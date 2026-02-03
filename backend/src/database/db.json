@@ -1,0 +1,11 @@
+{
+  "products": [
+    {
+      "productId": "1770100323425",
+      "name": "Coca-Cola",
+      "price": 7.5,
+      "category": "Bebida",
+      "quantity": 20
+    }
+  ]
+}
