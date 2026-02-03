@@ -1,7 +1,9 @@
 SENZALASBAR 🍻
 Sistema de controle de estoque desenvolvido para o bar da minha família, com o objetivo de praticar e consolidar conhecimentos em desenvolvimento full stack, arquitetura de software e programação orientada a objetos.
+
 🚀 Visão Geral
 Este projeto foi criado para atender às necessidades reais de gerenciamento de estoque de um pequeno negócio. A aplicação permite o controle de produtos, movimentações de entrada e saída, e oferece uma base sólida para expansão futura com funcionalidades como pedidos, vendas e relatórios.
+
 🧠 Tecnologias Utilizadas
 Backend
 - Node.js: Ambiente de execução JavaScript.
@@ -9,8 +11,7 @@ Backend
 - MySQL 
 - Arquitetura em camadas: Separação clara entre controllers, services, models e routes.
 - POO (Programação Orientada a Objetos): Estrutura modular e reutilizável.
-Frontend
-- (Adicione aqui se estiver usando React, Vue, Angular ou outro framework)
+
 📁 Estrutura do Projeto
 SENZALASBAR/
 ├── backend/
@@ -32,18 +33,7 @@ SENZALASBAR/
 - Listagem e busca de produtos.
 - API RESTful com rotas organizadas.
 - Validação de dados e tratamento de erros.
-📦 Instalação e Execução
-Backend
-cd backend
-npm install
-npm run dev
-
-
-Frontend
-cd frontend
-npm install
-npm start
-
+  
 
 📌 Objetivos do Projeto
 - Aplicar conceitos de arquitetura de software e boas práticas.
