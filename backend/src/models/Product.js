@@ -1,3 +1,4 @@
+// criaçao da classe Product com encapsulamento dos atributos productId e quantity
 class Product {
   #productId;
   #quantity;

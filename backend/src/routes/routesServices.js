@@ -1,5 +1,5 @@
-const express = require("express");
-const router = express.Router();
+const express = require("express"); // criando servidor http com express para manipulação do estoque de produtos
+const router = express.Router(); //
 const stockService = require("../services/appStock");
 
 // POST /products - Criar produto

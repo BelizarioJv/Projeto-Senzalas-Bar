@@ -1,17 +1,20 @@
+//classe de serviçõs para manipulação do estoque de produtos utilizando lowdb , depois desenvolver o frontend para consumir esses serviços vou mudar para o mongoose
+
 const { Low } = require("lowdb");
 const { JSONFile } = require("lowdb/node");
+
 
 const adapter = new JSONFile("./src/database/db.json");
 const db = new Low(adapter, { products: [] });
 
-async function initDB() {
-  await db.read();
+async function initDB() { // inicializando o banco de dados
+  await db.read(); 
   db.data ||= { products: [] };
   await db.write();
 }
 initDB();
 
-module.exports = {
+module.exports = { // serviços para manipulação do estoque de produtos
   addProduct: async (name, price, category, quantity) => {
     await db.read();
 

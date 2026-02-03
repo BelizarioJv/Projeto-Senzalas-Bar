@@ -1,3 +1,4 @@
+// criaçao da classe Stock para gerenciar o estoque de produtos
 class Stock {
   constructor() {
     this.items = {};
