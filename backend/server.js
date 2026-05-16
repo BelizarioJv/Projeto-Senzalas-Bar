@@ -1,24 +1,20 @@
-const express = require("express");
-const cors = require("cors");
+//Servidor
+
+import express from "express";
+import cors from "cors";
+import { productRouter } from "./src/routes/productRoutes.js";
+
 const app = express();
 
-const PORT = 3000; // definindo a porta do servidor
-
-// Permite JSON no body das requisições
 app.use(express.json());
-// Configura CORS
+
+//Estudando sobre CORS(pendente)
 app.use(cors());
 
-// Rotas
-const routesServices = require("./src/routes/routesServices");
-app.use("/products", routesServices);
+app.use("/products", productRouter);
 
-// Rota básica
-app.get("/", (req, res) => {
-  res.send("Servidor Express está rodando!");
-});
+const PORT = process.env.PORT || 3000;
 
-// Inicializa o servidor
 app.listen(PORT, () => {
   console.log(`Servidor rodando em http://localhost:${PORT}`);
 });

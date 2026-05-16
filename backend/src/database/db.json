@@ -5,7 +5,7 @@
       "name": "Coca-Cola",
       "price": 7.5,
       "category": "Bebida",
-      "quantity": 20
+      "quantity": "10"
     }
   ]
 }

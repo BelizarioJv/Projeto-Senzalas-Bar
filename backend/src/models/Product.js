@@ -1,5 +1,6 @@
-// criaçao da classe Product com encapsulamento dos atributos productId e quantity
-class Product {
+// Classe Product
+// *Encapsulamento no id e na quantidade dos produtos
+export class Product {
   #productId;
   #quantity;
   constructor(productId = null, name, price, category, quantity = 0) {
@@ -44,5 +45,3 @@ class Product {
     };
   }
 }
-
-module.exports = Product;

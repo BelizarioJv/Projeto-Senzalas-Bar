@@ -1,30 +1,38 @@
-//classe de serviçõs para manipulação do estoque de produtos utilizando lowdb , depois desenvolver o frontend para consumir esses serviços vou mudar para o mongoose
+import { Low } from "lowdb";
+import { JSONFile } from "lowdb/node";
+import { Product } from "../models/Product.js";
 
-const { Low } = require("lowdb");
-const { JSONFile } = require("lowdb/node");
-
-
+//Configuraçoes Json
 const adapter = new JSONFile("./src/database/db.json");
 const db = new Low(adapter, { products: [] });
 
-async function initDB() { // inicializando o banco de dados
-  await db.read(); 
+//Inicializando o banco de dados
+async function initDB() {
+  await db.read();
   db.data ||= { products: [] };
   await db.write();
 }
 initDB();
 
-module.exports = { // serviços para manipulação do estoque de produtos
+//Objeto de Funçao com serviços de stock/produto
+export const stockService = {
+  //Pegar todo o estoque no banco
+  getStock: async () => {
+    await db.read();
+    return db.data.products;
+  },
+
+  //Verificar produto no estoque
+  checkProductExists: async (id) => {
+    await db.read();
+    return db.data.products.some((p) => p.productId === id);
+  },
+
+  //Adicionar Produtos no banco de dados
   addProduct: async (name, price, category, quantity) => {
     await db.read();
 
-    const newProduct = {
-      productId: Date.now().toString(),
-      name,
-      price,
-      category,
-      quantity,
-    };
+    const newProduct = new Product(name, price, category, quantity);
 
     db.data.products.push(newProduct);
     await db.write();
@@ -32,16 +40,7 @@ module.exports = { // serviços para manipulação do estoque de produtos
     return newProduct;
   },
 
-  getStock: async () => {
-    await db.read();
-    return db.data.products;
-  },
-
-  checkProductExists: async (id) => {
-    await db.read();
-    return db.data.products.some((p) => p.productId === id);
-  },
-
+  //Adicionar quantidade no produto
   updateQuantity: async (id, quantity) => {
     await db.read();
 
@@ -53,6 +52,7 @@ module.exports = { // serviços para manipulação do estoque de produtos
     return product;
   },
 
+  //Remover produto no banco
   removeProduct: async (id) => {
     await db.read();
     db.data.products = db.data.products.filter((p) => p.productId !== id);

@@ -1,5 +1,5 @@
 // criaçao da classe Stock para gerenciar o estoque de produtos
-class Stock {
+export class Stock {
   constructor() {
     this.items = {};
   }
@@ -41,5 +41,3 @@ class Stock {
     return Object.values(this.items);
   }
 }
-
-module.exports = Stock;

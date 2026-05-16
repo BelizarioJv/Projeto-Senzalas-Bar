@@ -6,43 +6,43 @@ Este projeto foi criado para atender às necessidades reais de gerenciamento de 
 
 🧠 Tecnologias Utilizadas
 Backend
+
 - Node.js: Ambiente de execução JavaScript.
 - Express: Framework para construção da API REST.
-- MySQL 
-- Arquitetura em camadas: Separação clara entre controllers, services, models e routes.
+- MySQL
+- Arquitetura em camadas: Separação clara entre controllers, services, models , database e routes.
 - POO (Programação Orientada a Objetos): Estrutura modular e reutilizável.
 
 📁 Estrutura do Projeto
 SENZALASBAR/
 ├── backend/
-│   ├── src/
-│   │   ├── controllers/
-│   │   ├── database/
-│   │   ├── models/
-│   │   ├── routes/
-│   │   └── services/
-│   ├── package.json
-│   └── server.js
+│ ├── src/
+│ │ ├── controllers/
+│ │ ├── database/
+│ │ ├── models/
+│ │ ├── routes/
+│ │ └── services/
+│ ├── package.json
+│ └── server.js
 ├── frontend/
-│   └── ... (estrutura do frontend)
-
+│ └── ... (estrutura do frontend)
 
 ⚙️ Funcionalidades
+
 - Cadastro de produtos com nome, categoria, quantidade e preço.
 - Atualização de estoque com entradas e saídas.
 - Listagem e busca de produtos.
 - API RESTful com rotas organizadas.
 - Validação de dados e tratamento de erros.
-  
 
 📌 Objetivos do Projeto
+
 - Aplicar conceitos de arquitetura de software e boas práticas.
 - Criar uma solução funcional para uso real.
 - Aprender e praticar integração entre frontend e backend.
 - Evoluir o sistema com base em feedback e necessidades reais.
 
-- 
-📈 Próximos Passos
+- 📈 Próximos Passos
 - Implementar funcionalidade de vendas por mesa, permitindo o controle de pedidos vinculados a mesas específicas.
 - Adicionar cadastro de clientes, com histórico de consumo e identificação personalizada.
 - Desenvolver sistema de autenticação de usuários para controle de acesso.
