@@ -6,6 +6,13 @@
       "price": 7.5,
       "category": "Bebida",
       "quantity": "10"
+    },
+    {
+      "productId": 5,
+      "name": "Guarana",
+      "price": 7.5,
+      "category": "Refrigerante",
+      "quantity": 14
     }
   ]
 }
