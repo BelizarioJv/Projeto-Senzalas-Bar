@@ -1,0 +1,147 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum ProductStatus {
+  ACTIVE
+  INACTIVE
+}
+
+enum MovementType {
+  ENTRY
+  EXIT
+  ADJUSTMENT
+}
+
+enum PaymentMethod {
+  CASH
+  PIX
+  CREDIT_CARD
+  DEBIT_CARD
+}
+
+enum PurchaseStatus {
+  PENDING
+  COMPLETED
+  CANCELED
+}
+
+model Supplier {
+  id           Int        @id @default(autoincrement())
+  name         String
+  email        String?
+  phone        String?
+  address      String?
+  cnpj         String?  @unique
+  observations String?
+  purchases    Purchase[]
+  createdAt    DateTime   @default(now())
+  updatedAt    DateTime   @updatedAt
+}
+
+model Category {
+  id        Int       @id @default(autoincrement())
+  name      String    @unique
+  products  Product[]
+
+  
+}
+
+model Product {
+  id              Int              @id @default(autoincrement())
+  name            String           
+  description     String?
+  categoryId      Int
+  brand           String?
+  unitMeasure     String
+  costPrice       Decimal          @db.Decimal(10, 2)
+  salePrice       Decimal          @db.Decimal(10, 2)
+  currentQuantity Int               @default(0)
+  minimumQuantity Int               @default(0)
+  status          ProductStatus    @default(ACTIVE)
+  category        Category         @relation(fields: [categoryId], references: [id])
+  purchaseItems   PurchaseProduct[]
+  saleItems       SaleItem[]
+  stockMovements  StockMovement[]
+  createdAt       DateTime         @default(now())
+  updatedAt       DateTime         @updatedAt
+
+  @@index([categoryId])
+}
+
+
+model StockMovement {
+  id              Int            @id @default(autoincrement())
+  productId       Int
+  movementType    MovementType
+  quantity        Int
+  observations    String?
+  product         Product        @relation(fields: [productId], references: [id])
+  createdAt       DateTime       @default(now())
+
+  @@index([productId])
+}
+
+model Purchase {
+  id            Int              @id @default(autoincrement())
+  date          DateTime         @default(now())
+  total         Decimal          @db.Decimal(10, 2)
+  supplierId    Int
+  status        PurchaseStatus   @default(PENDING)
+  payment       PaymentMethod?
+  supplier      Supplier         @relation(fields: [supplierId], references: [id])
+  items         PurchaseProduct[]
+  createdAt     DateTime         @default(now())
+  updatedAt     DateTime         @updatedAt
+
+
+  @@index([supplierId])
+}
+
+model PurchaseProduct {
+  id            Int        @id @default(autoincrement())
+  purchaseId    Int
+  productId     Int
+  quantity      Int
+  price         Decimal    @db.Decimal(10, 2)
+  subtotal      Decimal    @db.Decimal(10, 2)
+  purchase      Purchase   @relation(fields: [purchaseId], references: [id])
+  product       Product    @relation(fields: [productId], references: [id])
+
+  @@index([purchaseId])
+  @@index([productId])
+  @@unique([purchaseId, productId])
+}
+
+model Sale {
+  id            Int              @id @default(autoincrement())
+  dateTime      DateTime         @default(now())
+  total         Decimal          @db.Decimal(10, 2)
+  payment       PaymentMethod
+  discount      Decimal?         @db.Decimal(10, 2)
+  observation   String?
+  items         SaleItem[]
+  createdAt     DateTime         @default(now())
+  updatedAt     DateTime         @updatedAt
+}
+
+model SaleItem {
+  id            Int        @id @default(autoincrement())
+  saleId        Int
+  productId     Int
+  quantity      Int
+  price         Decimal    @db.Decimal(10, 2)
+  subtotal      Decimal    @db.Decimal(10, 2)
+
+  sale          Sale       @relation(fields: [saleId], references: [id])
+  product       Product    @relation(fields: [productId], references: [id])
+
+  @@index([saleId])
+  @@index([productId])
+  @@unique([saleId, productId])
+}

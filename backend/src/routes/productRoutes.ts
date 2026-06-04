@@ -14,5 +14,8 @@ productRouter.post("/", productController.createProduct);
 // PUT /products/:id - Atualizar quantidade
 productRouter.put("/:id", productController.addQuantity);
 
+//Put /products/remove/:id - Remover quantidade
+productRouter.put("/remove/:id", productController.takeQuantity);
+
 // DELETE /products/:id - Remover produto
 productRouter.delete("/:id", productController.deleteProduct);
