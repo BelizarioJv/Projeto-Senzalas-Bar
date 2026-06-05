@@ -31,7 +31,7 @@ export class CategoryController {
       const { id } = req.params;
       const category = await prisma.supplier.findUnique({
         where: { id: Number(id) },
-        include: { products: true },
+        include: { product: true },
       });
       if (!category) {
         throw new HttpError(404, "Category not found");
@@ -47,7 +47,7 @@ export class CategoryController {
       const { id } = req.params;
       await prisma.supplier.delete({
         where: { id: Number(id) },
-        include: { products: true },
+        include: { product: true },
       });
 
       res.status(204).send();
