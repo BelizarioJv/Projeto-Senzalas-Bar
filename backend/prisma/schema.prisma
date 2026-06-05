@@ -8,6 +8,7 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+//Enus para assegurar e garabtir a integridade dos dados 
 enum ProductStatus {
   ACTIVE
   INACTIVE
@@ -39,6 +40,7 @@ enum UnitMeasure {
   FARDO
 }
 
+//Entidade (1:N(vendas)) "fornecedor" dados : id ,  nome , email , phone , address, cnpj , observaçoes , as compras feitas com o fornecedor ,data de criaçao e atualizaçao do fornecedor
 model Supplier {
   id           Int        @id @default(autoincrement())
   name         String
@@ -52,6 +54,7 @@ model Supplier {
   updatedAt    DateTime   @updatedAt
 }
 
+//Entidade "Categorias" (1:N(Produtos))dados : nome e os produtos que contem a categoria
 model Category {
   id        Int       @id @default(autoincrement())
   name      String    @unique
@@ -60,6 +63,7 @@ model Category {
   
 }
 
+//Entidade "Product" (1:N(compras e vendas) 1:1(categ) dados : id, nome , descriçao ,categoria , marca , unidade de medida , preço de custo e de venda , status e data de criaçao e venda)
 model Product {
   id              Int              @id @default(autoincrement())
   name            String           
@@ -83,6 +87,7 @@ model Product {
 }
 
 
+//Entidade "movimentaçao de estoque" (1:N(Produtos) dados :id , produtos , tipo de movimentaçao , quantidade de produtos , e observaçoes )
 model StockMovement {
   id              Int            @id @default(autoincrement())
   productId       Int
@@ -95,6 +100,7 @@ model StockMovement {
   @@index([productId])
 }
 
+//Entidade "Compra" (1:N(produtos) dados: id, data , total , fornecedor , status , metodo de pagamento ) 
 model Purchase {
   id            Int              @id @default(autoincrement())
   date          DateTime         @default(now())
@@ -111,6 +117,7 @@ model Purchase {
   @@index([supplierId])
 }
 
+//Entidade "Produtos da compra" (N:N(compra e produtos) dados: id , id da compra , id do produto ,quantidade do produto , preço do produto e subtotal)
 model PurchaseProduct {
   id            Int        @id @default(autoincrement())
   purchaseId    Int
@@ -126,6 +133,7 @@ model PurchaseProduct {
   @@unique([purchaseId, productId])
 }
 
+//Entidade "Venda" (1:N( com itens da venda)) dados : id, data/hora da venda, total, forma de pagamento, desconto, observação, itens da venda, data de criação e atualização
 model Sale {
   id            Int              @id @default(autoincrement())
   dateTime      DateTime         @default(now())
@@ -138,6 +146,7 @@ model Sale {
   updatedAt     DateTime         @updatedAt
 }
 
+//Entidade "Itens da venda" (N:N entre venda e produtos) dados : id, id da venda, id do produto, quantidade, preço unitário, subtotal
 model SaleItem {
   id            Int        @id @default(autoincrement())
   saleId        Int

@@ -1,14 +1,17 @@
 import { prisma } from "../database/prisma";
 import { Handler } from "express";
-import { CategoryRequestSchema } from "./schemas/CategoryRequestSchema";
+import {
+  SupplierRequestSchema,
+  UpdateSupplierRequestSchema,
+} from "./schemas/SupplierRequestSchema";
 import { HttpError } from "../errors/HttpError";
 
-//Controller de categorias com as operações de CRUD e listagem.
-export class CategoryController {
+//Controller de fornecedores com as operações de CRUD e listagem.
+export class SupplierController {
   index: Handler = async (req, res, next) => {
     try {
-      const categories = await prisma.supplier.findMany();
-      res.json(categories);
+      const supplier = await prisma.supplier.findMany();
+      res.json(supplier);
     } catch (error) {
       next(error);
     }
@@ -16,11 +19,11 @@ export class CategoryController {
 
   create: Handler = async (req, res, next) => {
     try {
-      const body = CategoryRequestSchema.parse(req.body);
-      const newCategory = await prisma.supplier.create({
+      const body = SupplierRequestSchema.parse(req.body);
+      const newSupplier = await prisma.supplier.create({
         data: body,
       });
-      res.status(201).json(newCategory);
+      res.status(201).json(newSupplier);
     } catch (error) {
       next(error);
     }
@@ -31,7 +34,7 @@ export class CategoryController {
       const { id } = req.params;
       const category = await prisma.supplier.findUnique({
         where: { id: Number(id) },
-        include: { products: true },
+        //include:,
       });
       if (!category) {
         throw new HttpError(404, "Category not found");
@@ -47,7 +50,7 @@ export class CategoryController {
       const { id } = req.params;
       await prisma.supplier.delete({
         where: { id: Number(id) },
-        include: { products: true },
+        // include:,
       });
 
       res.status(204).send();
@@ -59,12 +62,12 @@ export class CategoryController {
   update: Handler = async (req, res, next) => {
     try {
       const { id } = req.params;
-      const body = CategoryRequestSchema.parse(req.body);
-      const updatedCategory = await prisma.supplier.update({
+      const body = UpdateSupplierRequestSchema.parse(req.body);
+      const updatedSupllier = await prisma.supplier.update({
         where: { id: Number(id) },
         data: body,
       });
-      res.json(updatedCategory);
+      res.json(updatedSupllier);
     } catch (error) {
       next(error);
     }

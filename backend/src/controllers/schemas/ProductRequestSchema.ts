@@ -1,8 +1,10 @@
 import { z } from "zod";
 
+//listas de opções para campos específicos
 const unitOfMeasurement = z.enum(["UNIT", "KG", "LITER", "FARDO"]);
 const productStatus = z.enum(["ACTIVE", "INACTIVE"]);
 
+//schema para validação dos dados de listagem de produtos, com paginação, filtros e ordenação
 export const MetaProductRequestSchema = z.object({
   page: z.coerce.number().int().positive().optional(),
   pageSize: z.coerce.number().int().positive().optional(),
@@ -12,6 +14,7 @@ export const MetaProductRequestSchema = z.object({
   order: z.enum(["asc", "desc"]).optional(),
 });
 
+//schema para validação dos dados de criação de produtos, onde todos os campos são obrigatórios, exceto descrição
 export const ProductRequestSchema = z.object({
   name: z.string().min(1, "Name is required"),
   description: z.string().optional(),
@@ -25,6 +28,7 @@ export const ProductRequestSchema = z.object({
     .nonnegative("Quantidade mínima não pode ser negativa"),
 });
 
+//schema para validação dos dados de atualização de produtos, onde todos os campos são opcionais e podem ser atualizados individualmente
 export const UpdateProductRequestSchema = z.object({
   name: z.string().min(1, "Name is required").optional(),
   description: z.string().optional(),

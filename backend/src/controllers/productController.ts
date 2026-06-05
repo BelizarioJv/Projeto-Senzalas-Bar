@@ -1,16 +1,51 @@
-import { prisma } from "../database/prisma";
 import { Handler } from "express";
+import { HttpError } from "../errors/HttpError";
+import { prisma } from "../database/prisma";
+import { Prisma } from "../generated/prisma/client";
 import {
   ProductRequestSchema,
   UpdateProductRequestSchema,
+  MetaProductRequestSchema,
 } from "./schemas/ProductRequestSchema";
-import { HttpError } from "../errors/HttpError";
 
+//Controller de produtos com as operações de CRUD e listagem com paginação, ordenação e filtro por nome.
 export class ProductController {
   index: Handler = async (req, res, next) => {
     try {
+      const query = MetaProductRequestSchema.parse(req.query);
+
+      const {
+        page = "1",
+        pageSize = "10",
+        name,
+        sortBy = "name",
+        order = "asc",
+      } = query;
+
+      const pageNumber = Number(page);
+      const pageSizeNumber = Number(pageSize);
+
+      const where: Prisma.ProductWhereInput = {};
+      if (name) where.name = { contains: name, mode: "insensitive" };
+
+      const product = await prisma.product.findMany({
+        where,
+        skip: (pageNumber - 1) * pageSizeNumber,
+        take: pageSizeNumber,
+        orderBy: { [sortBy]: order },
+      });
+
+      const total = await prisma.product.count({ where });
       const products = await prisma.product.findMany();
-      res.json(products);
+      res.json({
+        data: products,
+        meta: {
+          page: pageNumber,
+          pageSize: pageSizeNumber,
+          total,
+          totalPages: Math.ceil(total / pageSizeNumber),
+        },
+      });
     } catch (error) {
       next(error);
     }
