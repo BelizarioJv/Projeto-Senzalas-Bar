@@ -5,6 +5,7 @@ generator client {
 
 datasource db {
   provider = "postgresql"
+  url      = env("DATABASE_URL")
 }
 
 enum ProductStatus {
@@ -29,6 +30,13 @@ enum PurchaseStatus {
   PENDING
   COMPLETED
   CANCELED
+}
+
+enum UnitMeasure {
+  UNIT
+  KG
+  LITER
+  FARDO
 }
 
 model Supplier {
@@ -58,7 +66,7 @@ model Product {
   description     String?
   categoryId      Int
   brand           String?
-  unitMeasure     String
+  unitMeasure     UnitMeasure
   costPrice       Decimal          @db.Decimal(10, 2)
   salePrice       Decimal          @db.Decimal(10, 2)
   currentQuantity Int               @default(0)

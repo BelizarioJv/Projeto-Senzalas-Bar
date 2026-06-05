@@ -1,16 +1,13 @@
 import { prisma } from "../database/prisma";
 import { Handler } from "express";
-import {
-  ProductRequestSchema,
-  UpdateProductRequestSchema,
-} from "./schemas/ProductRequestSchema";
+import { CategoryRequestSchema } from "./schemas/CategoryRequestSchema";
 import { HttpError } from "../errors/HttpError";
 
-export class ProductController {
+export class CategoryController {
   index: Handler = async (req, res, next) => {
     try {
-      const products = await prisma.product.findMany();
-      res.json(products);
+      const categories = await prisma.product.findMany();
+      res.json(categories);
     } catch (error) {
       next(error);
     }
@@ -18,11 +15,11 @@ export class ProductController {
 
   create: Handler = async (req, res, next) => {
     try {
-      const body = ProductRequestSchema.parse(req.body);
-      const newProduct = await prisma.product.create({
+      const body = CategoryRequestSchema.parse(req.body);
+      const newCategory = await prisma.product.create({
         data: body,
       });
-      res.status(201).json(newProduct);
+      res.status(201).json(newCategory);
     } catch (error) {
       next(error);
     }
@@ -31,13 +28,14 @@ export class ProductController {
   show: Handler = async (req, res, next) => {
     try {
       const { id } = req.params;
-      const product = await prisma.product.findUnique({
+      const category = await prisma.product.findUnique({
         where: { id: Number(id) },
+        include: { products: true },
       });
-      if (!product) {
-        throw new HttpError(404, "Product not found");
+      if (!category) {
+        throw new HttpError(404, "Category not found");
       }
-      res.json(product);
+      res.json(category);
     } catch (error) {
       next(error);
     }
@@ -48,6 +46,7 @@ export class ProductController {
       const { id } = req.params;
       await prisma.product.delete({
         where: { id: Number(id) },
+        include: { products: true },
       });
 
       res.status(204).send();
@@ -59,12 +58,12 @@ export class ProductController {
   update: Handler = async (req, res, next) => {
     try {
       const { id } = req.params;
-      const body = UpdateProductRequestSchema.parse(req.body);
-      const updatedProduct = await prisma.product.update({
+      const body = CategoryRequestSchema.parse(req.body);
+      const updatedCategory = await prisma.product.update({
         where: { id: Number(id) },
         data: body,
       });
-      res.json(updatedProduct);
+      res.json(updatedCategory);
     } catch (error) {
       next(error);
     }

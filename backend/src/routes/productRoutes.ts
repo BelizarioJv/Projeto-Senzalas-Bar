@@ -1,21 +1,18 @@
-//Rotas relacionadas aos Produtos
-
 import express from "express";
-import { productController } from "../controllers/productController";
+import { ProductController } from "../controllers/productController";
 
 export const productRouter = express.Router();
 
+const productController = new ProductController();
+
 // GET /products - Listar produtos
-productRouter.get("/", productController.allProducts);
+productRouter.get("/", productController.index);
 
 // POST /products - Criar produto
-productRouter.post("/", productController.createProduct);
+productRouter.post("/", productController.create);
 
 // PUT /products/:id - Atualizar quantidade
-productRouter.put("/:id", productController.addQuantity);
-
-//Put /products/remove/:id - Remover quantidade
-productRouter.put("/remove/:id", productController.takeQuantity);
+productRouter.put("/:id", productController.update);
 
 // DELETE /products/:id - Remover produto
-productRouter.delete("/:id", productController.deleteProduct);
+productRouter.delete("/:id", productController.delete);

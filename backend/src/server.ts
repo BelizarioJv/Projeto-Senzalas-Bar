@@ -3,6 +3,7 @@
 import express from "express";
 import cors from "cors";
 import { productRouter } from "./routes/productRoutes";
+import { categoryRouter } from "./routes/categoryRoutes";
 
 const app = express();
 
@@ -12,6 +13,7 @@ app.use(express.json());
 app.use(cors());
 
 app.use("/products", productRouter);
+app.use("/category", categoryRouter);
 
 const PORT = process.env.PORT || 3000;
 
