@@ -4,6 +4,7 @@ import { categoryRouter } from "./routes/categoryRoutes";
 import { supplierRouter } from "./routes/supplierRoutes";
 import { purchaseRouter } from "./routes/purchaseRoutes";
 import { saleRouter } from "./routes/saleRoutes";
+import { dashboardRouter } from "./routes/dashboard";
 
 import express from "express";
 import cors from "cors";
@@ -20,6 +21,7 @@ app.use("/category", categoryRouter);
 app.use("/supplier", supplierRouter);
 app.use("/purchase", purchaseRouter);
 app.use("/sale", saleRouter);
+app.use("/dashboard", dashboardRouter);
 
 const PORT = process.env.PORT || 3000;
 
