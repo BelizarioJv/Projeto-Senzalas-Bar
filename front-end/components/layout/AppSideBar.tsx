@@ -10,22 +10,24 @@ import {
 } from "lucide-react";
 import {
   Sidebar,
-  SidebarTrigger,
   SidebarContent,
   SidebarHeader,
   SidebarFooter,
   SidebarGroup,
   useSidebar,
 } from "@/components/ui/sidebar";
+import { Moon, Sun } from "lucide-react";
+import { useTheme } from "next-themes";
 import { Button } from "@/components/ui/button";
 
 export function AppSidebar() {
   const { open } = useSidebar();
+  const { setTheme, theme } = useTheme();
 
   return (
-    <Sidebar className={`bg-gray-900 ${open ? "w-64" : "w-16"}`}>
-      <SidebarHeader className="p-4 border-b border-gray-700">
-        {open && <h2 className="text-xl font-bold">Menu</h2>}
+    <Sidebar className={`bg-gray-900  ${open ? "w-64" : "w-16"}`}>
+      <SidebarHeader className="flex flex-col justify-center h-16 items-center bg-background border-r border-border">
+        {open && <h2 className=" flex text-xl font-bold">Menu</h2>}
       </SidebarHeader>
 
       <SidebarContent className="flex flex-col gap-4 p-2 justify-center items-center">
@@ -90,14 +92,19 @@ export function AppSidebar() {
         </SidebarGroup>
       </SidebarContent>
 
-      <SidebarFooter className="p-5 bg-gray-800 border-t border-gray-700 flex items-center justify-between">
-        <h3 className="text-sm text-gray-300 font-medium">
+      <SidebarFooter className="p-5 bg-background border-t border-accent flex items-center justify-between">
+        <h3 className=" text-sm text-muted-foreground">
           Versão do software:
-          <span className="ml-2 text-white font-semibold">1.0.0</span>
+          <span className="ml-2 text-sm text-muted-foreground font-medium">
+            1.0.0
+          </span>
         </h3>
-        <button className="p-2 rounded-full bg-yellow-500 hover:bg-yellow-400 transition">
-          <Lightbulb className="text-gray-900" size={20} />
-        </button>
+        <Button
+          variant="outline"
+          size="icon"
+          onClick={() => setTheme(theme === "dark" ? "light" : "dark")}>
+          {theme === "dark" ? <Sun /> : <Moon />}
+        </Button>
       </SidebarFooter>
     </Sidebar>
   );

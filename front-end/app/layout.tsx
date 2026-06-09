@@ -1,6 +1,7 @@
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { AppSidebar } from "@/components/layout/AppSideBar";
 import { Header } from "@/components/layout/Header";
+import { ThemeProvider } from "@/components/layout/ThemeProvider";
 import type { Metadata } from "next";
 import {
   Geist,
@@ -39,31 +40,34 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <SidebarProvider>
-      <html
-        lang="pt-br"
-        className={cn(
-          "h-full",
-          "w-full",
-          "antialiased",
-          geistSans.variable,
-          geistMono.variable,
-          "font-sans",
-          notoSans.variable,
-          playfairDisplayHeading.variable,
-        )}>
-        <body className="min-h-screen bg-gray-950 text-white">
-          <div className="flex min-h-screen w-full">
-            <AppSidebar />
+    <html
+      lang="pt-br"
+      suppressHydrationWarning
+      className={cn(
+        "h-full",
+        "w-full",
+        "antialiased",
+        geistSans.variable,
+        geistMono.variable,
+        "font-sans",
+        notoSans.variable,
+        playfairDisplayHeading.variable,
+      )}>
+      <body className="min-h-screen text-white">
+        <SidebarProvider>
+          <ThemeProvider>
+            <div className="flex min-h-screen w-full">
+              <AppSidebar />
 
-            <div className="flex-1 flex flex-col justify-center">
-              <Header />
+              <div className="flex-1 flex flex-col justify-center">
+                <Header />
 
-              <main className="flex-1 p-6">{children}</main>
+                <main className="flex-1 p-6">{children}</main>
+              </div>
             </div>
-          </div>
-        </body>
-      </html>
-    </SidebarProvider>
+          </ThemeProvider>
+        </SidebarProvider>
+      </body>
+    </html>
   );
 }
