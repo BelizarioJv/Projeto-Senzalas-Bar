@@ -1,8 +1,7 @@
-import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
+import type { Metadata } from "next";
 import { AppSidebar } from "@/components/layout/AppSideBar";
 import { Header } from "@/components/layout/Header";
-import { ThemeProvider } from "@/components/layout/ThemeProvider";
-import type { Metadata } from "next";
+import { Providers } from "./providers";
 import {
   Geist,
   Geist_Mono,
@@ -30,15 +29,15 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Senalas bar",
-  description: "Dashoboard Senzalas bar",
+  title: "Senzalas Bar",
+  description: "App Senzalas bar",
 };
 
 export default function RootLayout({
   children,
-}: Readonly<{
+}: {
   children: React.ReactNode;
-}>) {
+}) {
   return (
     <html
       lang="pt-br"
@@ -53,20 +52,16 @@ export default function RootLayout({
         notoSans.variable,
         playfairDisplayHeading.variable,
       )}>
-      <body className="min-h-screen text-white">
-        <SidebarProvider>
-          <ThemeProvider>
-            <div className="flex min-h-screen w-full">
-              <AppSidebar />
-
-              <div className="flex-1 flex flex-col justify-center">
-                <Header />
-
-                <main className="flex-1 p-6">{children}</main>
-              </div>
+      <body className="min-h-screen">
+        <Providers>
+          <div className="flex min-h-screen w-full">
+            <AppSidebar />
+            <div className="flex-1 flex flex-col">
+              <Header />
+              <main className="flex-1 p-6">{children}</main>
             </div>
-          </ThemeProvider>
-        </SidebarProvider>
+          </div>
+        </Providers>
       </body>
     </html>
   );

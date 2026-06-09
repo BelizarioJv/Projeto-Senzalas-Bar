@@ -100,6 +100,7 @@ export function AppSidebar() {
           </span>
         </h3>
         <Button
+          className="rounded-md "
           variant="outline"
           size="icon"
           onClick={() => setTheme(theme === "dark" ? "light" : "dark")}>
