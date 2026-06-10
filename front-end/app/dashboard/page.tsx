@@ -1,6 +1,6 @@
 "use client";
 import { AppCard } from "@/components/layout/AppCard";
-import { useDashboard } from "@/hooks/useDashboard";
+import { useDashboard } from "@/hooks/dashboard/useDashboard";
 
 export default function DashboardPage() {
   const { data, isPending, error } = useDashboard();

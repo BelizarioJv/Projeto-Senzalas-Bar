@@ -8,6 +8,9 @@ const productController = new ProductController();
 // GET /products - Listar produtos
 productRouter.get("/", productController.index);
 
+//GET /products/:id - Buscar produto espefico
+productRouter.get("/:id", productController.show);
+
 // POST /products - Criar produto
 productRouter.post("/", productController.create);
 

@@ -13,7 +13,6 @@ const app = express();
 
 app.use(express.json());
 
-//Estudando sobre CORS(pendente)
 app.use(cors());
 
 app.use("/products", productRouter);

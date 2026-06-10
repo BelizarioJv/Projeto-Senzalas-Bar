@@ -36,7 +36,7 @@ export function AppSidebar() {
             <li>
               <a
                 href="/produtos"
-                className="flex items-center gap-2 p-2 rounded hover:bg-gray-800 transition">
+                className="flex items-center gap-2 p-2 rounded hover:bg-gray-400 transition">
                 <Package size={20} /> {open && "Produtos"}
               </a>
             </li>
@@ -48,7 +48,7 @@ export function AppSidebar() {
             <li>
               <a
                 href="/compra"
-                className="flex items-center gap-2 p-2 rounded hover:bg-gray-800 transition">
+                className="flex items-center gap-2 p-2 rounded hover:bg-gray-400 transition">
                 <ShoppingCart size={20} /> {open && "Compra"}
               </a>
             </li>
@@ -60,7 +60,7 @@ export function AppSidebar() {
             <li>
               <a
                 href="/venda"
-                className="flex items-center gap-2 p-2 rounded hover:bg-gray-800 transition">
+                className="flex items-center gap-2 p-2 rounded hover:bg-gray-400 transition">
                 <DollarSign size={20} /> {open && "Venda"}
               </a>
             </li>
@@ -72,7 +72,7 @@ export function AppSidebar() {
             <li>
               <a
                 href="/fornecedores"
-                className="flex items-center gap-2 p-2 rounded hover:bg-gray-800 transition">
+                className="flex items-center gap-2 p-2 rounded hover:bg-gray-400 transition">
                 <Truck size={20} /> {open && "Fornecedores"}
               </a>
             </li>
@@ -84,7 +84,7 @@ export function AppSidebar() {
             <li>
               <a
                 href="/dashboard"
-                className="flex items-center gap-2 p-2 rounded hover:bg-gray-800 transition">
+                className="flex items-center gap-2 p-2 rounded hover:bg-gray-400 transition">
                 <LayoutDashboard size={20} /> {open && "Dashboard"}
               </a>
             </li>

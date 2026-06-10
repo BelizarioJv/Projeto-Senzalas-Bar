@@ -36,9 +36,8 @@ export class ProductController {
       });
 
       const total = await prisma.product.count({ where });
-      const products = await prisma.product.findMany();
       res.json({
-        data: products,
+        data: product,
         meta: {
           page: pageNumber,
           pageSize: pageSizeNumber,
