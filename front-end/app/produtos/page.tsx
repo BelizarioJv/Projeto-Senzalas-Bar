@@ -48,7 +48,10 @@ export default function ProductsPage() {
 
       {/* Lista de produtos */}
       <Card className="p-6 shadow-md rounded-lg">
-        <h2 className="text-2xl font-semibold mb-4">Lista de Produtos</h2>
+        <div>
+          <h2 className="text-2xl font-semibold mb-4">Lista de Produtos</h2>
+          {/* vou colocar os filtros e campos de busca aqui */}
+        </div>
         <table className="w-full border-collapse rounded-sm">
           <thead>
             <tr className="bg-accent text-left ">
@@ -68,7 +71,7 @@ export default function ProductsPage() {
                 <td className="p-2 font-medium">{product.name}</td>
                 <td className="p-2 text-gray-600">R${product.costPrice}</td>
                 <td className="p-2 text-gray-600">R${product.salePrice}</td>
-                <td className="p-2 text-gray-600">R${product.categoryId}</td>
+                <td className="p-2 text-gray-600">R${product.category}</td>
                 <td className="p-2 text-gray-600">{product.status}</td>
                 <td>
                   <Link
@@ -106,9 +109,9 @@ export default function ProductsPage() {
       {/* Link para categorias */}
       <div className="text-center">
         <Link
-          href="/dashboard"
+          href="/produtos/form"
           className="inline-flex items-center gap-2 px-4 py-2 bg-accent text-accent- rounded hover:bg-gray-30 transition">
-          Ir para o Dashboard
+          Adicionar produto
         </Link>
       </div>
     </div>

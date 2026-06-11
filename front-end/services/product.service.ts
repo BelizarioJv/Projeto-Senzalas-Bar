@@ -1,5 +1,5 @@
 import { api } from "./api";
-import { ProductData, ProductUpdate } from "@/types/product";
+import { ProductData, ProductUpdate, ProductFormData } from "@/types/product";
 
 interface MetaData {
   page: number;
@@ -31,8 +31,8 @@ export async function showProduct(id: string): Promise<ProductData> {
 }
 
 //Criar produtos
-export async function createProduct(data: ProductData) {
-  const response = await api.post<ProductData>("/products", data);
+export async function createProduct(data: ProductFormData) {
+  const response = await api.post<ProductFormData>("/products", data);
 
   return response.data;
 }

@@ -25,7 +25,7 @@ export default function ProdutoPage() {
             <p className="text-accent-foreground">{product.description}</p>
             <div className="flex flex-col items-center justify-between">
               <p>Categoria</p>
-              <p className="text-accent-foreground">{product.categoryId}</p>
+              <p className="text-accent-foreground">{product.category}</p>
             </div>
             <p className="text-accent-foreground">{product.brand || ""}</p>
           </div>
