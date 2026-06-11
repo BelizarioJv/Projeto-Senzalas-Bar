@@ -18,7 +18,6 @@ export const MetaProductRequestSchema = z.object({
   pageSize: z.coerce.number().int().positive().optional(),
   name: z.string().optional(),
   status: productStatus.optional(),
-  category: productsCategory,
   sortBy: z.enum(["name", "status", "createdAt"]).optional(),
   order: z.enum(["asc", "desc"]).optional(),
 });

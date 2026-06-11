@@ -3,9 +3,15 @@ export interface ProductData {
   id: number;
   name: string;
   description?: string;
-  categoryId: number;
+  category:
+    | "CERVEJA"
+    | "VINHOS"
+    | "DESTILADOS"
+    | "REFRIGERANTES"
+    | "SUCO"
+    | "AGUA";
   brand?: string;
-  unitMeasure: "UNIT" | "KG" | "LITER" | "FARDO";
+  unitMeasure: "UNIDADE" | "KG" | "LITRO" | "FARDO";
   costPrice: string;
   salePrice: string;
   currentQuantity: number;
@@ -18,9 +24,15 @@ export interface ProductData {
 export interface ProductUpdate {
   name: string;
   description?: string;
-  categoryId: number;
+  category:
+    | "CERVEJA"
+    | "VINHOS"
+    | "DESTILADOS"
+    | "REFRIGERANTES"
+    | "SUCO"
+    | "AGUA";
   brand?: string;
-  unitMeasure: "UNIT" | "KG" | "LITER" | "FARDO";
+  unitMeasure: "UNIDADE" | "KG" | "LITRO" | "FARDO";
   costPrice: number;
   salePrice: number;
   minimumQuantity: number;
@@ -29,9 +41,15 @@ export interface ProductUpdate {
 export interface ProductFormData {
   name: string;
   description?: string;
-  categoryId: number;
+  category:
+    | "CERVEJA"
+    | "VINHOS"
+    | "DESTILADOS"
+    | "REFRIGERANTES"
+    | "SUCO"
+    | "AGUA";
   brand?: string;
-  unitMeasure: "UNIT" | "KG" | "LITER" | "FARDO";
+  unitMeasure: "UNIDADE" | "KG" | "LITRO" | "FARDO";
   costPrice: number;
   salePrice: number;
   minimumQuantity: number;
