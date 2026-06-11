@@ -5,38 +5,52 @@ generator client {
 
 datasource db {
   provider = "postgresql"
-  url      = env("DATABASE_URL")
 }
 
-//Enus para assegurar e garabtir a integridade dos dados 
+//Enus para assegurar e garantir a integridade dos dados 
 enum ProductStatus {
   ACTIVE
   INACTIVE
 }
 
+
+//Enum para categoria do produto
+enum ProductsCategory{
+  CERVEJA
+  VINHOS
+  DESTILADOS
+  REFRIGERANTES
+  SUCO
+  AGUA
+}
+
+//Tipos de movimentaçoes
 enum MovementType {
-  ENTRY
-  EXIT
-  ADJUSTMENT
+  ENTRADA
+  SAIDA
+  AJUSTE
 }
 
+//Tipode de pagamento
 enum PaymentMethod {
-  CASH
+  DINHEIRO
   PIX
-  CREDIT_CARD
-  DEBIT_CARD
+  CARTAO_CREDITO
+  CARTAO_DEBITO
 }
 
+//Status da compra
 enum PurchaseStatus {
-  PENDING
-  COMPLETED
-  CANCELED
+  PENDENTE
+  COMPLETO
+  CANCELADO
 }
 
+//Unidade de medida
 enum UnitMeasure {
-  UNIT
+  UNIDADE
   KG
-  LITER
+  LITRO
   FARDO
 }
 
@@ -54,21 +68,11 @@ model Supplier {
   updatedAt    DateTime   @updatedAt
 }
 
-//Entidade "Categorias" (1:N(Produtos))dados : nome e os produtos que contem a categoria
-model Category {
-  id        Int       @id @default(autoincrement())
-  name      String    @unique
-  products  Product[]
-
-  
-}
-
 //Entidade "Product" (1:N(compras e vendas) 1:1(categ) dados : id, nome , descriçao ,categoria , marca , unidade de medida , preço de custo e de venda , status e data de criaçao e venda)
 model Product {
   id              Int              @id @default(autoincrement())
   name            String           
   description     String?
-  categoryId      Int
   brand           String?
   unitMeasure     UnitMeasure
   costPrice       Decimal          @db.Decimal(10, 2)
@@ -76,14 +80,12 @@ model Product {
   currentQuantity Int               @default(0)
   minimumQuantity Int               @default(0)
   status          ProductStatus    @default(ACTIVE)
-  category        Category         @relation(fields: [categoryId], references: [id])
+  category        ProductsCategory  
   purchaseItems   PurchaseProduct[]
   saleItems       SaleItem[]
   stockMovements  StockMovement[]
   createdAt       DateTime         @default(now())
   updatedAt       DateTime         @updatedAt
-
-  @@index([categoryId])
 }
 
 
@@ -106,7 +108,7 @@ model Purchase {
   date          DateTime         @default(now())
   total         Decimal          @db.Decimal(10, 2)
   supplierId    Int
-  status        PurchaseStatus   @default(PENDING)
+  status        PurchaseStatus   @default(PENDENTE)
   payment       PaymentMethod?
   supplier      Supplier         @relation(fields: [supplierId], references: [id])
   items         PurchaseProduct[]

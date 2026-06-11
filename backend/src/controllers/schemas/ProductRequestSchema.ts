@@ -1,8 +1,16 @@
 import { z } from "zod";
 
 //listas de opções para campos específicos
-const unitOfMeasurement = z.enum(["UNIT", "KG", "LITER", "FARDO"]);
+const unitOfMeasurement = z.enum(["UNIDADE", "KG", "LITRO", "FARDO"]);
 const productStatus = z.enum(["ACTIVE", "INACTIVE"]);
+const productsCategory = z.enum([
+  "CERVEJA",
+  "VINHOS",
+  "DESTILADOS",
+  "REFRIGERANTES",
+  "SUCO",
+  "AGUA",
+]);
 
 //schema para validação dos dados de listagem de produtos, com paginação, filtros e ordenação
 export const MetaProductRequestSchema = z.object({
@@ -10,6 +18,7 @@ export const MetaProductRequestSchema = z.object({
   pageSize: z.coerce.number().int().positive().optional(),
   name: z.string().optional(),
   status: productStatus.optional(),
+  category: productsCategory,
   sortBy: z.enum(["name", "status", "createdAt"]).optional(),
   order: z.enum(["asc", "desc"]).optional(),
 });
@@ -18,7 +27,7 @@ export const MetaProductRequestSchema = z.object({
 export const ProductRequestSchema = z.object({
   name: z.string().min(1, "Name is required"),
   description: z.string().optional(),
-  categoryId: z.number().int().positive(),
+  category: productsCategory,
   brand: z.string().optional(),
   unitMeasure: unitOfMeasurement,
   costPrice: z.number().positive("Preço de custo deve ser um número positivo"),
@@ -32,7 +41,7 @@ export const ProductRequestSchema = z.object({
 export const UpdateProductRequestSchema = z.object({
   name: z.string().min(1, "Name is required").optional(),
   description: z.string().optional(),
-  categoryId: z.number().int().positive().optional(),
+  category: productsCategory,
   brand: z.string().optional(),
   unitMeasure: unitOfMeasurement.optional(),
   costPrice: z

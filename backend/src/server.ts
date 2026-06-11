@@ -1,6 +1,5 @@
 //Servidor
 import { productRouter } from "./routes/productRoutes";
-import { categoryRouter } from "./routes/categoryRoutes";
 import { supplierRouter } from "./routes/supplierRoutes";
 import { purchaseRouter } from "./routes/purchaseRoutes";
 import { saleRouter } from "./routes/saleRoutes";
@@ -16,7 +15,6 @@ app.use(express.json());
 app.use(cors());
 
 app.use("/products", productRouter);
-app.use("/category", categoryRouter);
 app.use("/supplier", supplierRouter);
 app.use("/purchase", purchaseRouter);
 app.use("/sale", saleRouter);
