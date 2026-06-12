@@ -11,7 +11,7 @@ export class SupplierController {
   index: Handler = async (req, res, next) => {
     try {
       const supplier = await prisma.supplier.findMany();
-      res.json(supplier);
+      res.json({ data: supplier });
     } catch (error) {
       next(error);
     }

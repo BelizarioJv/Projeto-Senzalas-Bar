@@ -1,7 +1,7 @@
 import { z } from "zod";
 
 const paymentMethod = z
-  .enum(["CASH", "PIX", "CREDIT_CARD", "DEBIT_CARD"])
+  .enum(["DINHEIRO", "PIX", "CARTAO_CREDITO", "CARTAO_DEBITO"])
   .optional();
 
 export const PurchaseRequestSchema = z.object({

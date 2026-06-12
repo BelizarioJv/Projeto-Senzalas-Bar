@@ -1,6 +1,6 @@
 import { api } from "./api";
 import { ProductData, ProductFormData } from "@/types/product";
-import axios, { AxiosError } from "axios";
+import { handleAxiosError } from "@/utils/handleAxiosError";
 
 interface MetaData {
   page: number;
@@ -12,19 +12,6 @@ interface MetaData {
 export interface ProductResponse {
   data: ProductData[];
   meta: MetaData;
-}
-
-// Função auxiliar para tratar erros do Axios
-function handleAxiosError(error: unknown): never {
-  if (axios.isAxiosError(error)) {
-    const axiosError = error as AxiosError<{ message?: string }>;
-    const message =
-      axiosError.response?.data?.message ||
-      axiosError.message ||
-      "Erro inesperado na requisição";
-    throw new Error(message);
-  }
-  throw new Error("Erro desconhecido");
 }
 
 // Buscar produtos na API /products

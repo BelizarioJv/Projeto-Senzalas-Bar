@@ -1,18 +1,20 @@
 "use client";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { deleteProduct } from "@/services/product.service";
+import { updateSupplier } from "@/services/supplier.service";
+import { ProductData } from "@/types/product";
 import { toast } from "sonner";
 
-export function useDeleteProduct() {
-  //POST - excluir u produto
+export function useUpdateSupplier() {
+  //PUT - atualizar dados fornecedor
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: ({ id }: { id: string }) => deleteProduct(id),
+    mutationFn: ({ id, data }: { id: string; data: ProductData }) =>
+      updateSupplier(id, data),
 
     onSuccess: () => {
       queryClient.invalidateQueries({
-        queryKey: ["products"],
+        queryKey: ["supplier"],
       });
     },
     onError: (error) => {

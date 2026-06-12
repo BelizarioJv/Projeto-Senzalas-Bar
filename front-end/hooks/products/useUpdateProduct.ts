@@ -5,6 +5,7 @@ import { ProductData } from "@/types/product";
 import { toast } from "sonner";
 
 export function useUpdateProduct() {
+  //PUT - atualizar dados produto
   const queryClient = useQueryClient();
 
   return useMutation({
