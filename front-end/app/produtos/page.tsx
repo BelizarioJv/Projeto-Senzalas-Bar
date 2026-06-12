@@ -59,7 +59,7 @@ export default function ProductsPage() {
               <th className="p-2">Preço de Venda</th>
               <th className="p-2">Categoria</th>
               <th className="p-2">Status</th>
-              <th className="p-2"> </th>
+              <th className="p-2">Açoes</th>
             </tr>
           </thead>
           <tbody>

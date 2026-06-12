@@ -8,6 +8,8 @@ const supplierController = new SupplierController();
 // GET /supplier - Listar Fornecedores
 supplierRouter.get("/", supplierController.index);
 
+supplierRouter.get("/:id", supplierController.show);
+
 // POST /supplier - Criar fornecedor
 supplierRouter.post("/", supplierController.create);
 

@@ -1,7 +1,7 @@
 "use client";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { updateSupplier } from "@/services/supplier.service";
-import { ProductData } from "@/types/product";
+import { SupplierData } from "@/types/supplier";
 import { toast } from "sonner";
 
 export function useUpdateSupplier() {
@@ -9,7 +9,7 @@ export function useUpdateSupplier() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: ({ id, data }: { id: string; data: ProductData }) =>
+    mutationFn: ({ id, data }: { id: string; data: SupplierData }) =>
       updateSupplier(id, data),
 
     onSuccess: () => {

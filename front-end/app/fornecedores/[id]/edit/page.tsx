@@ -1,47 +1,75 @@
 "use client";
+
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
+import { useEffect } from "react";
 import { useForm } from "react-hook-form";
-import { SupplierFormData } from "@/types/supplier";
+import { useGetSupplier } from "@/hooks/supplier/useGetSupplier";
+import { useUpdateSupplier } from "@/hooks/supplier/useUpdateSupplier";
+import { useParams } from "next/navigation";
+import { SupplierData } from "@/types/supplier";
 import { Button } from "@/components/ui/button";
+import { notFound } from "next/navigation";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Truck } from "lucide-react";
-import { useCreateSupplier } from "@/hooks/supplier/useCreateSupplier";
+import { Truck, ArrowLeft } from "lucide-react";
 
-export default function CreateProductPage() {
+export default function UpdateSupplierPage() {
   const router = useRouter();
+  //Buscando produto pelo Id
+  const params = useParams();
+  const id = params.id as string;
+  const { data: supplier, isPending, error } = useGetSupplier(id);
+
+  const updateMutation = useUpdateSupplier();
+
+  //Verificaçoes
+  if (isPending) <p>Carregando...</p>;
+  if (error) <p>Erro ao carregar produto</p>;
+  if (!supplier) notFound();
+
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<SupplierFormData>();
+    reset,
+  } = useForm<SupplierData>({
+    values: supplier,
+  });
 
-  const createSupplier = useCreateSupplier();
+  useEffect(() => {
+    if (supplier) {
+      reset(supplier);
+    }
+  }, [supplier, reset]);
 
-  async function onSubmit(data: SupplierFormData) {
+  async function onSubmit(data: SupplierData) {
     try {
-      await createSupplier.mutateAsync(data);
+      await updateMutation.mutateAsync({ id, data });
 
-      toast.success("Fornecedor cadastrado com sucesso");
+      toast.success("fornecedor atualizado com sucesso!");
       router.replace("/fornecedores");
-    } catch (error: any) {
-      console.error("Erro ao cadastrar Fornecedor:", error);
-      toast.error("Não foi possível cadastrar o Fornecedor. Tente novamente.");
+    } catch (error) {
+      console.error("Erro ao atualizar fornecedor:", error);
+      toast.error("Não foi possível atualizar o fornecedor. Tente novamente.");
+    } finally {
+      reset(data);
     }
   }
 
   return (
     <div className="max-w-4xl mx-auto">
-      {/* Card para adicionar Fornecedor */}
+      {/* Card para adicionar fornecedor */}
       <Card>
         <CardHeader>
           <div className="flex gap-4">
-            <CardTitle className="text-2xl font-extrabold">
-              Adicionar fornecedor
-            </CardTitle>
+            <Link href={`/fornecedores`} className="">
+              <ArrowLeft />
+            </Link>
+            <CardTitle>Editar Fornecedor</CardTitle>
             <Truck />
           </div>
         </CardHeader>
@@ -54,7 +82,6 @@ export default function CreateProductPage() {
               {/*Nome */}
               <Input
                 id="name"
-                placeholder="Surpermecado Bh"
                 {...register("name", {
                   required: "Nome obrigatório",
                 })}
@@ -147,11 +174,11 @@ export default function CreateProductPage() {
             {/* Submit */}
             <Button
               type="submit"
-              className="w-full bg-accent-foreground hover:bg-accent-foreground"
-              disabled={createSupplier.isPending}>
-              {createSupplier.isPending
-                ? "Salvando..."
-                : "Adicionar Fornecedor"}
+              className="w-full"
+              disabled={updateMutation.isPending}>
+              {updateMutation.isPending
+                ? "Salvando edição..."
+                : "Editar Fornecedor"}
             </Button>
           </form>
         </CardContent>

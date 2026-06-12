@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { useEffect } from "react";
@@ -14,7 +15,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { PackageSearch } from "lucide-react";
+import { PackageSearch, ArrowLeft } from "lucide-react";
 
 export default function UpdateProductPage() {
   const router = useRouter();
@@ -65,6 +66,9 @@ export default function UpdateProductPage() {
       <Card>
         <CardHeader>
           <div className="flex gap-4">
+            <Link href={`/produtos`} className="">
+              <ArrowLeft />
+            </Link>
             <CardTitle>Editar Produto</CardTitle>
             <PackageSearch />
           </div>

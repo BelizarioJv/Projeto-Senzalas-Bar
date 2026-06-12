@@ -49,7 +49,7 @@ export default function ProductsPage() {
               <th className="p-2">Endereço</th>
               <th className="p-2">CNPJ</th>
               <th className="p-2">Observações</th>
-              <th className="p-2"></th>
+              <th className="p-2">Açoes</th>
             </tr>
           </thead>
           <tbody>
@@ -67,7 +67,7 @@ export default function ProductsPage() {
                   <Link
                     href={`/fornecedores/${supplier.id}`}
                     className="inline-flex items-center gap-2 px-2 py-1 bg-accent text-accent-foreground rounded-sm hover:bg-gray-300 transition">
-                    Ver compras
+                    Ver Fornecedor
                   </Link>
                 </td>
               </tr>
@@ -75,6 +75,15 @@ export default function ProductsPage() {
           </tbody>
         </table>
       </Card>
+
+      {/* Link para categorias */}
+      <div className="text-center">
+        <Link
+          href="/fornecedores/form"
+          className="inline-flex items-center gap-2 px-4 py-2 bg-accent text-accent- rounded hover:bg-gray-30 transition">
+          Adicionar fornecedor
+        </Link>
+      </div>
     </div>
   );
 }
