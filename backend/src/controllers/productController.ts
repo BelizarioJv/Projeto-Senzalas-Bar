@@ -93,13 +93,17 @@ export class ProductController {
   update: Handler = async (req, res, next) => {
     try {
       const { id } = req.params;
+      const idNum: number = Number(id);
       const body = UpdateProductRequestSchema.parse(req.body);
       const updatedProduct = await prisma.product.update({
-        where: { id: Number(id) },
+        where: { id: idNum },
         data: body,
       });
       res.json(updatedProduct);
     } catch (error) {
+      if (error instanceof HttpError) {
+        throw new HttpError(404, "Product not found");
+      }
       next(error);
     }
   };

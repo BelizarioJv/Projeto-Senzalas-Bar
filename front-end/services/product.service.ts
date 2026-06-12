@@ -1,5 +1,6 @@
 import { api } from "./api";
-import { ProductData, ProductUpdate, ProductFormData } from "@/types/product";
+import { ProductData, ProductFormData } from "@/types/product";
+import axios, { AxiosError } from "axios";
 
 interface MetaData {
   page: number;
@@ -13,40 +14,70 @@ export interface ProductResponse {
   meta: MetaData;
 }
 
-//Buscar produtos na api /products
+// Função auxiliar para tratar erros do Axios
+function handleAxiosError(error: unknown): never {
+  if (axios.isAxiosError(error)) {
+    const axiosError = error as AxiosError<{ message?: string }>;
+    const message =
+      axiosError.response?.data?.message ||
+      axiosError.message ||
+      "Erro inesperado na requisição";
+    throw new Error(message);
+  }
+  throw new Error("Erro desconhecido");
+}
+
+// Buscar produtos na API /products
 export async function getProducts(
   page: number,
   pageSize: number,
 ): Promise<ProductResponse> {
-  const response = await api.get<ProductResponse>("/products", {
-    params: { page, pageSize },
-  });
-  return response.data;
+  try {
+    const response = await api.get<ProductResponse>("/products", {
+      params: { page, pageSize },
+    });
+    return response.data;
+  } catch (error) {
+    handleAxiosError(error);
+  }
 }
 
-//Buscar produto especifico
+// Buscar produto específico
 export async function showProduct(id: string): Promise<ProductData> {
-  const response = await api.get<ProductData>(`/products/${id}`);
-  return response.data;
+  try {
+    const response = await api.get<ProductData>(`/products/${id}`);
+    return response.data;
+  } catch (error) {
+    handleAxiosError(error);
+  }
 }
 
-//Criar produtos
+// Criar produto
 export async function createProduct(data: ProductFormData) {
-  const response = await api.post<ProductFormData>("/products", data);
-
-  return response.data;
+  try {
+    const response = await api.post<ProductFormData>("/products", data);
+    return response.data;
+  } catch (error) {
+    handleAxiosError(error);
+  }
 }
 
-//Atualizar produto
-export async function updateProduct(id: string, data: ProductUpdate) {
-  const response = await api.put<ProductUpdate>(`/products/${id}`, data);
-
-  return response.data;
+// Atualizar produto
+export async function updateProduct(id: string, data: ProductData) {
+  try {
+    const response = await api.put<ProductData>(`/products/${id}`, data);
+    return response.data;
+  } catch (error) {
+    handleAxiosError(error);
+  }
 }
 
-//Deletar produto
+// Deletar produto
 export async function deleteProduct(id: string) {
-  const response = await api.delete<ProductData>(`/products/${id}`);
-
-  return response.data;
+  try {
+    const response = await api.delete<ProductData>(`/products/${id}`);
+    return response.data;
+  } catch (error) {
+    handleAxiosError(error);
+  }
 }

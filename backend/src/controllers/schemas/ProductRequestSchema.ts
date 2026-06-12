@@ -43,19 +43,19 @@ export const UpdateProductRequestSchema = z.object({
   category: productsCategory,
   brand: z.string().optional(),
   unitMeasure: unitOfMeasurement.optional(),
-  costPrice: z
+  costPrice: z.coerce
     .number()
     .positive("Preço de custo deve ser um número positivo")
     .optional(),
-  salePrice: z
+  salePrice: z.coerce
     .number()
     .positive("Preço de venda deve ser um número positivo")
     .optional(),
-  currentQuantity: z
+  currentQuantity: z.coerce
     .number()
     .nonnegative("Quantidade atual não pode ser negativa")
     .optional(),
-  minimumQuantity: z
+  minimumQuantity: z.coerce
     .number()
     .nonnegative("Quantidade mínima não pode ser negativa")
     .optional(),

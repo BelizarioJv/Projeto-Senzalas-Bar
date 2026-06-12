@@ -1,36 +1,61 @@
 "use client";
+
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
+import { useEffect } from "react";
 import { useForm } from "react-hook-form";
-import { ProductFormData } from "@/types/product";
+import { useGetProduct } from "@/hooks/products/useGetProduct";
+import { useUpdateProduct } from "@/hooks/products/useUpdateProduct";
+import { useParams } from "next/navigation";
+import { ProductData } from "@/types/product";
 import { Button } from "@/components/ui/button";
+import { notFound } from "next/navigation";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { PackageSearch } from "lucide-react";
-import { useCreateProduct } from "@/hooks/products/useCreateProducts";
 
-export default function CreateProductPage() {
+export default function UpdateProductPage() {
   const router = useRouter();
+  //Buscando produto pelo Id
+  const params = useParams();
+  const id = params.id as string;
+  const { data: product, isPending, error } = useGetProduct(id);
+
+  const updateMutation = useUpdateProduct();
+
+  //Verificaçoes
+  if (isPending) <p>Carregando...</p>;
+  if (error) <p>Erro ao carregar produto</p>;
+  if (!product) notFound();
+
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<ProductFormData>();
+    reset,
+  } = useForm<ProductData>({
+    values: product,
+  });
 
-  const createProduct = useCreateProduct();
+  useEffect(() => {
+    if (product) {
+      reset(product);
+    }
+  }, [product, reset]);
 
-  async function onSubmit(data: ProductFormData) {
+  async function onSubmit(data: ProductData) {
     try {
-      await createProduct.mutateAsync(data);
+      await updateMutation.mutateAsync({ id, data });
 
-      alert("Produto cadastrado com sucesso!");
-      toast.success("Produto cadastrado com sucesso");
-      router.replace("/productos");
-    } catch (error: any) {
-      console.error("Erro ao cadastrar produto:", error);
-      toast.error("Não foi possível cadastrar o produto. Tente novamente.");
+      toast.success("Produto atualizado com sucesso!");
+      router.replace("/produtos");
+    } catch (error) {
+      console.error("Erro ao atualizar produto:", error);
+      toast.error("Não foi possível atualizar o produto. Tente novamente.");
+    } finally {
+      reset(data);
     }
   }
 
@@ -40,9 +65,7 @@ export default function CreateProductPage() {
       <Card>
         <CardHeader>
           <div className="flex gap-4">
-            <CardTitle className="text-2xl font-extrabold">
-              Adicionar Produto
-            </CardTitle>
+            <CardTitle>Editar Produto</CardTitle>
             <PackageSearch />
           </div>
         </CardHeader>
@@ -55,7 +78,6 @@ export default function CreateProductPage() {
               {/*Nome */}
               <Input
                 id="name"
-                placeholder="Heineken Long Neck"
                 {...register("name", {
                   required: "Nome obrigatório",
                 })}
@@ -93,7 +115,7 @@ export default function CreateProductPage() {
               {/* Marca */}
               <Label htmlFor="brand">Marca</Label>
 
-              <Input id="brand" placeholder="Heineken" {...register("brand")} />
+              <Input id="brand" {...register("brand")} />
             </div>
 
             <div>
@@ -158,19 +180,17 @@ export default function CreateProductPage() {
               {/* Descrição */}
               <Label htmlFor="description">Descrição</Label>
 
-              <Textarea
-                id="description"
-                placeholder="Descrição do produto..."
-                {...register("description")}
-              />
+              <Textarea id="description" {...register("description")} />
             </div>
 
             {/* Submit */}
             <Button
               type="submit"
-              className="w-full bg-accent-foreground hover:bg-accent"
-              disabled={createProduct.isPending}>
-              {createProduct.isPending ? "Salvando..." : "Adicionar Produto"}
+              className="w-full"
+              disabled={updateMutation.isPending}>
+              {updateMutation.isPending
+                ? "Salvando edição..."
+                : "Editar Produto"}
             </Button>
           </form>
         </CardContent>

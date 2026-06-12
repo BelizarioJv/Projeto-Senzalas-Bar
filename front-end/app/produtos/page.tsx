@@ -1,6 +1,7 @@
 "use client";
-import { useState } from "react";
 import Link from "next/link";
+import { useState } from "react";
+import { toast } from "sonner";
 import { AppCard } from "@/components/layout/AppCard";
 import { useProducts } from "@/hooks/products/useProducts";
 import { ProductData } from "@/types/product";
@@ -15,9 +16,7 @@ export default function ProductsPage() {
     return <p className="text-center text-gray-500">Carregando...</p>;
   }
   if (productsQuery.error) {
-    return (
-      <p className="text-center text-red-500">Erro ao carregar produtos</p>
-    );
+    return toast.error("Erro ao buscar produtos");
   }
 
   return (

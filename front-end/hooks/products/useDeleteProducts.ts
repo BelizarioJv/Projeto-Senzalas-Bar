@@ -1,20 +1,21 @@
 "use client";
-import { useQueryClient, useMutation } from "@tanstack/react-query";
-import { createProduct } from "@/services/product.service";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { deleteProduct } from "@/services/product.service";
 import { toast } from "sonner";
 
-export function useCreateProduct() {
+export function useDeleteProduct() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: createProduct,
+    mutationFn: ({ id }: { id: string }) => deleteProduct(id),
+
     onSuccess: () => {
       queryClient.invalidateQueries({
         queryKey: ["products"],
       });
     },
     onError: (error) => {
-      toast.error("Erro ao Criar produto");
+      toast.error("Erro ao excluir produto");
 
       console.error(error);
     },
