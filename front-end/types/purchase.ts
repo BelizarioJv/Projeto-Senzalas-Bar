@@ -1,4 +1,4 @@
-import { ProductData } from "./product";
+import { ProductData, ProductFormData } from "./product";
 
 export interface PurchaseData {
   id: number;
@@ -6,28 +6,21 @@ export interface PurchaseData {
   total: number;
   supplierId: number;
   status: "PENDENTE" | "COMPLETO" | "CANCELADO";
-  paymentMethod:
-    | "DINHEIRO"
-    | "PIX"
-    | "CARTAO_CREDITO"
-    | "PENDENTE"
-    | "CARTAO_DEBITO";
+  payment: "DINHEIRO" | "PIX" | "CARTAO_CREDITO" | "CARTAO_DEBITO";
   products: ProductData[];
   createdAt: string;
   updatedAt: string;
 }
-
-export interface PurchaseForm {
-  id: number;
+export interface PurchaseProductForm {
+  productId: number;
+  quantity: number;
+  price: number;
+}
+export interface PurchaseFormData {
   date: Date;
   total: number;
   supplierId: number;
   status: "PENDENTE" | "COMPLETO" | "CANCELADO";
-  paymentMethod:
-    | "DINHEIRO"
-    | "PIX"
-    | "CARTAO_CREDITO"
-    | "PENDENTE"
-    | "CARTAO_DEBITO";
-  products: ProductData[];
+  payment: "DINHEIRO" | "PIX" | "CARTAO_CREDITO" | "PENDENTE" | "CARTAO_DEBITO";
+  products: PurchaseProductForm[];
 }

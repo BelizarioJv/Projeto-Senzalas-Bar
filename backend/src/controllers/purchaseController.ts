@@ -1,21 +1,52 @@
 import { Handler } from "express";
 import { prisma } from "../database/prisma";
-import { PurchaseRequestSchema } from "./schemas/PurchaseResquestSchema";
+import {
+  PurchaseRequestSchema,
+  MetaPurchaseRequestSchema,
+} from "./schemas/PurchaseResquestSchema";
+import { HttpError } from "../errors/HttpError";
+import { Prisma } from "../generated/prisma";
 
 export class PurchaseController {
   index: Handler = async (req, res, next) => {
     try {
+      const query = MetaPurchaseRequestSchema.parse(req.query);
+
+      const { page, pageSize, total, sortBy, order } = query;
+
+      const pageNumber = Number(page);
+      const pageSizeNumber = Number(pageSize);
+
+      const where: Prisma.PurchaseWhereInput = {};
+
+      if (total) {
+        where.total = {
+          equals: total,
+        };
+      }
+
       const purchases = await prisma.purchase.findMany({
-        include: {
-          supplier: true,
-          items: {
-            include: {
-              product: true,
-            },
-          },
+        where,
+        skip: (pageNumber - 1) * pageSizeNumber,
+        take: pageSizeNumber,
+        orderBy: {
+          [sortBy]: order,
         },
       });
-      res.json(purchases);
+
+      const totalRecords = await prisma.purchase.count({
+        where,
+      });
+
+      res.json({
+        data: purchases,
+        meta: {
+          page: pageNumber,
+          pageSize: pageSizeNumber,
+          totalRecords,
+          totalPages: Math.ceil(totalRecords / pageSizeNumber),
+        },
+      });
     } catch (error) {
       next(error);
     }
@@ -35,6 +66,8 @@ export class PurchaseController {
           },
         },
       });
+
+      res.json(purchase);
     } catch (error) {
       next(error);
     }
@@ -54,7 +87,7 @@ export class PurchaseController {
           data: {
             supplierId: body.supplierId,
             payment: body.payment,
-            total,
+            total: new Prisma.Decimal(total),
 
             items: {
               create: body.items.map((item) => ({
@@ -108,6 +141,10 @@ export class PurchaseController {
       const purchase = await prisma.purchase.findUnique({
         where: { id: Number(id) },
       });
+
+      if (!purchase) {
+        throw new HttpError(404, "Purchase not found");
+      }
 
       const deletedPurchase = await prisma.purchase.delete({
         where: { id: Number(id) },

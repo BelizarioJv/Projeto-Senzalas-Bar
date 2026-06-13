@@ -5,7 +5,9 @@ generator client {
 
 datasource db {
   provider = "postgresql"
+  //url      = "postgresql://postgres:010500@localhost:5432/SenzalasSchema?schema=public"
 }
+
 
 //Enus para assegurar e garantir a integridade dos dados 
 enum ProductStatus {
