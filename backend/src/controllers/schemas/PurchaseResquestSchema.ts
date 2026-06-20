@@ -17,7 +17,7 @@ export const PurchaseRequestSchema = z.object({
 
   payment: paymentMethod,
 
-  items: z
+  products: z
     .array(
       z.object({
         productId: z.number().int().positive(),

@@ -8,6 +8,7 @@ import { HttpError } from "../errors/HttpError";
 
 //Controller de fornecedores com as operações de CRUD e listagem.
 export class SupplierController {
+  //Buscar fornecedor
   index: Handler = async (req, res, next) => {
     try {
       const supplier = await prisma.supplier.findMany();
@@ -17,6 +18,7 @@ export class SupplierController {
     }
   };
 
+  //Criar forncedor
   create: Handler = async (req, res, next) => {
     try {
       const body = SupplierRequestSchema.parse(req.body);
@@ -29,6 +31,7 @@ export class SupplierController {
     }
   };
 
+  //Mostrar dados forcedor
   show: Handler = async (req, res, next) => {
     try {
       const { id } = req.params;
@@ -45,6 +48,7 @@ export class SupplierController {
     }
   };
 
+  //Deletar forneecedor
   delete: Handler = async (req, res, next) => {
     try {
       const { id } = req.params;
@@ -59,6 +63,7 @@ export class SupplierController {
     }
   };
 
+  //Atualizar fornecedor
   update: Handler = async (req, res, next) => {
     try {
       const { id } = req.params;

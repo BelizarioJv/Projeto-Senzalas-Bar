@@ -1,13 +1,14 @@
 import { Handler } from "express";
 import { prisma } from "../database/prisma";
+import { Prisma } from "../generated/prisma";
+import { HttpError } from "../errors/HttpError";
 import {
   PurchaseRequestSchema,
   MetaPurchaseRequestSchema,
 } from "./schemas/PurchaseResquestSchema";
-import { HttpError } from "../errors/HttpError";
-import { Prisma } from "../generated/prisma";
 
 export class PurchaseController {
+  //Buscar compras com paginaçao e filtros
   index: Handler = async (req, res, next) => {
     try {
       const query = MetaPurchaseRequestSchema.parse(req.query);
@@ -52,6 +53,7 @@ export class PurchaseController {
     }
   };
 
+  //Mostrar dados da compra
   show: Handler = async (req, res, next) => {
     try {
       const { id } = req.params;
@@ -59,7 +61,7 @@ export class PurchaseController {
         where: { id: Number(id) },
         include: {
           supplier: true,
-          items: {
+          products: {
             include: {
               product: true,
             },
@@ -73,54 +75,59 @@ export class PurchaseController {
     }
   };
 
+  //Criaçao compra
   create: Handler = async (req, res, next) => {
     try {
       const body = PurchaseRequestSchema.parse(req.body);
 
-      const total = body.items.reduce(
-        (acc, item) => acc + item.quantity * item.price,
+      const total = body.products.reduce(
+        (acc, products) => acc + products.quantity * products.price,
         0,
       );
 
       const purchaseTrnsaction = await prisma.$transaction(async (tx) => {
+        // 1. Cria a compra com os dados da recebidos e inclui os produtos
         const purchase = await tx.purchase.create({
           data: {
             supplierId: body.supplierId,
             payment: body.payment,
             total: new Prisma.Decimal(total),
 
-            items: {
-              create: body.items.map((item) => ({
+            products: {
+              create: body.products.map((item) => ({
                 productId: item.productId,
                 quantity: item.quantity,
                 price: item.price,
-                subtotal: item.quantity * item.price,
+                subtotal: new Prisma.Decimal(item.price).mul(item.quantity),
               })),
             },
           },
 
           include: {
-            items: true,
+            products: true,
           },
         });
 
-        for (const item of body.items) {
+        // 2. Atualiza o estoque dos produtos comprados
+        for (const product of body.products) {
           await tx.product.update({
             where: {
-              id: item.productId,
+              id: product.productId,
             },
             data: {
+              costPrice: product.price,
               currentQuantity: {
-                increment: item.quantity,
+                increment: product.quantity,
               },
             },
           });
 
+          // 3. Cria movimentaçao de estoque
           await tx.stockMovement.create({
             data: {
-              productId: item.productId,
+              productId: product.productId,
               movementType: "ENTRADA",
-              quantity: item.quantity,
+              quantity: product.quantity,
               observations: `Purchase #${purchase.id}`,
             },
           });
@@ -135,19 +142,38 @@ export class PurchaseController {
     }
   };
 
+  //Deletar compra
   delete: Handler = async (req, res, next) => {
     try {
       const { id } = req.params;
-      const purchase = await prisma.purchase.findUnique({
-        where: { id: Number(id) },
-      });
 
-      if (!purchase) {
-        throw new HttpError(404, "Purchase not found");
-      }
+      const deletedPurchase = await prisma.$transaction(async (tx) => {
+        // 1. Buscar a compra e seus itens
+        const purchase = await tx.purchase.findUnique({
+          where: { id: Number(id) },
+          include: { products: true }, // supondo que tenha relação "products"
+        });
 
-      const deletedPurchase = await prisma.purchase.delete({
-        where: { id: Number(id) },
+        if (!purchase) {
+          throw new HttpError(404, "Purchase not found");
+        }
+
+        // 2. Atualizar estoque dos produtos (remover a quantidade que entrou)
+        for (const item of purchase.products) {
+          await tx.product.update({
+            where: { id: item.productId },
+            data: {
+              currentQuantity: { decrement: item.quantity },
+            },
+          });
+        }
+
+        // 3. Deletar a compra
+        const deleted = await tx.purchase.delete({
+          where: { id: Number(id) },
+        });
+
+        return deleted;
       });
 
       res.json(deletedPurchase);

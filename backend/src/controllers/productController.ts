@@ -10,6 +10,7 @@ import {
 
 //Controller de produtos com as operações de CRUD e listagem com paginação, ordenação e filtro por nome.
 export class ProductController {
+  //Busca de produtos com paginação
   index: Handler = async (req, res, next) => {
     try {
       const query = MetaProductRequestSchema.parse(req.query);
@@ -50,18 +51,7 @@ export class ProductController {
     }
   };
 
-  create: Handler = async (req, res, next) => {
-    try {
-      const body = ProductRequestSchema.parse(req.body);
-      const newProduct = await prisma.product.create({
-        data: body,
-      });
-      res.status(201).json(newProduct);
-    } catch (error) {
-      next(error);
-    }
-  };
-
+  //Busca produtos
   show: Handler = async (req, res, next) => {
     try {
       const { id } = req.params;
@@ -77,6 +67,20 @@ export class ProductController {
     }
   };
 
+  //Criaçao de produtos
+  create: Handler = async (req, res, next) => {
+    try {
+      const body = ProductRequestSchema.parse(req.body);
+      const newProduct = await prisma.product.create({
+        data: body,
+      });
+      res.status(201).json(newProduct);
+    } catch (error) {
+      next(error);
+    }
+  };
+
+  //Deletar Produto
   delete: Handler = async (req, res, next) => {
     try {
       const { id } = req.params;
@@ -90,6 +94,7 @@ export class ProductController {
     }
   };
 
+  //Atualizar produto
   update: Handler = async (req, res, next) => {
     try {
       const { id } = req.params;

@@ -3,6 +3,7 @@ import { prisma } from "../database/prisma";
 import { getStartOfToday, getStartOfMonth } from "../utils/date";
 
 export class DashboardController {
+  //Busca de informaçaoes para mostrar no Dashboard principal , total de produtos , produtos com abaixo do estoque minimo , vendas de hoje e do mes
   index: Handler = async (req, res, next) => {
     try {
       const totalProducts = await prisma.product.count({

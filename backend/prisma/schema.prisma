@@ -5,7 +5,7 @@ generator client {
 
 datasource db {
   provider = "postgresql"
-  //url      = "postgresql://postgres:010500@localhost:5432/SenzalasSchema?schema=public"
+  url      = "postgresql://postgres:010500@localhost:5432/SenzalasSchema?schema=public"
 }
 
 
@@ -83,8 +83,8 @@ model Product {
   minimumQuantity Int               @default(0)
   status          ProductStatus    @default(ACTIVE)
   category        ProductsCategory  
-  purchaseItems   PurchaseProduct[]
-  saleItems       SaleItem[]
+  purchaseProducts   PurchaseProduct[]
+  saleProducts       SaleProducts[]
   stockMovements  StockMovement[]
   createdAt       DateTime         @default(now())
   updatedAt       DateTime         @updatedAt
@@ -113,7 +113,7 @@ model Purchase {
   status        PurchaseStatus   @default(PENDENTE)
   payment       PaymentMethod?
   supplier      Supplier         @relation(fields: [supplierId], references: [id])
-  items         PurchaseProduct[]
+  products         PurchaseProduct[]
   createdAt     DateTime         @default(now())
   updatedAt     DateTime         @updatedAt
 
@@ -145,13 +145,13 @@ model Sale {
   payment       PaymentMethod
   discount      Decimal?         @db.Decimal(10, 2)
   observation   String?
-  items         SaleItem[]
+  products      SaleProducts[]
   createdAt     DateTime         @default(now())
   updatedAt     DateTime         @updatedAt
 }
 
 //Entidade "Itens da venda" (N:N entre venda e produtos) dados : id, id da venda, id do produto, quantidade, preço unitário, subtotal
-model SaleItem {
+model SaleProducts {
   id            Int        @id @default(autoincrement())
   saleId        Int
   productId     Int

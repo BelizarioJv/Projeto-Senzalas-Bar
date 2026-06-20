@@ -14,7 +14,7 @@ export const SaleRequestSchema = z.object({
 
   discount: z.number().nonnegative().optional(),
 
-  items: z
+  products: z
     .array(
       z.object({
         productId: z.number().int().positive(),

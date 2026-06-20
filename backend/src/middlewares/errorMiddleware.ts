@@ -1,6 +1,7 @@
 import type { ErrorRequestHandler } from "express";
 import { HttpError } from "../errors/HttpError";
 
+//Middleware de tratamento de erro
 export const errorHandler: ErrorRequestHandler = (err, req, res, next) => {
   if (err instanceof HttpError) {
     res.status(err.status).json({ message: err.message });
