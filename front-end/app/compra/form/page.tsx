@@ -1,12 +1,8 @@
 "use client";
 
-import { useForm, useFieldArray } from "react-hook-form";
-import { useState } from "react";
-import { PurchaseFormData } from "@/types/purchase";
-import { ProductData } from "@/types/product";
-import { useSupplier } from "@/hooks/supplier/useSupplier";
-import { useProducts } from "@/hooks/products/useProducts";
-import { useCreatePurchase } from "@/hooks/purchase/useCreatePurchase";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { usePurchaseForm } from "@/hooks/purchase/usePurchaseForm";
 import {
   Card,
   CardContent,
@@ -14,83 +10,26 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 
 export default function CreatePurchaseForm() {
-  const [selectedProductId, setSelectedProductId] = useState("");
-  const [quantity, setQuantity] = useState(1);
-
-  const supplierQuery = useSupplier();
-  const { productsQuery } = useProducts(1, 1000);
-  const createPurchase = useCreatePurchase();
-
-  const { register, control, handleSubmit, watch, reset, setValue } =
-    useForm<PurchaseFormData>({
-      defaultValues: {
-        supplierId: 0,
-        payment: "PIX",
-        status: "PENDENTE",
-        products: [],
-      },
-    });
-
-  const { fields, append, remove } = useFieldArray({
-    control,
-    name: "products",
-  });
-
-  const products = watch("products") ?? [];
-
-  const total =
-    products.reduce((acc, item) => {
-      return acc + item.quantity * item.price;
-    }, 0) ?? 0;
-
-  function handleAddProduct() {
-    const product = productsQuery.data?.data.find(
-      (p) => p.id === Number(selectedProductId),
-    );
-
-    if (!product) return;
-
-    const existingIndex = fields.findIndex(
-      (item) => item.productId === product.id,
-    );
-
-    if (existingIndex >= 0) {
-      const currentQty = watch(`products.${existingIndex}.quantity`);
-
-      setValue(`products.${existingIndex}.quantity`, currentQty + quantity);
-
-      setSelectedProductId("");
-      setQuantity(1);
-
-      return;
-    }
-
-    append({
-      productId: product.id,
-      quantity,
-      price: Number(product.costPrice),
-    });
-
-    setSelectedProductId("");
-    setQuantity(1);
-  }
-  async function onSubmit(data: PurchaseFormData) {
-    try {
-      await createPurchase.mutateAsync(data);
-
-      alert("Compra cadastrada com sucesso!");
-
-      reset();
-    } catch (error) {
-      console.error(error);
-
-      alert("Erro ao cadastrar compra");
-    }
-  }
+  const {
+    register,
+    handleSubmit,
+    fields,
+    products,
+    total,
+    handleAddProduct,
+    onSubmit,
+    remove,
+    errors,
+    productsQuery,
+    supplierQuery,
+    createPurchase,
+    selectedProductId,
+    setSelectedProductId,
+    quantity,
+    setQuantity,
+  } = usePurchaseForm();
 
   if (productsQuery.isLoading) {
     return <p>Carregando produtos...</p>;
