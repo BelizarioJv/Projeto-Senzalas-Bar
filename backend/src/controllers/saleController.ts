@@ -1,27 +1,63 @@
 import { Handler } from "express";
 import { prisma } from "../database/prisma";
 import { HttpError } from "../errors/HttpError";
-import { SaleRequestSchema } from "./schemas/SaleRequestSchema";
+import {
+  SaleRequestSchema,
+  MetaSaleRequestSchema,
+} from "./schemas/SaleRequestSchema";
+import { Prisma } from "../generated/prisma/client";
 
 export class SaleController {
-  //Buscar todos os produtos
+  //Buscar todos as vendas
   index: Handler = async (req, res, next) => {
     try {
-      const sales = await prisma.sale.findMany();
-      res.json(sales);
+      const query = MetaSaleRequestSchema.parse(req.query);
+      const { page, pageSize, total, sortBy, order } = query;
+      const pageNumber = Number(page);
+      const pageSizeNumber = Number(pageSize);
+
+      const where: Prisma.SaleWhereInput = {};
+
+      if (total) {
+        where.total = {
+          equals: total,
+        };
+      }
+
+      const sales = await prisma.sale.findMany({
+        where,
+        skip: (pageNumber - 1) * pageSizeNumber,
+        take: pageSizeNumber,
+        orderBy: {
+          [sortBy]: order,
+        },
+      });
+
+      const totalRecords = await prisma.purchase.count({
+        where,
+      });
+
+      res.json({
+        data: sales,
+        meta: {
+          page: pageNumber,
+          pageSize: pageSizeNumber,
+          totalRecords,
+          totalPages: Math.ceil(totalRecords / pageSizeNumber),
+        },
+      });
     } catch (error) {
       next(error);
     }
   };
 
-  //Buscar produto
+  //Buscar venda
   show: Handler = async (req, res, next) => {
     try {
       const { id } = req.params;
       const purchase = await prisma.sale.findUnique({
         where: { id: Number(id) },
         include: {
-          total: true,
           products: {
             include: {
               product: true,
@@ -36,7 +72,7 @@ export class SaleController {
     }
   };
 
-  //Criar produto
+  //Criar venda
   create: Handler = async (req, res, next) => {
     try {
       const body = SaleRequestSchema.parse(req.body);
@@ -46,19 +82,19 @@ export class SaleController {
         0,
       );
 
-      const discount = Number(body.discount || 0);
-
-      const total = subtotal - discount;
+      const discountPercent = Number(body.discountPercent || 0);
+      const discountValue = (subtotal * discountPercent) / 100;
+      const total = subtotal - discountValue;
 
       // 1. Cria a venda com os dados recebidos
       const saleTransaction = await prisma.$transaction(async (tx) => {
         const sale = await tx.sale.create({
           data: {
-            discount,
+            discountPercent,
+            discountValue,
             total,
             payment: body.payment,
             observation: body.observation,
-
             products: {
               create: body.products.map((products) => ({
                 productId: products.productId,

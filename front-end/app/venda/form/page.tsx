@@ -2,11 +2,10 @@
 
 import { useForm, useFieldArray } from "react-hook-form";
 import { useState } from "react";
-import { PurchaseFormData } from "@/types/purchase";
-import { ProductData } from "@/types/product";
-import { useSupplier } from "@/hooks/supplier/useSupplier";
+import { SaleFormData } from "@/types/sale";
+import { SaleData } from "@/types/sale";
 import { useProducts } from "@/hooks/products/useProducts";
-import { useCreatePurchase } from "@/hooks/purchase/useCreatePurchase";
+import { useCreateSale } from "@/hooks/sale/useCreateSale";
 import {
   Card,
   CardContent,
@@ -17,23 +16,28 @@ import {
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 
-export default function CreatePurchaseForm() {
+export default function CreateSaleForm() {
   const [selectedProductId, setSelectedProductId] = useState("");
   const [quantity, setQuantity] = useState(1);
 
-  const supplierQuery = useSupplier();
   const { productsQuery } = useProducts(1, 1000);
-  const createPurchase = useCreatePurchase();
+  const createSale = useCreateSale();
 
-  const { register, control, handleSubmit, watch, reset, setValue } =
-    useForm<PurchaseFormData>({
-      defaultValues: {
-        supplierId: 0,
-        payment: "PIX",
-        status: "PENDENTE",
-        products: [],
-      },
-    });
+  const {
+    register,
+    control,
+    handleSubmit,
+    watch,
+    reset,
+    setValue,
+    formState: { errors },
+  } = useForm<SaleFormData>({
+    defaultValues: {
+      payment: "PIX",
+      products: [],
+      discountPercent: 0,
+    },
+  });
 
   const { fields, append, remove } = useFieldArray({
     control,
@@ -78,17 +82,17 @@ export default function CreatePurchaseForm() {
     setSelectedProductId("");
     setQuantity(1);
   }
-  async function onSubmit(data: PurchaseFormData) {
+  async function onSubmit(data: SaleFormData) {
     try {
-      await createPurchase.mutateAsync(data);
+      await createSale.mutateAsync(data);
 
-      alert("Compra cadastrada com sucesso!");
+      alert("Venda cadastrada com sucesso!");
 
       reset();
     } catch (error) {
       console.error(error);
 
-      alert("Erro ao cadastrar compra");
+      alert("Erro ao cadastrar venda");
     }
   }
 
@@ -103,90 +107,13 @@ export default function CreatePurchaseForm() {
     <div className="container mx-auto max-w-7xl py-8">
       <Card>
         <CardHeader>
-          <CardTitle className="text-3xl font-extrabold">Nova Compra</CardTitle>
+          <CardTitle className="text-3xl font-extrabold">Nova Venda</CardTitle>
 
-          <CardDescription>
-            Cadastre uma nova entrada de produtos
-          </CardDescription>
+          <CardDescription>Cadastre uma nova saida de produtos</CardDescription>
         </CardHeader>
 
         <CardContent>
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-8">
-            {/* Dados da Compra */}
-            <div className="grid gap-4 md:grid-cols-3">
-              <div>
-                <label className="text-sm font-medium">Fornecedor</label>
-
-                <select
-                  {...register("supplierId", {
-                    valueAsNumber: true,
-                  })}
-                  className="
-                    mt-1
-                    h-10
-                    w-full
-                    rounded-md
-                    border
-                    bg-background
-                    px-3
-                  ">
-                  <option value="">Selecione</option>
-
-                  {supplierQuery.data?.data.map((supplier) => (
-                    <option key={supplier.id} value={supplier.id}>
-                      {supplier.name}
-                    </option>
-                  ))}
-                </select>
-              </div>
-
-              <div>
-                <label className="text-sm font-medium">
-                  Forma de Pagamento
-                </label>
-
-                <select
-                  {...register("payment")}
-                  className="
-                    mt-1
-                    h-10
-                    w-full
-                    rounded-md
-                    border
-                    bg-background
-                    px-3
-                  ">
-                  <option value="DINHEIRO">Dinheiro</option>
-
-                  <option value="PIX">PIX</option>
-
-                  <option value="CARTAO_CREDITO">Cartão Crédito</option>
-
-                  <option value="CARTAO_DEBITO">Cartão Débito</option>
-                </select>
-              </div>
-
-              <div>
-                <label className="text-sm font-medium">Status</label>
-
-                <select
-                  {...register("status")}
-                  className="
-                    mt-1
-                    h-10
-                    w-full
-                    rounded-md
-                    border
-                    bg-background
-                    px-3
-                  ">
-                  <option value="PENDENTE">Pendente</option>
-
-                  <option value="COMPLETO">Completo</option>
-                </select>
-              </div>
-            </div>
-
             {/* Produtos */}
             <Card>
               <CardHeader>
@@ -229,6 +156,32 @@ export default function CreatePurchaseForm() {
                   className="bg-accent text-accent-foreground">
                   Adicionar
                 </Button>
+              </CardContent>
+            </Card>
+
+            {/* Observaçoes */}
+            <Card>
+              <CardHeader>
+                <CardTitle>Observações</CardTitle>
+              </CardHeader>
+
+              <CardContent className="flex flex-col gap-2">
+                <label htmlFor="observation" className="text-sm font-medium">
+                  Observações
+                </label>
+
+                <textarea
+                  id="observation"
+                  {...register("observation", { maxLength: 500 })}
+                  className="w-full border rounded p-2"
+                  placeholder="Digite suas observações aqui..."
+                />
+
+                {errors.observation && (
+                  <span className="text-red-500 text-sm">
+                    Máximo de 500 caracteres permitido.
+                  </span>
+                )}
               </CardContent>
             </Card>
 
@@ -310,12 +263,51 @@ export default function CreatePurchaseForm() {
               </CardContent>
             </Card>
 
+            {/* Dados da Compra */}
+            <div className="flex justify-evenly">
+              {/* Desconto */}
+              <div className="flex flex-col">
+                <label
+                  htmlFor="discountPercent"
+                  className="text-sm font-medium mb-1">
+                  Desconto (%)
+                </label>
+                <Input
+                  id="discountPercent"
+                  {...register("discountPercent", {
+                    valueAsNumber: true,
+                    min: 0,
+                    max: 100,
+                  })}
+                  type="number"
+                  className="w-32"
+                  placeholder="0"
+                />
+              </div>
+
+              {/* Forma de Pagamento */}
+              <div className="flex flex-col ">
+                <label htmlFor="payment" className="text-sm font-medium mb-1">
+                  Forma de Pagamento
+                </label>
+                <select
+                  id="payment"
+                  {...register("payment")}
+                  className="h-10 w-full rounded-md border px-3 bg-background focus:outline-none focus:ring-2 focus:ring-primary">
+                  <option value="DINHEIRO">Dinheiro</option>
+                  <option value="PIX">PIX</option>
+                  <option value="CARTAO_CREDITO">Cartão Crédito</option>
+                  <option value="CARTAO_DEBITO">Cartão Débito</option>
+                </select>
+              </div>
+            </div>
+
             {/* Resumo */}
             <Card>
               <CardContent className="py-6">
                 <div className="flex items-center justify-between">
                   <span className="text-lg text-muted-foreground">
-                    Total da Compra
+                    Total da Venda
                   </span>
 
                   <span className="text-3xl font-bold">
@@ -327,8 +319,8 @@ export default function CreatePurchaseForm() {
                   className="mt-6 w-full bg-accent text-accent-foreground"
                   size="lg"
                   type="submit"
-                  disabled={createPurchase.isPending}>
-                  {createPurchase.isPending ? "Salvando..." : "Salvar Compra"}
+                  disabled={createSale.isPending}>
+                  {createSale.isPending ? "Salvando..." : "Salvar Venda"}
                 </Button>
               </CardContent>
             </Card>

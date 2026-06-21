@@ -18,9 +18,9 @@ export default function DashboardPage() {
 
           <AppCard title="Estoque Baixo" value={data.lowStockProducts} />
 
-          <AppCard title="Vendas Hoje" value={data.todaySales} />
+          <AppCard title="Vendas Hoje" value={data.todaySales.toFixed(0)} />
 
-          <AppCard title="Vendas do Mês" value={data.monthSales} />
+          <AppCard title="Vendas do Mês" value={data.monthSales.toFixed(0)} />
         </div>
       </div>
 

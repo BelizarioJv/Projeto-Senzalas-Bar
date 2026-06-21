@@ -2,29 +2,29 @@
 
 import { useParams } from "next/navigation";
 import { Card } from "@/components/ui/card";
-import { useGetPurchase } from "@/hooks/purchase/useGetPurchase";
+import { useGetSale } from "@/hooks/sale/useGetSale";
 
-export default function ShowPurchasePage() {
+export default function ShowSalePage() {
   const params = useParams();
 
-  const purchaseId = params.id as string;
+  const saleId = params.id as string;
 
-  const purchaseQuery = useGetPurchase(purchaseId);
+  const saleQuery = useGetSale(saleId);
 
-  if (purchaseQuery.isPending) {
+  if (saleQuery.isPending) {
     return <p>Carregando...</p>;
   }
 
-  if (purchaseQuery.error) {
-    return <p>Erro ao carregar compra</p>;
+  if (saleQuery.error) {
+    return <p>Erro ao carregar venda</p>;
   }
 
-  const purchase = purchaseQuery.data;
+  const sale = saleQuery.data;
 
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-3xl font-bold">Compra #{purchase.id}</h1>
+        <h1 className="text-3xl font-bold">Venda #{sale.id}</h1>
 
         <p className="text-muted-foreground">Detalhes da compra</p>
       </div>
@@ -32,27 +32,34 @@ export default function ShowPurchasePage() {
       <Card className="p-6">
         <div className="grid md:grid-cols-2 gap-4">
           <div>
-            <strong>Fornecedor</strong>
+            <strong>ID venda</strong>
 
-            <p>{purchase.supplierId}</p>
+            <p>{sale.id}</p>
+          </div>
+
+          <div className="flex gap-6">
+            <div>
+              <strong>Pagamento</strong>
+
+              <p>{sale.payment}</p>
+            </div>
+
+            <div>
+              <strong>Desconto(%)</strong>
+              <p>{sale.discountPercent}</p>
+            </div>
           </div>
 
           <div>
-            <strong>Pagamento</strong>
+            <strong>Observações</strong>
 
-            <p>{purchase.payment}</p>
-          </div>
-
-          <div>
-            <strong>Status</strong>
-
-            <p>{purchase.status}</p>
+            <p>{sale.observation}</p>
           </div>
 
           <div>
             <strong>Data</strong>
 
-            <p>{new Date(purchase.date).toLocaleDateString()}</p>
+            <p>{new Date(sale.dateTime).toLocaleDateString()}</p>
           </div>
         </div>
       </Card>
@@ -74,7 +81,7 @@ export default function ShowPurchasePage() {
           </thead>
 
           <tbody>
-            {purchase.products.map((product: any) => (
+            {sale.products.map((product: any) => (
               <tr key={product.id} className="border-b">
                 <td className="p-2">{product.product.name}</td>
 
@@ -89,7 +96,10 @@ export default function ShowPurchasePage() {
         </table>
 
         <div className="mt-6 flex justify-end">
-          <div className="text-2xl font-bold">Total: R$ {purchase.total}</div>
+          <div className="text-2xl font-bold">
+            <p>Total: R$ {sale.total}</p>
+            <p>Valor do Desconto : R$ {sale.discountValue}</p>
+          </div>
         </div>
       </Card>
     </div>

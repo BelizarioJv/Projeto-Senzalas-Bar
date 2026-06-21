@@ -113,7 +113,7 @@ model Purchase {
   status        PurchaseStatus   @default(PENDENTE)
   payment       PaymentMethod?
   supplier      Supplier         @relation(fields: [supplierId], references: [id])
-  products         PurchaseProduct[]
+  products      PurchaseProduct[]
   createdAt     DateTime         @default(now())
   updatedAt     DateTime         @updatedAt
 
@@ -142,6 +142,8 @@ model Sale {
   id            Int              @id @default(autoincrement())
   dateTime      DateTime         @default(now())
   total         Decimal          @db.Decimal(10, 2)
+  discountPercent Float 
+  discountValue   Float
   payment       PaymentMethod
   discount      Decimal?         @db.Decimal(10, 2)
   observation   String?

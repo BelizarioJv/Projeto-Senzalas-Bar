@@ -1,13 +1,7 @@
 import { api } from "./api";
 import { PurchaseData, PurchaseFormData } from "@/types/purchase";
 import { handleAxiosError } from "@/utils/handleAxiosError";
-
-interface MetaData {
-  page: number;
-  pageSize: number;
-  total: number;
-  totalPages: number;
-}
+import { MetaData } from "@/types/metaDataPage";
 
 export interface PurchaseResponse {
   data: PurchaseData[];

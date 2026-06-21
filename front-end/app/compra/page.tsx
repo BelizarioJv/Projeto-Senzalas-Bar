@@ -43,10 +43,10 @@ export default function PurchasePage() {
         <AppCard title="Em desenvolvimento" />
       </div>
 
-      {/* Lista de produtos */}
+      {/* Lista de compras */}
       <Card className="p-6 shadow-md rounded-lg">
         <div>
-          <h2 className="text-2xl font-semibold mb-4">Lista de Produtos</h2>
+          <h2 className="text-2xl font-semibold mb-4">Lista de compras</h2>
           {/* vou colocar os filtros e campos de busca aqui */}
         </div>
         <table className="w-full border-collapse rounded-sm">
@@ -71,7 +71,7 @@ export default function PurchasePage() {
                   {new Date(purchase.date).toLocaleString("pt-BR")}
                 </td>
                 <td className="p-2 text-gray-600">{purchase.supplierId}</td>
-                <td className="p-2 text-gray-600">{purchase.total}</td>
+                <td className="p-2 text-gray-600">R${purchase.total}</td>
                 <td className="p-2 text-gray-600">{purchase.status}</td>
                 <td className="p-2 text-gray-600">{purchase.payment}</td>
                 <td>
