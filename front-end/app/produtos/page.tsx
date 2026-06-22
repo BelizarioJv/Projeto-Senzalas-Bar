@@ -70,7 +70,7 @@ export default function ProductsPage() {
                 <td className="p-2 font-medium">{product.name}</td>
                 <td className="p-2 text-gray-600">R${product.costPrice}</td>
                 <td className="p-2 text-gray-600">R${product.salePrice}</td>
-                <td className="p-2 text-gray-600">R${product.category}</td>
+                <td className="p-2 text-gray-600">{product.category}</td>
                 <td className="p-2 text-gray-600">{product.status}</td>
                 <td>
                   <Link

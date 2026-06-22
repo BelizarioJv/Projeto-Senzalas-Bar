@@ -49,14 +49,13 @@ export default function PurchasePage() {
           <h2 className="text-2xl font-semibold mb-4">Lista de compras</h2>
           {/* vou colocar os filtros e campos de busca aqui */}
         </div>
-        <table className="w-full border-collapse rounded-sm">
+        <table className="table-auto  border-collapse rounded-sm  ">
           <thead>
             <tr className="bg-accent text-left ">
               <th className="p-2">ID</th>
               <th className="p-2">Data</th>
               <th className="p-2">Fornecedor</th>
               <th className="p-2">Total</th>
-              <th className="p-2">Status</th>
               <th className="p-2">Metodo Pagamento</th>
               <th className="p-2">Açoes</th>
             </tr>
@@ -72,7 +71,6 @@ export default function PurchasePage() {
                 </td>
                 <td className="p-2 text-gray-600">{purchase.supplierId}</td>
                 <td className="p-2 text-gray-600">R${purchase.total}</td>
-                <td className="p-2 text-gray-600">{purchase.status}</td>
                 <td className="p-2 text-gray-600">{purchase.payment}</td>
                 <td>
                   <Link

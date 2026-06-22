@@ -1,13 +1,7 @@
 import { api } from "./api";
 import { ProductData, ProductFormData } from "@/types/product";
 import { handleAxiosError } from "@/utils/handleAxiosError";
-
-interface MetaData {
-  page: number;
-  pageSize: number;
-  total: number;
-  totalPages: number;
-}
+import { MetaData } from "@/types/metaDataPage";
 
 export interface ProductResponse {
   data: ProductData[];

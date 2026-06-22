@@ -119,8 +119,6 @@ export default function CreatePurchaseForm() {
                     bg-background
                     px-3
                   ">
-                  <option value="PENDENTE">Pendente</option>
-
                   <option value="COMPLETO">Completo</option>
                 </select>
               </div>

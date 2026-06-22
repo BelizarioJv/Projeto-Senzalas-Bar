@@ -21,6 +21,6 @@ export interface PurchaseFormData {
   total: number;
   supplierId: number;
   status: "PENDENTE" | "COMPLETO" | "CANCELADO";
-  payment: "DINHEIRO" | "PIX" | "CARTAO_CREDITO" | "PENDENTE" | "CARTAO_DEBITO";
+  payment: "DINHEIRO" | "PIX" | "CARTAO_CREDITO" | "CARTAO_DEBITO";
   products: PurchaseProductForm[];
 }

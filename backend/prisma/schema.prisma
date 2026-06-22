@@ -41,12 +41,6 @@ enum PaymentMethod {
   CARTAO_DEBITO
 }
 
-//Status da compra
-enum PurchaseStatus {
-  PENDENTE
-  COMPLETO
-  CANCELADO
-}
 
 //Unidade de medida
 enum UnitMeasure {
@@ -91,35 +85,23 @@ model Product {
 }
 
 
-//Entidade "movimentaçao de estoque" (1:N(Produtos) dados :id , produtos , tipo de movimentaçao , quantidade de produtos , e observaçoes )
-model StockMovement {
-  id              Int            @id @default(autoincrement())
-  productId       Int
-  movementType    MovementType
-  quantity        Int
-  observations    String?
-  product         Product        @relation(fields: [productId], references: [id])
-  createdAt       DateTime       @default(now())
-
-  @@index([productId])
-}
-
 //Entidade "Compra" (1:N(produtos) dados: id, data , total , fornecedor , status , metodo de pagamento ) 
 model Purchase {
   id            Int              @id @default(autoincrement())
   date          DateTime         @default(now())
   total         Decimal          @db.Decimal(10, 2)
   supplierId    Int
-  status        PurchaseStatus   @default(PENDENTE)
   payment       PaymentMethod?
   supplier      Supplier         @relation(fields: [supplierId], references: [id])
   products      PurchaseProduct[]
+  stockMovements StockMovement[]
   createdAt     DateTime         @default(now())
   updatedAt     DateTime         @updatedAt
 
 
   @@index([supplierId])
 }
+
 
 //Entidade "Produtos da compra" (N:N(compra e produtos) dados: id , id da compra , id do produto ,quantidade do produto , preço do produto e subtotal)
 model PurchaseProduct {
@@ -148,6 +130,7 @@ model Sale {
   discount      Decimal?         @db.Decimal(10, 2)
   observation   String?
   products      SaleProducts[]
+  stockMovements StockMovement[]
   createdAt     DateTime         @default(now())
   updatedAt     DateTime         @updatedAt
 }
@@ -167,4 +150,30 @@ model SaleProducts {
   @@index([saleId])
   @@index([productId])
   @@unique([saleId, productId])
+}
+
+//Entidade "movimentaçao de estoque" (1:N(Produtos) dados :id , produtos , tipo de movimentaçao , quantidade de produtos , e observaçoes )
+model StockMovement {
+  id            Int @id @default(autoincrement())
+
+  productId     Int
+
+  purchaseId    Int?
+  saleId        Int?
+
+  movementType  MovementType
+  quantity      Int
+
+  observations  String?
+
+  product Product @relation(fields: [productId], references: [id])
+
+  purchase Purchase? @relation(fields: [purchaseId], references: [id])
+  sale Sale? @relation(fields: [saleId], references: [id])
+
+  createdAt DateTime @default(now())
+
+  @@index([productId])
+  @@index([purchaseId])
+  @@index([saleId])
 }

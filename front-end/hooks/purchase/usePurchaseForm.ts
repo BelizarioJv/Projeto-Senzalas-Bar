@@ -75,7 +75,7 @@ export function usePurchaseForm() {
     try {
       await createPurchase.mutateAsync(data);
       alert("Compra cadastrada com sucesso!");
-      toast.success("Venda cadastrada com sucesso!");
+      toast.success("Compra cadastrada com sucesso!");
       reset();
     } catch (error) {
       console.error(error);

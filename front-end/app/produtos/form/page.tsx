@@ -27,7 +27,7 @@ export default function CreateProductPage() {
 
       alert("Produto cadastrado com sucesso!");
       toast.success("Produto cadastrado com sucesso");
-      router.replace("/productos");
+      router.replace("/produtos");
     } catch (error: any) {
       console.error("Erro ao cadastrar produto:", error);
       toast.error("Não foi possível cadastrar o produto. Tente novamente.");

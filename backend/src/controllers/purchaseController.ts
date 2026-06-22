@@ -126,6 +126,7 @@ export class PurchaseController {
           await tx.stockMovement.create({
             data: {
               productId: product.productId,
+              purchaseId: purchase.id,
               movementType: "ENTRADA",
               quantity: product.quantity,
               observations: `Purchase #${purchase.id}`,
