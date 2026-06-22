@@ -1,4 +1,4 @@
-import { AppSidebar } from "@/components/layout/AppSideBar";
+import { AppSidebar } from "@/components/layout/AppSidebar";
 import { Header } from "@/components/layout/Header";
 
 import { Providers } from "./providers";

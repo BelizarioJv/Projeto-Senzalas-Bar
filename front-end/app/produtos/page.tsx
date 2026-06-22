@@ -24,9 +24,7 @@ export default function ProductsPage() {
       {/* Cabeçalho */}
       <header className="flex flex-col justify-center items-center">
         <div className="flex gap-4 items-center">
-          <h1 className="text-4xl font-extrabold text-accent-foreground">
-            Produtos
-          </h1>
+          <h1 className="text-4xl font-extrabold text-accent">Produtos</h1>
           <PackageSearch size={50} />
         </div>
         <p className="text-gray-500 mt-2">

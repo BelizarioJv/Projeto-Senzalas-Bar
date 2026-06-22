@@ -1,12 +1,17 @@
 "use client";
 
+import Link from "next/link";
+import { Moon, Sun, Plus, PackageSearch } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { useTheme } from "next-themes";
+import { useState } from "react";
 import {
   Package,
   ShoppingCart,
   DollarSign,
   Truck,
   LayoutDashboard,
-  Lightbulb,
+  ChevronDown,
 } from "lucide-react";
 import {
   Sidebar,
@@ -16,91 +21,236 @@ import {
   SidebarGroup,
   useSidebar,
 } from "@/components/ui/sidebar";
-import { Moon, Sun } from "lucide-react";
-import { useTheme } from "next-themes";
-import { Button } from "@/components/ui/button";
 
 export function AppSidebar() {
   const { open } = useSidebar();
   const { setTheme, theme } = useTheme();
+  const [expandedMenu, setExpandedMenu] = useState<string | null>(null);
+
+  const toggleMenu = (menuName: string) => {
+    setExpandedMenu(expandedMenu === menuName ? null : menuName);
+  };
 
   return (
-    <Sidebar className={`bg-gray-900  ${open ? "w-64" : "w-16"}`}>
+    <Sidebar className={`bg-gray-900 ${open ? "w-64" : "w-16"}`}>
       <SidebarHeader className="flex flex-col justify-center h-16 items-center bg-background border-r border-border">
-        {open && <h2 className=" flex text-xl font-bold">Menu</h2>}
+        {open && <h2 className="flex text-xl font-bold">Menu</h2>}
       </SidebarHeader>
 
-      <SidebarContent className="flex flex-col gap-4 p-2 justify-center items-center">
+      <SidebarContent className="flex flex-col gap-2 p-2">
+        {/* PRODUTOS */}
         <SidebarGroup>
           <ul className="space-y-2">
             <li>
-              <a
-                href="/produtos"
-                className="flex items-center gap-2 p-2 rounded hover:bg-gray-400 transition">
-                <Package size={20} /> {open && "Produtos"}
-              </a>
+              <button
+                onClick={() => toggleMenu("produtos")}
+                className="w-full flex items-center justify-between gap-2 p-2 rounded hover:bg-gray-400 transition">
+                <span className="flex items-center gap-2">
+                  <Package size={20} />
+                  {open && "Produtos"}
+                </span>
+                {open && (
+                  <ChevronDown
+                    size={16}
+                    className={`transition-transform ${
+                      expandedMenu === "produtos" ? "rotate-180" : ""
+                    }`}
+                  />
+                )}
+              </button>
+              {expandedMenu === "produtos" && open && (
+                <ul className="mt-2 ml-4 space-y-1 border-l border-gray-500 pl-3">
+                  <li>
+                    <Link
+                      href={`/produtos`}
+                      className="inline-flex items-center w-full gap-2 px-2 py-1 bg-accent text-accent-foreground  hover:bg-gray-30 transition">
+                      Ver Produtos
+                    </Link>
+                  </li>
+                  <li>
+                    <Link
+                      href={`/produtos/form`}
+                      className="inline-flex items-center w-full gap-2 px-2 py-1 bg-accent text-accent-foreground rounded-sm hover:bg-gray-30 transition">
+                      Novo Produto
+                    </Link>
+                  </li>
+                </ul>
+              )}
             </li>
           </ul>
         </SidebarGroup>
 
+        {/* COMPRA */}
         <SidebarGroup>
           <ul className="space-y-2">
             <li>
-              <a
-                href="/compra"
-                className="flex items-center gap-2 p-2 rounded hover:bg-gray-400 transition">
-                <ShoppingCart size={20} /> {open && "Compra"}
-              </a>
+              <button
+                onClick={() => toggleMenu("compra")}
+                className="w-full flex items-center justify-between gap-2 p-2 rounded hover:bg-gray-400 transition">
+                <span className="flex items-center gap-2">
+                  <ShoppingCart size={20} />
+                  {open && "Compra"}
+                </span>
+                {open && (
+                  <ChevronDown
+                    size={16}
+                    className={`transition-transform ${
+                      expandedMenu === "compra" ? "rotate-180" : ""
+                    }`}
+                  />
+                )}
+              </button>
+              {expandedMenu === "compra" && open && (
+                <ul className="mt-2 ml-4 space-y-1 border-l border-gray-500 pl-3">
+                  <li>
+                    <Link
+                      href={`/compra`}
+                      className="inline-flex items-center  w-full gap-2 px-2 py-1 bg-accent text-accent-foreground rounded-sm hover:bg-gray-30 transition">
+                      Ver Compras
+                    </Link>
+                  </li>
+                  <li>
+                    <Link
+                      href={`/compra/form`}
+                      className="inline-flex items-center w-full gap-2 px-2 py-1 bg-accent text-accent-foreground rounded-sm hover:bg-gray-30 transition">
+                      Nova Compra
+                    </Link>
+                  </li>
+                </ul>
+              )}
             </li>
           </ul>
         </SidebarGroup>
 
+        {/* VENDA */}
         <SidebarGroup>
           <ul className="space-y-2">
             <li>
-              <a
-                href="/venda"
-                className="flex items-center gap-2 p-2 rounded hover:bg-gray-400 transition">
-                <DollarSign size={20} /> {open && "Venda"}
-              </a>
+              <button
+                onClick={() => toggleMenu("venda")}
+                className="w-full flex items-center justify-between gap-2 p-2 rounded hover:bg-gray-400 transition">
+                <span className="flex items-center gap-2">
+                  <DollarSign size={20} />
+                  {open && "Venda"}
+                </span>
+                {open && (
+                  <ChevronDown
+                    size={16}
+                    className={`transition-transform ${
+                      expandedMenu === "venda" ? "rotate-180" : ""
+                    }`}
+                  />
+                )}
+              </button>
+              {expandedMenu === "venda" && open && (
+                <ul className="mt-2 ml-4 space-y-1 border-l border-gray-500 pl-3">
+                  <li>
+                    <Link
+                      href={`/venda`}
+                      className="inline-flex items-center w-full gap-2 px-2 py-1 bg-accent text-accent-foreground rounded-sm hover:bg-gray-30 transition">
+                      Ver Vendas
+                    </Link>
+                  </li>
+                  <li>
+                    <Link
+                      href={`/venda/form`}
+                      className="inline-flex items-center w-full gap-2 px-2 py-1 bg-accent text-accent-foreground rounded-sm hover:bg-gray-30 transition">
+                      Nova Venda
+                    </Link>
+                  </li>
+                </ul>
+              )}
             </li>
           </ul>
         </SidebarGroup>
 
+        {/* FORNECEDORES */}
         <SidebarGroup>
           <ul className="space-y-2">
             <li>
-              <a
-                href="/fornecedores"
-                className="flex items-center gap-2 p-2 rounded hover:bg-gray-400 transition">
-                <Truck size={20} /> {open && "Fornecedores"}
-              </a>
+              <button
+                onClick={() => toggleMenu("fornecedores")}
+                className="w-full flex items-center justify-between gap-2 p-2 rounded hover:bg-gray-400 transition">
+                <span className="flex items-center gap-2">
+                  <Truck size={20} />
+                  {open && "Fornecedores"}
+                </span>
+                {open && (
+                  <ChevronDown
+                    size={16}
+                    className={`transition-transform ${
+                      expandedMenu === "fornecedores" ? "rotate-180" : ""
+                    }`}
+                  />
+                )}
+              </button>
+              {expandedMenu === "fornecedores" && open && (
+                <ul className="mt-2 ml-4 space-y-1 border-l border-gray-500 pl-3">
+                  <li>
+                    <Link
+                      href={`/fornecedores`}
+                      className="inline-flex items-center  w-full gap-2 px-2 py-1 bg-accent text-accent-foreground rounded-sm hover:bg-gray-30 transition">
+                      Ver Fornecedores
+                    </Link>
+                  </li>
+                  <li>
+                    <Link
+                      href={`/fornecedores/form`}
+                      className="inline-flex items-center  w-full gap-2 px-2 py-1 bg-accent text-accent-foreground rounded-sm hover:bg-gray-30 transition">
+                      Novo Fornecedor
+                    </Link>
+                  </li>
+                </ul>
+              )}
             </li>
           </ul>
         </SidebarGroup>
 
+        {/* DASHBOARD */}
         <SidebarGroup>
           <ul className="space-y-2">
             <li>
-              <a
-                href="/dashboard"
-                className="flex items-center gap-2 p-2 rounded hover:bg-gray-400 transition">
-                <LayoutDashboard size={20} /> {open && "Dashboard"}
-              </a>
+              <button
+                onClick={() => toggleMenu("dashboard")}
+                className="w-full flex items-center justify-between gap-2 p-2 rounded hover:bg-gray-400 transition">
+                <span className="flex items-center gap-2">
+                  <LayoutDashboard size={20} />
+                  {open && "Dashboard"}
+                </span>
+                {open && (
+                  <ChevronDown
+                    size={16}
+                    className={`transition-transform ${
+                      expandedMenu === "dashboard" ? "rotate-180" : ""
+                    }`}
+                  />
+                )}
+              </button>
+              {expandedMenu === "dashboard" && open && (
+                <ul className="mt-2 ml-4 space-y-1 border-l border-gray-500 pl-3">
+                  <li>
+                    <Link
+                      href={`/dashboard`}
+                      className="inline-flex items-center w-full gap-2 px-2 py-1 bg-accent text-accent-foreground rounded-sm hover:bg-gray-30 transition">
+                      Dashboard
+                    </Link>
+                  </li>
+                </ul>
+              )}
             </li>
           </ul>
         </SidebarGroup>
       </SidebarContent>
 
       <SidebarFooter className="p-5 bg-background border-t border-accent flex items-center justify-between">
-        <h3 className=" text-sm text-muted-foreground">
+        <h3 className="text-sm text-muted-foreground">
           Versão do software:
           <span className="ml-2 text-sm text-muted-foreground font-medium">
             1.0.0
           </span>
         </h3>
         <Button
-          className="rounded-md "
+          className="rounded-md"
           variant="outline"
           size="icon"
           onClick={() => setTheme(theme === "dark" ? "light" : "dark")}>

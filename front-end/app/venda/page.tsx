@@ -25,9 +25,7 @@ export default function SellPage() {
       {/* Cabeçalho */}
       <header className="flex flex-col justify-center items-center">
         <div className="flex gap-4 items-center">
-          <h1 className="text-4xl font-extrabold text-accent-foreground">
-            Vendas
-          </h1>
+          <h1 className="text-4xl font-extrabold text-accent">Vendas</h1>
           <HandCoins size={50} />
         </div>
         <p className="text-gray-500 mt-2">Gerencie suas vendas</p>

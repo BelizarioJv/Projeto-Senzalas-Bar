@@ -26,9 +26,7 @@ export default function ProductsPage() {
       {/* Cabeçalho */}
       <header className="flex flex-col justify-center items-center">
         <div className="flex gap-4 items-center">
-          <h1 className="text-4xl font-extrabold text-accent-foreground">
-            Fornecedores
-          </h1>
+          <h1 className="text-4xl font-extrabold text-accent">Fornecedores</h1>
           <Truck size={50} />
         </div>
         <p className="text-gray-500 mt-2">Gerencie seus fornecedores</p>

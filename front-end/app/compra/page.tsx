@@ -24,9 +24,7 @@ export default function PurchasePage() {
       {/* Cabeçalho */}
       <header className="flex flex-col justify-center items-center">
         <div className="flex gap-4 items-center">
-          <h1 className="text-4xl font-extrabold text-accent-foreground">
-            Compras
-          </h1>
+          <h1 className="text-4xl font-extrabold text-accent">Compras</h1>
           <ShoppingCart size={50} />
         </div>
         <p className="text-gray-500 mt-2">Gerencie suas compras</p>
