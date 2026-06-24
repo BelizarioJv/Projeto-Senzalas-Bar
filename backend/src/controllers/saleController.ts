@@ -95,6 +95,7 @@ export class SaleController {
             total,
             payment: body.payment,
             observation: body.observation,
+            userId: req.user.id,
             products: {
               create: body.products.map((products) => ({
                 productId: products.productId,
@@ -107,6 +108,7 @@ export class SaleController {
 
           include: {
             products: true,
+            user: true,
           },
         });
 

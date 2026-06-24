@@ -33,6 +33,7 @@ export class PurchaseController {
         orderBy: {
           [sortBy]: order,
         },
+        include: { user: true },
       });
 
       const totalRecords = await prisma.purchase.count({
@@ -64,6 +65,7 @@ export class PurchaseController {
           products: {
             include: {
               product: true,
+              user: true,
             },
           },
         },
@@ -92,7 +94,7 @@ export class PurchaseController {
             supplierId: body.supplierId,
             payment: body.payment,
             total: new Prisma.Decimal(total),
-
+            userId: req.user.id,
             products: {
               create: body.products.map((item) => ({
                 productId: item.productId,
@@ -105,6 +107,7 @@ export class PurchaseController {
 
           include: {
             products: true,
+            include: { user: true },
           },
         });
 

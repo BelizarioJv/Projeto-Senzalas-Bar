@@ -57,6 +57,7 @@ export class ProductController {
       const { id } = req.params;
       const product = await prisma.product.findUnique({
         where: { id: Number(id) },
+        include: { usuario: true },
       });
       if (!product) {
         throw new HttpError(404, "Product not found");

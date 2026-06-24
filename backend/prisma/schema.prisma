@@ -5,7 +5,7 @@ generator client {
 
 datasource db {
   provider = "postgresql"
-  url      = "postgresql://postgres:010500@localhost:5432/SenzalasSchema?schema=public"
+  url      = env("DATABASE_URL")
 }
 
 
@@ -49,6 +49,19 @@ enum UnitMeasure {
   LITRO
   FARDO
 }
+//Entidade (1:N(vendas e produtos) use dados : id , nome , usuario , password)
+model User {
+  id        Int      @id @default(autoincrement())
+  name      String?
+  user      String   @unique
+  password  String
+  createdAt DateTime @default(now())
+
+  // Relacionamentos
+  sale         Sale[]
+  purchases    Purchase[]
+  product      Product[]
+}
 
 //Entidade (1:N(vendas)) "fornecedor" dados : id ,  nome , email , phone , address, cnpj , observaçoes , as compras feitas com o fornecedor ,data de criaçao e atualizaçao do fornecedor
 model Supplier {
@@ -59,9 +72,11 @@ model Supplier {
   address      String?
   cnpj         String?  @unique
   observations String?
-  purchases    Purchase[]
   createdAt    DateTime   @default(now())
   updatedAt    DateTime   @updatedAt
+
+  //Relacionamentos
+  purchases    Purchase[]
 }
 
 //Entidade "Product" (1:N(compras e vendas) 1:1(categ) dados : id, nome , descriçao ,categoria , marca , unidade de medida , preço de custo e de venda , status e data de criaçao e venda)
@@ -77,11 +92,16 @@ model Product {
   minimumQuantity Int               @default(0)
   status          ProductStatus    @default(ACTIVE)
   category        ProductsCategory  
+  createdAt       DateTime         @default(now())
+  updatedAt       DateTime         @updatedAt
+  createdBy       Int?
+  
+  //Relacionamentos
   purchaseProducts   PurchaseProduct[]
   saleProducts       SaleProducts[]
   stockMovements  StockMovement[]
-  createdAt       DateTime         @default(now())
-  updatedAt       DateTime         @updatedAt
+  usuario   User?   @relation(fields: [createdBy], references: [id])
+
 }
 
 
@@ -91,12 +111,16 @@ model Purchase {
   date          DateTime         @default(now())
   total         Decimal          @db.Decimal(10, 2)
   supplierId    Int
+  createdAt     DateTime         @default(now())
+  updatedAt     DateTime         @updatedAt
+  userId    Int
   payment       PaymentMethod?
+  
+  //Relacionamentos
   supplier      Supplier         @relation(fields: [supplierId], references: [id])
   products      PurchaseProduct[]
   stockMovements StockMovement[]
-  createdAt     DateTime         @default(now())
-  updatedAt     DateTime         @updatedAt
+  user      User?      @relation(fields: [userId], references: [id])
 
 
   @@index([supplierId])
@@ -111,6 +135,8 @@ model PurchaseProduct {
   quantity      Int
   price         Decimal    @db.Decimal(10, 2)
   subtotal      Decimal    @db.Decimal(10, 2)
+
+  //Relacionamentos
   purchase      Purchase   @relation(fields: [purchaseId], references: [id])
   product       Product    @relation(fields: [productId], references: [id])
 
@@ -129,10 +155,14 @@ model Sale {
   payment       PaymentMethod
   discount      Decimal?         @db.Decimal(10, 2)
   observation   String?
-  products      SaleProducts[]
-  stockMovements StockMovement[]
   createdAt     DateTime         @default(now())
   updatedAt     DateTime         @updatedAt
+  userId    Int
+
+  //Relacionamentos
+  products      SaleProducts[]
+  stockMovements StockMovement[]
+  user      User?      @relation(fields: [userId], references: [id])
 }
 
 //Entidade "Itens da venda" (N:N entre venda e produtos) dados : id, id da venda, id do produto, quantidade, preço unitário, subtotal
@@ -144,6 +174,7 @@ model SaleProducts {
   price         Decimal    @db.Decimal(10, 2)
   subtotal      Decimal    @db.Decimal(10, 2)
 
+  //Relacionamentos
   sale          Sale       @relation(fields: [saleId], references: [id])
   product       Product    @relation(fields: [productId], references: [id])
 
@@ -155,23 +186,19 @@ model SaleProducts {
 //Entidade "movimentaçao de estoque" (1:N(Produtos) dados :id , produtos , tipo de movimentaçao , quantidade de produtos , e observaçoes )
 model StockMovement {
   id            Int @id @default(autoincrement())
-
   productId     Int
-
   purchaseId    Int?
   saleId        Int?
-
   movementType  MovementType
   quantity      Int
-
   observations  String?
+  createdAt DateTime @default(now())
 
+  //Relacionamentos
   product Product @relation(fields: [productId], references: [id])
-
   purchase Purchase? @relation(fields: [purchaseId], references: [id])
   sale Sale? @relation(fields: [saleId], references: [id])
 
-  createdAt DateTime @default(now())
 
   @@index([productId])
   @@index([purchaseId])

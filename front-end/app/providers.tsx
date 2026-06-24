@@ -1,32 +1,24 @@
+// app/providers.tsx
 "use client";
-import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
+
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { useState } from "react";
-import { SidebarProvider } from "@/components/ui/sidebar";
-import { ThemeProvider } from "@/components/layout/ThemeProvider";
-import { Toaster } from "@/components/ui/sonner";
 
 export function Providers({ children }: { children: React.ReactNode }) {
+  // Criamos o QueryClient dentro de um useState para garantir que
+  // cada aba do navegador/requisição tenha sua própria instância (padrão do Next.js)
   const [queryClient] = useState(
     () =>
       new QueryClient({
         defaultOptions: {
           queries: {
             staleTime: 1000 * 60 * 5, // 5 minutos
-            refetchOnWindowFocus: false,
-            retry: 1,
           },
         },
       }),
   );
 
   return (
-    <QueryClientProvider client={queryClient}>
-      <SidebarProvider>
-        <ThemeProvider>{children}</ThemeProvider>
-        <Toaster />
-      </SidebarProvider>
-      <ReactQueryDevtools initialIsOpen={false} />
-    </QueryClientProvider>
+    <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
   );
 }

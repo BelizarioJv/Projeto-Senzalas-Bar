@@ -1,0 +1,26 @@
+# 1. Usa uma imagem oficial do Node.js estável
+FROM node:20-alpine
+
+RUN apk add --no-cache openssl
+
+# 2. Cria e define o diretório de trabalho dentro do contêiner
+WORKDIR /app
+
+# 3. Copia os arquivos de dependências
+COPY package*.json ./
+COPY prisma ./prisma/
+
+# 4. Instala as dependências do projeto
+RUN npm install
+
+# 5. Copia o restante do código do backend
+COPY . .
+
+# 6. Gera o client do Prisma (necessário para o seu ORM funcionar)
+RUN npx prisma generate
+
+# 7. Compila o TypeScript (se necessário) ou roda direto em modo dev
+EXPOSE 3000
+
+# 8. Comando para iniciar a aplicação
+CMD ["npm", "run", "dev"]
