@@ -16,9 +16,15 @@ export interface ProductData {
   salePrice: string;
   currentQuantity: number;
   minimumQuantity: number;
-  status: "ACTIVE" | "INACTIVE";
+  status: "ATIVO" | "INATIVO";
+  createdBy: number; // ID do usuário
   createdAt: string;
   updatedAt: string;
+  usuario?: {
+    id: number;
+    name: string;
+    email: string;
+  };
 }
 
 export interface ProductUpdate {

@@ -20,7 +20,11 @@ export function authMiddleware(
       return res.status(403).json({ error: "Token inválido ou expirado" });
     }
 
-    req.user = decoded as JwtPayload;
+    // Faz o narrowing: garante que não é string
+    if (typeof decoded !== "string") {
+      req.user = decoded as JwtPayload;
+    }
+
     next();
   });
 }

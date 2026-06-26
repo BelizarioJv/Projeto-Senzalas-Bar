@@ -65,7 +65,9 @@ export class PurchaseController {
           products: {
             include: {
               product: true,
-              user: true,
+              usuario: {
+                select: { id: true, name: true },
+              },
             },
           },
         },
@@ -77,55 +79,55 @@ export class PurchaseController {
     }
   };
 
-  //Criaçao compra
+  // Criação de compra
   create: Handler = async (req, res, next) => {
     try {
       const body = PurchaseRequestSchema.parse(req.body);
 
       const total = body.products.reduce(
-        (acc, products) => acc + products.quantity * products.price,
+        (acc, product) => acc + product.quantity * product.price,
         0,
       );
+      // Garantir que req.user existe e não é string
+      if (!req.user || typeof req.user === "string") {
+        throw new HttpError(401, "Usuário não autenticado");
+      }
 
-      const purchaseTrnsaction = await prisma.$transaction(async (tx) => {
-        // 1. Cria a compra com os dados da recebidos e inclui os produtos
+      if (!req.user || typeof req.user === "string") {
+        throw new HttpError(401, "Usuário não autenticado");
+      }
+
+      const purchaseTransaction = await prisma.$transaction(async (tx) => {
         const purchase = await tx.purchase.create({
           data: {
             supplierId: body.supplierId,
             payment: body.payment,
             total: new Prisma.Decimal(total),
-            userId: req.user.id,
             products: {
               create: body.products.map((item) => ({
                 productId: item.productId,
                 quantity: item.quantity,
                 price: item.price,
-                subtotal: new Prisma.Decimal(item.price).mul(item.quantity),
+                subtotal: new Prisma.Decimal(item.price).times(item.quantity),
               })),
             },
           },
-
           include: {
             products: true,
-            include: { user: true },
+            user: true,
           },
         });
 
-        // 2. Atualiza o estoque dos produtos comprados
+        // Atualiza estoque e cria movimentação
         for (const product of body.products) {
           await tx.product.update({
-            where: {
-              id: product.productId,
-            },
+            where: { id: product.productId },
             data: {
               costPrice: product.price,
-              currentQuantity: {
-                increment: product.quantity,
-              },
+              currentQuantity: { increment: product.quantity },
             },
           });
 
-          // 3. Cria movimentaçao de estoque
           await tx.stockMovement.create({
             data: {
               productId: product.productId,
@@ -140,7 +142,7 @@ export class PurchaseController {
         return purchase;
       });
 
-      res.status(201).json(purchaseTrnsaction);
+      res.status(201).json(purchaseTransaction);
     } catch (error) {
       next(error);
     }

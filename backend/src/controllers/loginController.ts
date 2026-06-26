@@ -13,6 +13,7 @@ export class LoginController {
 
       // 1. Verificação de segurança da chave secreta
       const secret = process.env.JWT_SECRET;
+
       if (!secret) {
         throw new HttpError(500, "Configuração interna do servidor ausente.");
       }

@@ -11,8 +11,8 @@ datasource db {
 
 //Enus para assegurar e garantir a integridade dos dados 
 enum ProductStatus {
-  ACTIVE
-  INACTIVE
+  ATIVO
+  INATIVO
 }
 
 
@@ -113,7 +113,7 @@ model Purchase {
   supplierId    Int
   createdAt     DateTime         @default(now())
   updatedAt     DateTime         @updatedAt
-  userId    Int
+  userId        Int
   payment       PaymentMethod?
   
   //Relacionamentos
@@ -157,7 +157,7 @@ model Sale {
   observation   String?
   createdAt     DateTime         @default(now())
   updatedAt     DateTime         @updatedAt
-  userId    Int
+  userId        Int
 
   //Relacionamentos
   products      SaleProducts[]
@@ -192,7 +192,7 @@ model StockMovement {
   movementType  MovementType
   quantity      Int
   observations  String?
-  createdAt DateTime @default(now())
+  createdAt      DateTime @default(now())
 
   //Relacionamentos
   product Product @relation(fields: [productId], references: [id])

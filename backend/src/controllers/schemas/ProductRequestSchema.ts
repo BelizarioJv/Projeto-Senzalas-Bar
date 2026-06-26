@@ -2,7 +2,7 @@ import { z } from "zod";
 
 //listas de opções para campos específicos
 const unitOfMeasurement = z.enum(["UNIDADE", "KG", "LITRO", "FARDO"]);
-const productStatus = z.enum(["ACTIVE", "INACTIVE"]);
+const productStatus = z.enum(["ATIVO", "INATIVO"]);
 const productsCategory = z.enum([
   "CERVEJA",
   "VINHOS",
@@ -30,6 +30,7 @@ export const ProductRequestSchema = z.object({
   brand: z.string().optional(),
   unitMeasure: unitOfMeasurement,
   costPrice: z.number().positive("Preço de custo deve ser um número positivo"),
+  createdBy: z.number().int().optional(),
   salePrice: z.number().positive("Preço de venda deve ser um número positivo"),
   minimumQuantity: z
     .number()

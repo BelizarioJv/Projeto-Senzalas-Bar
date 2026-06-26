@@ -86,6 +86,12 @@ export default function ProdutoPage() {
           </div>
 
           <div className="rounded-xl border p-5">
+            <p className="text-sm text-muted-foreground">Criador por :</p>
+
+            <p className="text-2xl font-bold">{product.usuario?.name}</p>
+          </div>
+
+          <div className="rounded-xl border p-5">
             <p className="text-sm text-muted-foreground">Estoque Atual</p>
 
             <p className="text-2xl font-bold">{product.currentQuantity}</p>
