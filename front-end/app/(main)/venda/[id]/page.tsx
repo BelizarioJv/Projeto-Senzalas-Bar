@@ -37,6 +37,11 @@ export default function ShowSalePage() {
             <p>{sale.id}</p>
           </div>
 
+          <div>
+            <strong>Criador por:</strong>
+            <p>{sale.user?.name}</p>
+          </div>
+
           <div className="flex gap-6">
             <div>
               <strong>Pagamento</strong>

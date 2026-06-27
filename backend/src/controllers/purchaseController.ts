@@ -54,26 +54,36 @@ export class PurchaseController {
     }
   };
 
-  //Mostrar dados da compra
+  // Mostrar dados da compra
   show: Handler = async (req, res, next) => {
     try {
       const { id } = req.params;
+      const purchaseId = Number(id);
+
+      if (isNaN(purchaseId)) {
+        return res.status(400).json({ message: "O ID fornecido é inválido." });
+      }
+
       const purchase = await prisma.purchase.findUnique({
-        where: { id: Number(id) },
+        where: { id: purchaseId },
         include: {
           supplier: true,
+          user: {
+            select: { id: true, name: true },
+          },
           products: {
             include: {
               product: true,
-              usuario: {
-                select: { id: true, name: true },
-              },
             },
           },
         },
       });
 
-      res.json(purchase);
+      if (!purchase) {
+        return res.status(404).json({ message: "Compra não encontrada." });
+      }
+
+      return res.json(purchase);
     } catch (error) {
       next(error);
     }

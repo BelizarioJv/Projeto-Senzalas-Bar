@@ -55,9 +55,18 @@ export class SaleController {
   show: Handler = async (req, res, next) => {
     try {
       const { id } = req.params;
-      const purchase = await prisma.sale.findUnique({
-        where: { id: Number(id) },
+      const saleId = Number(id);
+
+      if (isNaN(saleId)) {
+        return res.status(400).json({ message: "O ID fornecido é inválido." });
+      }
+
+      const sale = await prisma.sale.findUnique({
+        where: { id: saleId },
         include: {
+          user: {
+            select: { id: true, name: true },
+          },
           products: {
             include: {
               product: true,
@@ -66,7 +75,11 @@ export class SaleController {
         },
       });
 
-      res.status(201).json(purchase);
+      if (!sale) {
+        return res.status(404).json({ message: "Venda não encontrada." });
+      }
+
+      res.status(201).json(sale);
     } catch (error) {
       next(error);
     }

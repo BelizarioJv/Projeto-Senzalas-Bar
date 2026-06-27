@@ -11,6 +11,10 @@ export interface SaleData {
   products: ProductData[];
   createdAt: string;
   updatedAt: string;
+  user: {
+    id: number;
+    name: string;
+  } | null;
 }
 
 export interface SaleProductForm {

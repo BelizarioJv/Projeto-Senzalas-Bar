@@ -76,9 +76,17 @@ export class ProductController {
   create: Handler = async (req, res, next) => {
     try {
       const body = ProductRequestSchema.parse(req.body);
+
+      if (!req.user || typeof req.user !== "number") {
+        throw new HttpError(401, "Usuário não autenticado ou inválido");
+      }
+
+      const userId = req.user;
+
       const newProduct = await prisma.product.create({
         data: {
-          body,
+          ...body,
+          createdBy: userId ? Number(userId) : null,
         },
       });
       res.status(201).json(newProduct);

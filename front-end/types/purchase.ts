@@ -4,8 +4,15 @@ export interface PurchaseData {
   id: number;
   date: Date;
   total: number;
-  supplierId: number;
-  status: "PENDENTE" | "COMPLETO" | "CANCELADO";
+  user: {
+    id: number;
+    name: string;
+  } | null;
+  supplier: {
+    id: number;
+    name: string;
+  };
+  createdBy: string;
   payment: "DINHEIRO" | "PIX" | "CARTAO_CREDITO" | "CARTAO_DEBITO";
   products: ProductData[];
   createdAt: string;

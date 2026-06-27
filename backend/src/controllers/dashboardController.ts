@@ -9,7 +9,7 @@ export class DashboardController {
     try {
       const totalProducts = await prisma.product.count({
         where: {
-          status: "ACTIVE",
+          status: "ATIVO",
         },
       });
 

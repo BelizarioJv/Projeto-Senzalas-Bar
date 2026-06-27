@@ -23,7 +23,7 @@ export class LoginController {
       const validPassword = await bcrypt.compare(data.password, user.password);
       if (!validPassword) throw new HttpError(401, "Senha inválida");
 
-      const token = jwt.sign({ usuarioId: user.id }, secret, {
+      const token = jwt.sign({ id: user.id }, secret, {
         expiresIn: "1h",
       });
 

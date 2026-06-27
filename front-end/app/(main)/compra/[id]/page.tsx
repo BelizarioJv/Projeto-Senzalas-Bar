@@ -34,7 +34,7 @@ export default function ShowPurchasePage() {
           <div>
             <strong>Fornecedor</strong>
 
-            <p>{purchase.supplierId}</p>
+            <p>{purchase.supplier.name}</p>
           </div>
 
           <div>
@@ -46,7 +46,7 @@ export default function ShowPurchasePage() {
           <div>
             <strong>Status</strong>
 
-            <p>{purchase.status}</p>
+            <p>{purchase.user?.name}</p>
           </div>
 
           <div>
