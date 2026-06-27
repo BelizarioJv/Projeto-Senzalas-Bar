@@ -1,32 +1,25 @@
 import { AppSidebar } from "@/components/layout/AppSidebar";
 import { Header } from "@/components/layout/Header";
-
 import { Providers } from "./providers";
 import type { Metadata } from "next";
 import { cn } from "@/lib/utils";
-import {
-  Geist,
-  Geist_Mono,
-  Noto_Sans,
-  Playfair_Display,
-} from "next/font/google";
+import { Geist_Mono, Noto_Sans, Playfair_Display } from "next/font/google";
 import "../globals.css";
 
+// 1. Inicializa as fontes e define suas respectivas variáveis CSS
 const playfairDisplayHeading = Playfair_Display({
   subsets: ["latin"],
   variable: "--font-heading",
 });
 
-const notoSans = Noto_Sans({ subsets: ["latin"], variable: "--font-sans" });
-
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+const notoSans = Noto_Sans({
   subsets: ["latin"],
+  variable: "--font-sans",
 });
 
 const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
   subsets: ["latin"],
+  variable: "--font-mono",
 });
 
 export const metadata: Metadata = {
@@ -43,17 +36,15 @@ export default function RootLayout({
     <html
       lang="pt-br"
       suppressHydrationWarning
+      // 2. Injeta as variáveis de fonte na tag HTML
       className={cn(
-        "h-full",
-        "w-full",
-        "antialiased",
-        geistSans.variable,
-        geistMono.variable,
-        "font-sans",
+        "h-full w-full antialiased",
         notoSans.variable,
         playfairDisplayHeading.variable,
+        geistMono.variable,
       )}>
-      <body className="min-h-screen">
+      {/* 3. Aplica a classe font-sans no body (garantindo consistência) */}
+      <body className="min-h-screen font-sans bg-background text-foreground">
         <Providers>
           <div className="flex min-h-screen w-full">
             <AppSidebar />

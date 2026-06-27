@@ -118,6 +118,12 @@
   --sidebar-border: oklch(1 0 0 / 8%);
   --sidebar-ring: oklch(0.72 0.25 70);
 }
+@theme {
+  /* Mapeia as variáveis do Next.js para as classes do Tailwind v4 */
+  --font-sans: var(--font-sans), ui-sans-serif, system-ui, sans-serif;
+  --font-heading: var(--font-heading), Georgia, serif;
+  --font-mono: var(--font-mono), ui-monospace, SFMono-Regular, Menlo, monospace;
+}
 
 @layer base {
   * {

@@ -77,7 +77,9 @@ export class ProductController {
     try {
       const body = ProductRequestSchema.parse(req.body);
       const newProduct = await prisma.product.create({
-        data: body,
+        data: {
+          body,
+        },
       });
       res.status(201).json(newProduct);
     } catch (error) {

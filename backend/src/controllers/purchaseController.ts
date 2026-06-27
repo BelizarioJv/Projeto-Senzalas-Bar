@@ -82,25 +82,29 @@ export class PurchaseController {
   // Criação de compra
   create: Handler = async (req, res, next) => {
     try {
+      // 1. Validação do Body com Zod
       const body = PurchaseRequestSchema.parse(req.body);
 
+      // 2. Validação estrita do usuário autenticado (JWT Middleware)
+      if (!req.user || typeof req.user !== "number") {
+        throw new HttpError(401, "Usuário não autenticado ou inválido");
+      }
+
+      const userId = req.user;
+
+      // 3. Cálculo do valor total da compra
       const total = body.products.reduce(
         (acc, product) => acc + product.quantity * product.price,
         0,
       );
-      // Garantir que req.user existe e não é string
-      if (!req.user || typeof req.user === "string") {
-        throw new HttpError(401, "Usuário não autenticado");
-      }
 
-      if (!req.user || typeof req.user === "string") {
-        throw new HttpError(401, "Usuário não autenticado");
-      }
-
+      // 4. Execução da transação no banco de dados
       const purchaseTransaction = await prisma.$transaction(async (tx) => {
+        // Cria a compra e os itens (PurchaseProduct) de uma só vez
         const purchase = await tx.purchase.create({
           data: {
             supplierId: body.supplierId,
+            userId: userId,
             payment: body.payment,
             total: new Prisma.Decimal(total),
             products: {
@@ -118,31 +122,36 @@ export class PurchaseController {
           },
         });
 
-        // Atualiza estoque e cria movimentação
-        for (const product of body.products) {
-          await tx.product.update({
+        // Mapeia as operações de estoque para rodarem em paralelo dentro da transaction
+        const stockOperations = body.products.flatMap((product) => [
+          // Operação A: Atualizar preço de custo e incrementar quantidade no estoque do produto
+          tx.product.update({
             where: { id: product.productId },
             data: {
               costPrice: product.price,
               currentQuantity: { increment: product.quantity },
             },
-          });
-
-          await tx.stockMovement.create({
+          }),
+          // Operação B: Registrar a movimentação de entrada no estoque
+          tx.stockMovement.create({
             data: {
               productId: product.productId,
               purchaseId: purchase.id,
               movementType: "ENTRADA",
               quantity: product.quantity,
-              observations: `Purchase #${purchase.id}`,
+              observations: `Compra realizada - Registro #${purchase.id}`,
             },
-          });
-        }
+          }),
+        ]);
+
+        // Executa todas as atualizações de estoque concorrentemente na transação
+        await Promise.all(stockOperations);
 
         return purchase;
       });
 
-      res.status(201).json(purchaseTransaction);
+      // 5. Retorno de sucesso
+      return res.status(201).json(purchaseTransaction);
     } catch (error) {
       next(error);
     }

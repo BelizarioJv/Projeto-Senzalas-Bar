@@ -24,7 +24,7 @@ export default function ProdutoPage() {
       await deleteMutation.mutateAsync({ id });
       toast.success("Produto Excluido com sucesso");
       setTimeout(() => {
-        (router.push("/productos"), 1000);
+        (router.push("/produtos"), 1000);
       });
     } catch (error) {
       console.error("Erro ao exluir produto:", error);

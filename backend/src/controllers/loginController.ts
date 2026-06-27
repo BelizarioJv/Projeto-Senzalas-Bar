@@ -11,7 +11,6 @@ export class LoginController {
     try {
       const data = LoginRequestSchema.parse(req.body);
 
-      // 1. Verificação de segurança da chave secreta
       const secret = process.env.JWT_SECRET;
 
       if (!secret) {
@@ -22,10 +21,9 @@ export class LoginController {
       if (!user) throw new HttpError(404, "Usuário não encontrado");
 
       const validPassword = await bcrypt.compare(data.password, user.password);
-      if (!validPassword) throw new HttpError(401, "Senha inválida"); // Alterado para 401 (Não autorizado)
+      if (!validPassword) throw new HttpError(401, "Senha inválida");
 
-      // 2. Agora o TS sabe 100% que 'secret' é uma string válida
-      const token = jwt.sign({ id: user.id }, secret, {
+      const token = jwt.sign({ usuarioId: user.id }, secret, {
         expiresIn: "1h",
       });
 

@@ -77,6 +77,13 @@ export class SaleController {
     try {
       const body = SaleRequestSchema.parse(req.body);
 
+      // Validação estrita do usuário autenticado (JWT Middleware)
+      if (!req.user || typeof req.user !== "number") {
+        throw new HttpError(401, "Usuário não autenticado ou inválido");
+      }
+
+      const userId = req.user;
+
       const subtotal = body.products.reduce(
         (acc, product) => acc + product.quantity * product.price,
         0,
@@ -95,7 +102,7 @@ export class SaleController {
             total,
             payment: body.payment,
             observation: body.observation,
-            userId: req.user.id,
+            userId: userId,
             products: {
               create: body.products.map((products) => ({
                 productId: products.productId,
