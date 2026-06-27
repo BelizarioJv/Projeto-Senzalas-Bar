@@ -1,5 +1,5 @@
 // app/(main)/layout.tsx
-import { AppSidebar } from "@/components/layout/AppSidebar";
+import { AppSidebar } from "../../components/layout/AppSidebar";
 import { Header } from "@/components/layout/Header";
 import { Providers } from "./providers";
 

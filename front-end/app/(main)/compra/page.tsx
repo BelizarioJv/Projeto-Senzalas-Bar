@@ -67,7 +67,7 @@ export default function PurchasePage() {
                 <td className="p-2 text-gray-600">
                   {new Date(purchase.date).toLocaleString("pt-BR")}
                 </td>
-                <td className="p-2 text-gray-600">{purchase.supplierId}</td>
+                <td className="p-2 text-gray-600">{purchase.supplier.name}</td>
                 <td className="p-2 text-gray-600">R${purchase.total}</td>
                 <td className="p-2 text-gray-600">{purchase.payment}</td>
                 <td>
