@@ -64,9 +64,12 @@ export function useSaleForm() {
       toast.success("Venda cadastrada com sucesso!");
       reset();
     } catch (error) {
-      console.error(error);
-      alert("Erro ao cadastrar venda");
-      toast.error("Erro ao cadastrar venda");
+      if (error instanceof Error) {
+        console.error(error);
+        toast.error(error.message);
+      } else {
+        toast.error("Erro inesperado");
+      }
     }
   }
 

@@ -33,7 +33,12 @@ export class PurchaseController {
         orderBy: {
           [sortBy]: order,
         },
-        include: { user: true },
+        include: {
+          user: true,
+          supplier: {
+            select: { id: true, name: true },
+          },
+        },
       });
 
       const totalRecords = await prisma.purchase.count({
