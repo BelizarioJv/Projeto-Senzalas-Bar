@@ -8,7 +8,10 @@ const purchaseController = new PurchaseController();
 // GET /- Listar compra
 purchaseRouter.get("/", purchaseController.index);
 
-//GET /:id -
+// GET /purchase/monthly-total - Total de compras do mês
+purchaseRouter.get("/monthly-total", purchaseController.monthlyTotal);
+
+//GET /:id - mostrar compra por ID
 purchaseRouter.get("/:id", purchaseController.show);
 
 // POST /purchase - Criar compra

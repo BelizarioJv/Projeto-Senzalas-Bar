@@ -2,6 +2,7 @@ import { Handler } from "express";
 import { prisma } from "../database/prisma";
 import { Prisma } from "../generated/prisma";
 import { HttpError } from "../errors/HttpError";
+import { getStartOfMonth } from "../utils/date";
 import {
   PurchaseRequestSchema,
   MetaPurchaseRequestSchema,
@@ -209,6 +210,38 @@ export class PurchaseController {
       res.json(deletedPurchase);
     } catch (erro) {
       next(erro);
+    }
+  };
+
+  // Valor total de compras no mês atual
+  monthlyTotal: Handler = async (req, res, next) => {
+    try {
+      const startDate = getStartOfMonth();
+
+      const endDate = new Date(
+        startDate.getFullYear(),
+        startDate.getMonth() + 1,
+        0,
+        23,
+        59,
+        59,
+      );
+
+      const result = await prisma.purchase.aggregate({
+        _sum: {
+          total: true,
+        },
+        where: {
+          createdAt: {
+            gte: startDate,
+            lt: endDate,
+          },
+        },
+      });
+
+      return res.json({ totalPurchases: result._sum.total ?? 0 });
+    } catch (error) {
+      next(error);
     }
   };
 }

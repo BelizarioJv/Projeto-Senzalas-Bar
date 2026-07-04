@@ -62,3 +62,15 @@ export async function deleteSale(id: string) {
     handleAxiosError(error);
   }
 }
+
+export async function getMonthlyTotalSales(): Promise<number> {
+  try {
+    const response = await api.get<{ totalSales: number }>(
+      "/sale/monthly-total",
+    );
+    return response.data.totalSales;
+  } catch (error) {
+    handleAxiosError(error);
+    return 0;
+  }
+}

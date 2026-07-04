@@ -53,6 +53,19 @@ export async function updatePurchase(id: string, data: PurchaseData) {
   }
 }
 
+//Total de compras do mes
+export async function getTotalPurchasesOfMonth(): Promise<number> {
+  try {
+    const response = await api.get<{ totalPurchases: number }>(
+      "/purchase/monthly-total",
+    );
+    return response.data.totalPurchases;
+  } catch (error) {
+    handleAxiosError(error);
+    return 0;
+  }
+}
+
 // Deletar venda
 export async function deletePurchase(id: string) {
   try {

@@ -127,4 +127,17 @@ export class ProductController {
       next(error);
     }
   };
+
+  getProductsLowStock: Handler = async (req, res, next) => {
+    try {
+      const lowStockProducts = await prisma.$queryRaw`
+        SELECT * 
+        FROM "Product"
+        WHERE "currentQuantity" < "minimumQuantity";
+      `;
+      return res.json(lowStockProducts);
+    } catch (error) {
+      next(error);
+    }
+  };
 }

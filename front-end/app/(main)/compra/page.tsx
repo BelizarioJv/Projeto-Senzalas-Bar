@@ -4,6 +4,7 @@ import { useState } from "react";
 import { toast } from "sonner";
 import { AppCard } from "@/components/layout/AppCard";
 import { usePurchase } from "@/hooks/purchase/usePurchase";
+import { useGetPurchaseOfMonth } from "@/hooks/purchase/useGetTotalPurchaseMonth";
 import { PurchaseData } from "@/types/purchase";
 import { Card } from "@/components/ui/card";
 import { ShoppingCart, ArrowLeft, ArrowRight } from "lucide-react";
@@ -11,6 +12,7 @@ import { ShoppingCart, ArrowLeft, ArrowRight } from "lucide-react";
 export default function PurchasePage() {
   const [page, setPage] = useState(1);
   const { purchaseQuery } = usePurchase(page, 10);
+  const totalPurchasesOfMonthQuery = useGetPurchaseOfMonth();
 
   if (purchaseQuery.isPending) {
     return <p className="text-center text-gray-500">Carregando...</p>;
@@ -36,9 +38,10 @@ export default function PurchasePage() {
           title="Total Compras"
           value={purchaseQuery.data.data.length ?? 0}
         />
-        <AppCard title="Em desenvolvimento" />
-        <AppCard title="Em desenvolvimento" />
-        <AppCard title="Em desenvolvimento" />
+        <AppCard
+          title="Total compras Mes ($)"
+          value={totalPurchasesOfMonthQuery.data ?? 0}
+        />
       </div>
 
       {/* Lista de compras */}

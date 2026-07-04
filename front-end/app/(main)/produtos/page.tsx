@@ -4,6 +4,7 @@ import { useState } from "react";
 import { toast } from "sonner";
 import { AppCard } from "@/components/layout/AppCard";
 import { useProducts } from "@/hooks/products/useProducts";
+import { useGetProductsLowStock } from "@/hooks/products/useGetLowStockProducts";
 import { ProductData } from "@/types/product";
 import { Card } from "@/components/ui/card";
 import { PackageSearch, ArrowLeft, ArrowRight } from "lucide-react";
@@ -11,6 +12,7 @@ import { PackageSearch, ArrowLeft, ArrowRight } from "lucide-react";
 export default function ProductsPage() {
   const [page, setPage] = useState(1);
   const { productsQuery } = useProducts(page, 10);
+  const lowStockProductsQuery = useGetProductsLowStock();
 
   if (productsQuery.isPending) {
     return <p className="text-center text-gray-500">Carregando...</p>;
@@ -38,9 +40,10 @@ export default function ProductsPage() {
           title="Total Produtos"
           value={productsQuery.data.data.length ?? 0}
         />
-        <AppCard title="Em desenvolvimento" />
-        <AppCard title="Em desenvolvimento" />
-        <AppCard title="Em desenvolvimento" />
+        <AppCard
+          title="Produtos com estoque baixo"
+          value={lowStockProductsQuery.data?.length ?? 0}
+        />
       </div>
 
       {/* Lista de produtos */}

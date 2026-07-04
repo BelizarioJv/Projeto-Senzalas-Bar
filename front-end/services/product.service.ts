@@ -62,3 +62,13 @@ export async function deleteProduct(id: string) {
     handleAxiosError(error);
   }
 }
+
+// Buscar produtos com estoque baixo
+export async function getProductsLowStock(): Promise<ProductData[]> {
+  try {
+    const response = await api.get<ProductData[]>(`/products/low-stock`);
+    return response.data;
+  } catch (error) {
+    handleAxiosError(error);
+  }
+}

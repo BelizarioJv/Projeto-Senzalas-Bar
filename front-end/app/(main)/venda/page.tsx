@@ -5,6 +5,7 @@ import { useState } from "react";
 import { Card } from "@/components/ui/card";
 import { toast } from "sonner";
 import { useSales } from "@/hooks/sale/useSales";
+import { useGetSaleOfMonth } from "@/hooks/sale/useTotalSaleMonth";
 import { SaleData } from "@/types/sale";
 import { AppCard } from "@/components/layout/AppCard";
 import { HandCoins, ArrowLeft, ArrowRight } from "lucide-react";
@@ -12,6 +13,7 @@ import { HandCoins, ArrowLeft, ArrowRight } from "lucide-react";
 export default function SellPage() {
   const [page, setPage] = useState(1);
   const { saleQuery } = useSales(page, 10);
+  const totalSalesQuery = useGetSaleOfMonth();
 
   if (saleQuery.isPending) {
     return <p className="text-center text-gray-500">Carregando...</p>;
@@ -34,9 +36,10 @@ export default function SellPage() {
       {/* Cards resumo */}
       <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
         <AppCard title="Total vendas" value={saleQuery.data.data.length ?? 0} />
-        <AppCard title="Em desenvolvimento" />
-        <AppCard title="Em desenvolvimento" />
-        <AppCard title="Em desenvolvimento" />
+        <AppCard
+          title="Total de venda mes ($)"
+          value={totalSalesQuery.data ?? 0}
+        />
       </div>
 
       {/* Lista de vendas */}

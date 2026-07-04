@@ -1,6 +1,7 @@
 import { Handler } from "express";
 import { prisma } from "../database/prisma";
 import { HttpError } from "../errors/HttpError";
+import { getStartOfMonth } from "../utils/date";
 import {
   SaleRequestSchema,
   MetaSaleRequestSchema,
@@ -222,6 +223,38 @@ export class SaleController {
       res.json(deletedSale);
     } catch (erro) {
       next(erro);
+    }
+  };
+
+  // Valor total de vendas no mês atual
+  monthlyTotal: Handler = async (req, res, next) => {
+    try {
+      const startDate = getStartOfMonth();
+
+      const endDate = new Date(
+        startDate.getFullYear(),
+        startDate.getMonth() + 1,
+        0,
+        23,
+        59,
+        59,
+      );
+
+      const result = await prisma.sale.aggregate({
+        _sum: {
+          total: true,
+        },
+        where: {
+          createdAt: {
+            gte: startDate,
+            lt: endDate,
+          },
+        },
+      });
+
+      return res.json({ totalSales: result._sum.total ?? 0 });
+    } catch (error) {
+      next(error);
     }
   };
 }
