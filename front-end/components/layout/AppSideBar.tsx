@@ -23,7 +23,7 @@ import {
   useSidebar,
 } from "@/components/ui/sidebar";
 
-export function AppSidebar() {
+export function Appsidebar() {
   const { open } = useSidebar();
   const { setTheme, theme } = useTheme();
   const [expandedMenu, setExpandedMenu] = useState<string | null>(null);
@@ -41,6 +41,7 @@ export function AppSidebar() {
       <SidebarContent className="flex flex-col gap-2 p-2">
         {/* PRODUTOS */}
         <SidebarGroup>
+          dsa
           <ul className="space-y-2">
             <li>
               <button

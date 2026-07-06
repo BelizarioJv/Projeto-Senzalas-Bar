@@ -1,7 +1,7 @@
 // app/(main)/layout.tsx
 import { Header } from "@/components/layout/Header";
 import { Providers } from "./providers";
-import { AppSidebar } from "@/components/layout/AppSidebar";
+import { Appsidebar } from "@/components/layout/AppSidebar";
 
 export default function MainLayout({
   children,
@@ -10,7 +10,7 @@ export default function MainLayout({
 }) {
   return (
     <Providers>
-      <AppSidebar />
+      <Appsidebar />
       <div className="flex min-h-screen w-full">
         <div className="flex-1 flex flex-col">
           <Header />
