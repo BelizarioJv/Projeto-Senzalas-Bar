@@ -1,7 +1,7 @@
 // app/(main)/layout.tsx
-import { AppSidebar } from "@/components/layout/AppSidebar";
 import { Header } from "@/components/layout/Header";
 import { Providers } from "./providers";
+import { AppSidebar } from "@/components/layout/AppSidebar";
 
 export default function MainLayout({
   children,
