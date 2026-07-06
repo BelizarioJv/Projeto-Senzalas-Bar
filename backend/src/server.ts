@@ -1,12 +1,12 @@
 //Servidor
 
-import { prisma } from "./database/prisma"; // Ajuste o caminho se necessário
-import { loginRouter } from "./routes/login";
+import { loginRouter } from "./routes/loginRoutes";
 import { productRouter } from "./routes/productRoutes";
 import { supplierRouter } from "./routes/supplierRoutes";
+import { customerRouter } from "./routes/customerRoutes";
 import { purchaseRouter } from "./routes/purchaseRoutes";
 import { saleRouter } from "./routes/saleRoutes";
-import { dashboardRouter } from "./routes/dashboard";
+import { dashboardRouter } from "./routes/dashboardRoutes";
 import { authMiddleware } from "./middlewares/authMiddleware";
 import { errorHandler } from "./middlewares/errorMiddleware";
 
@@ -24,6 +24,7 @@ app.use(cors());
 // ---------------------------------
 app.use("/login", loginRouter);
 app.use("/products", authMiddleware, productRouter);
+app.use("/customer", authMiddleware, customerRouter);
 app.use("/supplier", authMiddleware, supplierRouter);
 app.use("/purchase", authMiddleware, purchaseRouter);
 app.use("/sale", authMiddleware, saleRouter);

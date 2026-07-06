@@ -40,6 +40,7 @@ export default function PurchasePage() {
         />
         <AppCard
           title="Total compras Mes ($)"
+          text="$"
           value={totalPurchasesOfMonthQuery.data ?? 0}
         />
       </div>

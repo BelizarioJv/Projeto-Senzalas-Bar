@@ -14,7 +14,7 @@ export function useCreatePurchase() {
       });
     },
     onError: (error) => {
-      toast.error("Erro ao Criar Compra");
+      toast.error("Erro ao criar compra");
 
       console.error(error);
     },

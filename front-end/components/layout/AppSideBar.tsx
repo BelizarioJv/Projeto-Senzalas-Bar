@@ -12,6 +12,7 @@ import {
   Truck,
   LayoutDashboard,
   ChevronDown,
+  Users,
 } from "lucide-react";
 import {
   Sidebar,
@@ -72,6 +73,48 @@ export function AppSidebar() {
                       href={`/produtos/form`}
                       className="inline-flex items-center w-full gap-2 px-2 py-1 bg-accent text-accent-foreground rounded-sm hover:bg-gray-30 transition">
                       Novo Produto
+                    </Link>
+                  </li>
+                </ul>
+              )}
+            </li>
+          </ul>
+        </SidebarGroup>
+
+        {/* CLIENTES */}
+        <SidebarGroup>
+          <ul className="space-y-2">
+            <li>
+              <button
+                onClick={() => toggleMenu("clientes")}
+                className="w-full flex items-center justify-between gap-2 p-2 rounded hover:bg-gray-400 transition">
+                <span className="flex items-center gap-2">
+                  <Users size={20} />
+                  {open && "clientes"}
+                </span>
+                {open && (
+                  <ChevronDown
+                    size={16}
+                    className={`transition-transform ${
+                      expandedMenu === "clientes" ? "rotate-180" : ""
+                    }`}
+                  />
+                )}
+              </button>
+              {expandedMenu === "clientes" && open && (
+                <ul className="mt-2 ml-4 space-y-1 border-l border-gray-500 pl-3">
+                  <li>
+                    <Link
+                      href={`/clientes`}
+                      className="inline-flex items-center w-full gap-2 px-2 py-1 bg-accent text-accent-foreground  hover:bg-gray-30 transition">
+                      Ver clientes
+                    </Link>
+                  </li>
+                  <li>
+                    <Link
+                      href={`/clientes/form`}
+                      className="inline-flex items-center w-full gap-2 px-2 py-1 bg-accent text-accent-foreground rounded-sm hover:bg-gray-30 transition">
+                      Novo Cliente
                     </Link>
                   </li>
                 </ul>

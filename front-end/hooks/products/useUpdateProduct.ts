@@ -18,7 +18,7 @@ export function useUpdateProduct() {
       });
     },
     onError: (error) => {
-      toast.error("Erro ao excluir produto");
+      toast.error("Erro ao editar produto");
 
       console.error(error);
     },

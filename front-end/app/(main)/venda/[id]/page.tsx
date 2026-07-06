@@ -36,7 +36,10 @@ export default function ShowSalePage() {
 
             <p>{sale.id}</p>
           </div>
-
+          <div>
+            <strong>Cliente</strong>
+            <p>{sale.customer?.name ?? "Sem cliente"}</p>
+          </div>
           <div>
             <strong>Criador por:</strong>
             <p>{sale.user?.name}</p>

@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useSaleForm } from "@/hooks/sale/useSaleForm";
+import { useCustomers } from "@/hooks/customer/useCustomers";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 
@@ -16,6 +17,7 @@ import {
 export default function CreateSaleForm() {
   const [selectedProductId, setSelectedProductId] = useState("");
   const [quantity, setQuantity] = useState(1);
+  const customerQuery = useCustomers();
 
   const {
     register,
@@ -49,6 +51,35 @@ export default function CreateSaleForm() {
 
         <CardContent>
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-8">
+            {/* Clientes*/}
+            <Card>
+              <CardHeader>
+                <CardTitle>Cliente</CardTitle>
+              </CardHeader>
+
+              <select
+                {...register("customerId", {
+                  valueAsNumber: true,
+                })}
+                className="
+                    mt-1
+                    h-10
+                    w-full
+                    rounded-md
+                    border
+                    bg-background
+                    px-3
+                  ">
+                <option value="">Selecione</option>
+
+                {customerQuery.data?.map((customer) => (
+                  <option key={customer.id} value={customer.id}>
+                    {customer.name}
+                  </option>
+                ))}
+              </select>
+            </Card>
+
             {/* Produtos */}
             <Card>
               <CardHeader>

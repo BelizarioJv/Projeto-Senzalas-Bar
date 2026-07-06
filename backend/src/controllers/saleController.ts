@@ -32,6 +32,14 @@ export class SaleController {
         orderBy: {
           [sortBy]: order,
         },
+        include: {
+          customer: {
+            select: {
+              id: true,
+              name: true,
+            },
+          },
+        },
       });
 
       const totalRecords = await prisma.purchase.count({
@@ -73,6 +81,9 @@ export class SaleController {
               product: true,
             },
           },
+          customer: {
+            select: { id: true, name: true },
+          },
         },
       });
 
@@ -107,8 +118,22 @@ export class SaleController {
       const discountValue = (subtotal * discountPercent) / 100;
       const total = subtotal - discountValue;
 
-      // 1. Cria a venda com os dados recebidos
+      // Executa toda a operação em uma transação isolada
       const saleTransaction = await prisma.$transaction(async (tx) => {
+        // 1. Caso haja customerId, valida se o cliente realmente existe antes de prosseguir
+        if (body.customerId) {
+          const customerExists = await tx.customer.findUnique({
+            where: { id: body.customerId },
+          });
+          if (!customerExists) {
+            throw new HttpError(
+              404,
+              `Cliente com ID ${body.customerId} não encontrado`,
+            );
+          }
+        }
+
+        // 2. Cria a venda com os dados recebidos (e vincula o customerId se houver)
         const sale = await tx.sale.create({
           data: {
             discountPercent,
@@ -117,60 +142,70 @@ export class SaleController {
             payment: body.payment,
             observation: body.observation,
             userId: userId,
+            customerId: body.customerId || null, // Relacionamento com o cliente do bar
             products: {
-              create: body.products.map((products) => ({
-                productId: products.productId,
-                quantity: products.quantity,
-                price: products.price,
-                subtotal: products.quantity * products.price,
+              create: body.products.map((p) => ({
+                productId: p.productId,
+                quantity: p.quantity,
+                price: p.price,
+                subtotal: p.quantity * p.price,
               })),
             },
           },
-
           include: {
             products: true,
             user: true,
+            customer: true, // Inclui os dados do cliente no retorno
           },
         });
 
-        // 2. verificando produto e a quantidade em estoque
-        for (const products of body.products) {
-          const product = await tx.product.findUnique({
-            where: {
-              id: products.productId,
+        // 3. Se o método de pagamento for FIADO, atualiza o saldo devedor do cliente
+        if (body.payment === "FIADO" && body.customerId) {
+          await tx.customer.update({
+            where: { id: body.customerId },
+            data: {
+              debtBalance: {
+                increment: total, // Incrementa o valor total da venda na pendura do cliente
+              },
             },
+          });
+        }
+
+        // 4. Verificação de estoque, decremento e geração do histórico de movimentação
+        for (const p of body.products) {
+          const product = await tx.product.findUnique({
+            where: { id: p.productId },
           });
 
           if (!product) {
-            throw new Error(`Produto ${products.productId} não encontrado`);
+            throw new HttpError(404, `Produto #${p.productId} não encontrado`);
           }
 
-          if (product.currentQuantity < products.quantity) {
-            throw new Error(
-              `Estoque insuficiente para o produto ${product.name}`,
+          if (product.currentQuantity < p.quantity) {
+            throw new HttpError(
+              400,
+              `Estoque insuficiente para o produto "${product.name}". Atual: ${product.currentQuantity}, Solicitado: ${p.quantity}`,
             );
           }
 
-          // 3. Atualizando a quantidade dos produtos da venda
+          // Atualizando a quantidade do produto no estoque
           await tx.product.update({
-            where: {
-              id: products.productId,
-            },
+            where: { id: p.productId },
             data: {
               currentQuantity: {
-                decrement: products.quantity,
+                decrement: p.quantity,
               },
             },
           });
 
-          // 4. Criando movimentaçao de estoque
+          // Criando movimentação de estoque para auditoria
           await tx.stockMovement.create({
             data: {
-              productId: products.productId,
+              productId: p.productId,
               saleId: sale.id,
               movementType: "SAIDA",
-              quantity: products.quantity,
-              observations: `Sale #${sale.id}`,
+              quantity: p.quantity,
+              observations: `Venda #${sale.id}${body.payment === "FIADO" ? " (Adicionado ao Fiado)" : ""}`,
             },
           });
         }

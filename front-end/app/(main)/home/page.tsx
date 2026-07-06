@@ -183,9 +183,6 @@ export default function Page() {
       {/* CTA FINAL SECTION */}
       <section className="py-20 px-4 bg-black">
         <div className="max-w-4xl mx-auto text-center space-y-8">
-          <h2 className="text-4xl md:text-5xl font-serif font-bold">
-            Pronto para Elevar seu Estabelecimento?
-          </h2>
           <p className="text-gray-400 text-lg max-w-2xl mx-auto">
             Comece a usar o Senzalas Bar agora e tenha controle total sobre suas
             operações

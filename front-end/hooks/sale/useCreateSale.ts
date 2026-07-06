@@ -1,7 +1,6 @@
 "use client";
 import { useQueryClient, useMutation } from "@tanstack/react-query";
 import { createSale } from "@/services/sale.service";
-import { SaleFormData } from "@/types/sale";
 import { toast } from "sonner";
 
 export function useCreateSale() {

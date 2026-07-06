@@ -39,6 +39,7 @@ enum PaymentMethod {
   PIX
   CARTAO_CREDITO
   CARTAO_DEBITO
+  FIADO
 }
 
 
@@ -61,6 +62,20 @@ model User {
   sale         Sale[]
   purchases    Purchase[]
   product      Product[]
+}
+
+//Entidade (1:N(vendas)) "cliente" dados : id , nome , telefone , email , saldo devedor , data de criaçao e atualizaçao do cliente
+model Customer {
+  id           Int      @id @default(autoincrement())
+  name         String
+  phone        String?
+  email        String?
+  debtBalance  Decimal  @default(0.00) @db.Decimal(10, 2) 
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  // Relacionamentos
+  sales        Sale[]
 }
 
 //Entidade (1:N(vendas)) "fornecedor" dados : id ,  nome , email , phone , address, cnpj , observaçoes , as compras feitas com o fornecedor ,data de criaçao e atualizaçao do fornecedor
@@ -158,11 +173,14 @@ model Sale {
   createdAt     DateTime         @default(now())
   updatedAt     DateTime         @updatedAt
   userId        Int
+  customerId    Int?
+
 
   //Relacionamentos
   products      SaleProducts[]
   stockMovements StockMovement[]
   user      User?      @relation(fields: [userId], references: [id])
+  customer        Customer?     @relation(fields: [customerId], references: [id])
 }
 
 //Entidade "Itens da venda" (N:N entre venda e produtos) dados : id, id da venda, id do produto, quantidade, preço unitário, subtotal

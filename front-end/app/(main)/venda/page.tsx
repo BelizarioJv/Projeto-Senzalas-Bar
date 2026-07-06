@@ -38,6 +38,7 @@ export default function SellPage() {
         <AppCard title="Total vendas" value={saleQuery.data.data.length ?? 0} />
         <AppCard
           title="Total de venda mes ($)"
+          text="$"
           value={totalSalesQuery.data ?? 0}
         />
       </div>
@@ -53,9 +54,9 @@ export default function SellPage() {
             <tr className="bg-accent text-left ">
               <th className="p-2">ID</th>
               <th className="p-2">Data</th>
+              <th className="p-2">Cliente</th>
               <th className="p-2">Metodo Pagamento</th>
               <th className="p-2">Total</th>
-              <th className="p-2">Observaçoes</th>
               <th className="p-2">Açoes</th>
             </tr>
           </thead>
@@ -68,9 +69,11 @@ export default function SellPage() {
                 <td className="p-2 text-gray-600">
                   {new Date(sale.dateTime).toLocaleString("pt-BR")}
                 </td>
+                <td className="p-2 text-gray-600">
+                  {sale.customer?.name || "—"}
+                </td>
                 <td className="p-2 text-gray-600">{sale.payment}</td>
                 <td className="p-2 text-gray-600">R$ {sale.total}</td>
-                <td className="p-2 text-gray-600">{sale.observation}</td>
                 <td>
                   <Link
                     href={`/venda/${sale.id}`}

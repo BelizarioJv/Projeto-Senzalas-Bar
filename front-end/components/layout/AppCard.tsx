@@ -2,10 +2,11 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 interface AppCardProps {
   title: string;
+  text?: string;
   value?: string | number;
 }
 
-export function AppCard({ title, value }: AppCardProps) {
+export function AppCard({ title, text, value }: AppCardProps) {
   return (
     <Card
       className="bg-card
@@ -24,7 +25,10 @@ export function AppCard({ title, value }: AppCardProps) {
       </CardHeader>
 
       <CardContent>
-        <p className="text-3xl font-bold">{value}</p>
+        <div className="flex text-sm text-muted-foreground">
+          <p className="text-2xl">{text}</p>
+          <p className="text-3xl font-bold">{value}</p>
+        </div>
       </CardContent>
     </Card>
   );

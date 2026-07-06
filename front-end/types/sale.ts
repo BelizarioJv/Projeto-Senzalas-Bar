@@ -15,6 +15,10 @@ export interface SaleData {
     id: number;
     name: string;
   } | null;
+  customer: {
+    id: number;
+    name: string;
+  } | null;
 }
 
 export interface SaleProductForm {
@@ -24,6 +28,7 @@ export interface SaleProductForm {
 }
 
 export interface SaleFormData {
+  customerId: number;
   dateTime: Date;
   total: number;
   payment: "DINHEIRO" | "PIX" | "CARTAO_CREDITO" | "CARTAO_DEBITO";
