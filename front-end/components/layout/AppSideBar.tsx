@@ -90,7 +90,7 @@ export function AppSidebar() {
                 className="w-full flex items-center justify-between gap-2 p-2 rounded hover:bg-gray-400 transition">
                 <span className="flex items-center gap-2">
                   <Users size={20} />
-                  {open && "clientes"}
+                  {open && "Clientes"}
                 </span>
                 {open && (
                   <ChevronDown

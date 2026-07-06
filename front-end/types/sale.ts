@@ -4,7 +4,7 @@ export interface SaleData {
   id: number;
   dateTime: Date;
   total: number;
-  payment: "DINHEIRO" | "PIX" | "CARTAO_CREDITO" | "CARTAO_DEBITO";
+  payment: "DINHEIRO" | "PIX" | "CARTAO_CREDITO" | "CARTAO_DEBITO" | "FIADO";
   discountPercent: number;
   discountValue: number;
   observation: string;
@@ -31,7 +31,7 @@ export interface SaleFormData {
   customerId: number;
   dateTime: Date;
   total: number;
-  payment: "DINHEIRO" | "PIX" | "CARTAO_CREDITO" | "CARTAO_DEBITO";
+  payment: "DINHEIRO" | "PIX" | "CARTAO_CREDITO" | "CARTAO_DEBITO" | "FIADO";
   discountPercent: number;
   observation: string;
   products: SaleProductForm[];

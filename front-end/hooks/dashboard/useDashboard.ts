@@ -4,7 +4,7 @@ import { getDashboard } from "@/services/dashboard.service";
 
 export function useDashboard() {
   return useQuery({
-    queryKey: ["dashboard"],
+    queryKey: ["dashboard", "sale"],
     queryFn: getDashboard,
   });
 }

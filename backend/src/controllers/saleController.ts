@@ -142,7 +142,7 @@ export class SaleController {
             payment: body.payment,
             observation: body.observation,
             userId: userId,
-            customerId: body.customerId || null, // Relacionamento com o cliente do bar
+            customerId: body.customerId || null,
             products: {
               create: body.products.map((p) => ({
                 productId: p.productId,
@@ -155,7 +155,7 @@ export class SaleController {
           include: {
             products: true,
             user: true,
-            customer: true, // Inclui os dados do cliente no retorno
+            customer: true,
           },
         });
 
@@ -165,7 +165,7 @@ export class SaleController {
             where: { id: body.customerId },
             data: {
               debtBalance: {
-                increment: total, // Incrementa o valor total da venda na pendura do cliente
+                increment: total,
               },
             },
           });

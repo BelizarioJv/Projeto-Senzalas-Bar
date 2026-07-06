@@ -264,6 +264,7 @@ export default function CreateSaleForm() {
                   <option value="PIX">PIX</option>
                   <option value="CARTAO_CREDITO">Cartão Crédito</option>
                   <option value="CARTAO_DEBITO">Cartão Débito</option>
+                  <option value="FIADO">Fiado</option>
                 </select>
               </div>
             </div>

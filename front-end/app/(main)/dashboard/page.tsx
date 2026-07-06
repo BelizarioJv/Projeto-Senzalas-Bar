@@ -35,12 +35,20 @@ export default function DashboardPage() {
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
         <AppCard title="Total Produtos" value={dashboard.totalProducts} />
 
-        <AppCard title="Estoque Baixo" value={dashboard.lowStockProducts} />
-
-        <AppCard title="Vendas Hoje" value={dashboard.todaySales.toFixed(0)} />
+        <AppCard
+          title="Produtos Estoque Baixo"
+          value={dashboard.lowStockProducts}
+        />
 
         <AppCard
-          title="Vendas do Mês"
+          title="Vendas Hoje (R$)"
+          text="$"
+          value={dashboard.todaySales.toFixed(0)}
+        />
+
+        <AppCard
+          title="Vendas do Mês (R$)"
+          text="$"
           value={dashboard.monthSales.toFixed(0)}
         />
       </div>

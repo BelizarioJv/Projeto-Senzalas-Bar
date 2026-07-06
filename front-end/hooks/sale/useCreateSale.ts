@@ -10,7 +10,7 @@ export function useCreateSale() {
     mutationFn: createSale,
     onSuccess: () => {
       queryClient.invalidateQueries({
-        queryKey: ["sale"],
+        queryKey: ["sale", "dashboard"],
       });
     },
     onError: (error) => {
