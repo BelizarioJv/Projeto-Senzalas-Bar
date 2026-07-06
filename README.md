@@ -76,6 +76,7 @@ Além de resolver um problema real de negócio, o projeto serve como laboratóri
 - Zod
 - REST API
 - JWT token
+- Docker
 
 ### Frontend
 
@@ -139,6 +140,22 @@ Principais entidades:
 Relacionamentos modelados utilizando Prisma ORM e PostgreSQL.
 
 ---
+## 🐳 Docker
+
+O projeto está totalmente containerizado utilizando Docker Compose.
+
+Os seguintes serviços são iniciados automaticamente:
+
+- Frontend (Next.js)
+- Backend (Node.js + Express)
+- PostgreSQL
+
+Basta executar:
+
+```bash
+docker compose up --build
+```
+
 
 ## 🎯 Objetivos do Projeto
 
