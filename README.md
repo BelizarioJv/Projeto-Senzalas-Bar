@@ -1,12 +1,12 @@
 # 🍻 Senzalas Bar
 
-Sistema de gestão para bares e pequenos comércios desenvolvido para atender às necessidades reais do bar da minha família. O projeto foi criado com o objetivo de aplicar conhecimentos de desenvolvimento Full Stack, modelagem de banco de dados, arquitetura de software e construção de aplicações escaláveis.
+Sistema de gestão para bar desenvolvido para atender às necessidades reais do bar da minha família. O projeto foi criado com o objetivo de aplicar conhecimentos de desenvolvimento Full Stack, modelagem de banco de dados, arquitetura de software e construção de aplicações escaláveis.
 
 ---
 
 ## 🚀 Visão Geral
 
-O Senzalas Bar é uma aplicação de gerenciamento que permite controlar produtos, categorias, fornecedores, compras, vendas e movimentações de estoque de forma organizada e eficiente.
+O Senzalas Bar é uma aplicação de gerenciamento que permite controlar produtos, clientes , fornecedores, compras, vendas e movimentações de estoque de forma organizada e eficiente.
 
 Além de resolver um problema real de negócio, o projeto serve como laboratório para aprofundamento em tecnologias modernas do ecossistema JavaScript e TypeScript.
 
@@ -22,10 +22,10 @@ Além de resolver um problema real de negócio, o projeto serve como laboratóri
 - Ativação e inativação de produtos
 - Organização por categorias
 
-### 🏷️ Gestão de Categorias
+### 🏷️ Gestão de Clientes
 
-- Cadastro de categorias
-- Associação de produtos por categoria
+- Cadastro de clientes
+- Associaçao a saldo devedor ao cliente
 
 ### 🚚 Gestão de Fornecedores
 
@@ -75,6 +75,7 @@ Além de resolver um problema real de negócio, o projeto serve como laboratóri
 - PostgreSQL
 - Zod
 - REST API
+- JWT token
 
 ### Frontend
 
@@ -124,6 +125,8 @@ src/
 
 Principais entidades:
 
+- User
+- Customer
 - Product
 - Category
 - Supplier
@@ -150,20 +153,15 @@ Relacionamentos modelados utilizando Prisma ORM e PostgreSQL.
 
 ## 📈 Próximas Implementações
 
-### 🔐 Autenticação e Controle de Acesso
-
-- Login de usuários
-- Perfis e permissões
-
-### 🪑 Gestão de Mesas
-
+### 📊 
 - Controle de mesas
 - Pedidos vinculados às mesas
+- cliente vinculados à mesa
 
-### 👥 Gestão de Clientes
-
-- Cadastro de clientes
-- Histórico de compras
+### 🪑 Gestão de Mesas
+- Controle de mesas
+- Pedidos vinculados às mesas
+- cliente vinculados à mesa
 
 ### 📊 Relatórios Avançados
 
@@ -187,10 +185,11 @@ Relacionamentos modelados utilizando Prisma ORM e PostgreSQL.
 
 ## 💡 Aprendizados
 
-Este projeto representa um marco importante na minha jornada como desenvolvedor, pois reúne conceitos de backend, frontend, banco de dados e regras de negócio em uma aplicação desenvolvida para resolver problemas reais.
+Este projeto marca um ponto decisivo na minha trajetória como desenvolvedor, reunindo conceitos de backend, frontend, banco de dados e regras de negócio em uma aplicação voltada para resolver problemas reais.
 
-Ao longo do desenvolvimento estou aprofundando conhecimentos em arquitetura de software, APIs REST, ORM, banco de dados relacionais, validação de dados, integração frontend/backend e construção de sistemas escaláveis.
+Durante o desenvolvimento, aprofundei meus conhecimentos em arquitetura de software, APIs REST, ORM, bancos de dados relacionais, validação de dados, integração entre frontend e backend e na construção de sistemas escaláveis e robustos.
 
+Para mim, este projeto tem um significado especial: ele evidencia minha evolução. O que antes era apenas uma ideia distante, quando eu ainda aprendia HTML, hoje se transformou em um sistema completo, onde enfrento desafios muito maiores e mais complexos. É uma prova concreta de como dedicação e aprendizado contínuo podem transformar imaginação em realidade.
 ---
 
 ### 👨‍💻 Desenvolvido por
