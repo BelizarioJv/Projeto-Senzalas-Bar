@@ -23,7 +23,7 @@ import {
   useSidebar,
 } from "@/components/ui/sidebar";
 
-export function Appsidebar() {
+export function AppSidebar() {
   const { open } = useSidebar();
   const { setTheme, theme } = useTheme();
   const [expandedMenu, setExpandedMenu] = useState<string | null>(null);
