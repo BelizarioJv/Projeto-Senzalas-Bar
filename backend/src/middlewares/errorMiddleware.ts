@@ -1,5 +1,5 @@
 import { ErrorRequestHandler } from "express";
-import { HttpError } from "../errors/HttpError";
+import { HttpError } from "../errors/HttpError.js";
 import { ZodError } from "zod";
 
 // Middleware de tratamento de erro

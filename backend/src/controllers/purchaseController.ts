@@ -1,12 +1,12 @@
 import { Handler } from "express";
-import { prisma } from "../database/prisma";
-import { Prisma } from "../generated/prisma";
-import { HttpError } from "../errors/HttpError";
-import { getStartOfMonth } from "../utils/date";
+import { prisma } from "../database/prisma.js";
+import { Prisma } from "../generated/prisma/index.js";
+import { HttpError } from "../errors/HttpError.js";
+import { getStartOfMonth } from "../utils/date.js";
 import {
   PurchaseRequestSchema,
   MetaPurchaseRequestSchema,
-} from "./schemas/PurchaseResquestSchema";
+} from "./schemas/PurchaseResquestSchema.js";
 
 export class PurchaseController {
   //Buscar compras com paginaçao e filtros

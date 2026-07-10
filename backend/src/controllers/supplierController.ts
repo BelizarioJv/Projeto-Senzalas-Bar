@@ -1,10 +1,10 @@
-import { prisma } from "../database/prisma";
+import { prisma } from "../database/prisma.js";
 import { Handler } from "express";
 import {
   SupplierRequestSchema,
   UpdateSupplierRequestSchema,
-} from "./schemas/SupplierRequestSchema";
-import { HttpError } from "../errors/HttpError";
+} from "./schemas/SupplierRequestSchema.js";
+import { HttpError } from "../errors/HttpError.js";
 
 //Controller de fornecedores com as operações de CRUD e listagem.
 export class SupplierController {

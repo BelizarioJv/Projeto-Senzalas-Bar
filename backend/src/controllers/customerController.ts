@@ -1,12 +1,12 @@
 import { Handler } from "express";
-import { HttpError } from "../errors/HttpError";
-import { prisma } from "../database/prisma";
-import { Prisma } from "../generated/prisma";
+import { HttpError } from "../errors/HttpError.js";
+import { prisma } from "../database/prisma.js";
+import { Prisma } from "../generated/prisma/index.js";
 import {
   CustomerRequestSchema,
   UpdateCustomerRequestSchema,
   MetaCustomerRequestSchema,
-} from "./schemas/CustomerResquestSchema"; // Lembre-se de criar esses schemas parecidos com os de produto
+} from "./schemas/CustomerResquestSchema.js"; // Lembre-se de criar esses schemas parecidos com os de produto
 
 export class CustomerController {
   // Listagem de clientes com paginação, ordenação e filtro por nome

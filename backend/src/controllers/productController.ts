@@ -1,12 +1,12 @@
 import { Handler } from "express";
-import { HttpError } from "../errors/HttpError";
-import { prisma } from "../database/prisma";
-import { Prisma } from "../generated/prisma/client";
+import { HttpError } from "../errors/HttpError.js";
+import { prisma } from "../database/prisma.js";
+import { Prisma } from "../generated/prisma/index.js";
 import {
   ProductRequestSchema,
   UpdateProductRequestSchema,
   MetaProductRequestSchema,
-} from "./schemas/ProductRequestSchema";
+} from "./schemas/ProductRequestSchema.js";
 
 //Controller de produtos com as operações de CRUD e listagem com paginação, ordenação e filtro por nome.
 export class ProductController {

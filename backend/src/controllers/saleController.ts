@@ -1,12 +1,12 @@
 import { Handler } from "express";
-import { prisma } from "../database/prisma";
-import { HttpError } from "../errors/HttpError";
-import { getStartOfMonth } from "../utils/date";
+import { prisma } from "../database/prisma.js";
+import { HttpError } from "../errors/HttpError.js";
+import { getStartOfMonth } from "../utils/date.js";
 import {
   SaleRequestSchema,
   MetaSaleRequestSchema,
-} from "./schemas/SaleRequestSchema";
-import { Prisma } from "../generated/prisma/client";
+} from "./schemas/SaleRequestSchema.js";
+import { Prisma } from "../generated/prisma/index.js";
 
 export class SaleController {
   //Buscar todos as vendas
@@ -42,7 +42,7 @@ export class SaleController {
         },
       });
 
-      const totalRecords = await prisma.purchase.count({
+      const totalRecords = await prisma.sale.count({
         where,
       });
 
