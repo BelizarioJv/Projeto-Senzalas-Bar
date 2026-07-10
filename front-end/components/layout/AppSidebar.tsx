@@ -41,7 +41,6 @@ export function AppSidebar() {
       <SidebarContent className="flex flex-col gap-2 p-2">
         {/* PRODUTOS */}
         <SidebarGroup>
-          dsa
           <ul className="space-y-2">
             <li>
               <button
