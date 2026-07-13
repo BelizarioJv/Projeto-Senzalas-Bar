@@ -5,7 +5,7 @@ import { SaleFormData } from "@/types/sale";
 import { toast } from "sonner";
 
 export function useSaleForm() {
-  const { productsQuery } = useProducts(1, 1000);
+  const { productsQuery } = useProducts();
   const createSale = useCreateSale();
 
   const {

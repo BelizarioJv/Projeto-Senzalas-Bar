@@ -2,6 +2,7 @@ import { useState } from "react";
 import { toast } from "sonner";
 import { useForm, useFieldArray } from "react-hook-form";
 import { PurchaseFormData } from "@/types/purchase";
+import { ProductFilters } from "@/types/product";
 import { useCreatePurchase } from "./useCreatePurchase";
 import { useSupplier } from "@/hooks/supplier/useSupplier";
 import { useProducts } from "@/hooks/products/useProducts";
@@ -11,7 +12,7 @@ export function usePurchaseForm() {
   const [quantity, setQuantity] = useState(1);
 
   const supplierQuery = useSupplier();
-  const { productsQuery } = useProducts(1, 1000);
+  const { productsQuery } = useProducts();
   const createPurchase = useCreatePurchase();
 
   const {

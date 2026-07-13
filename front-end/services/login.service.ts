@@ -6,7 +6,7 @@ import { handleAxiosError } from "@/utils/handleAxiosError";
 export async function login(data: LoginForm) {
   try {
     const response = await api.post("/login", data);
-    Cookies.set("token", response.data.token, { expires: 7 });
+    Cookies.set("token", response.data.token, { expires: 0.1 });
 
     return response.data;
   } catch (error) {
