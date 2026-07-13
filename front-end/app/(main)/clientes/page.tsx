@@ -15,7 +15,7 @@ export default function CustomerPage() {
   const [onlyDebtors, setOnlyDebtors] = useState<boolean>(false);
   const [searchName, setSearchName] = useState("");
 
-  // Hook de busca de clientes baseado nos filtros do seu backend
+  // Hook de busca de clientes baseado nos filtros no backend
   const customerQuery = useAllCustomers({
     page,
     pageSize: 10,

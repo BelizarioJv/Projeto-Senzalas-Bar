@@ -4,7 +4,7 @@ export interface ICustomer {
   name: string;
   phone: string | null;
   email: string | null;
-  debtBalance: number | string; // O Prisma/Postgres envia Decimal como string às vezes, é bom precaver
+  debtBalance: number | string;
   createdAt: string;
   updatedAt: string;
 }
@@ -16,7 +16,7 @@ export interface ICreateCustomerInput {
   email?: string | null;
 }
 
-//Interface para os dados de ATUALIZAÇÃO de um cliente (Todos os campos se tornam opcionais)
+//Interface para os dados de ATUALIZAÇÃO de um cliente
 export interface IUpdateCustomerInput {
   name?: string;
   phone?: string | null;
@@ -30,7 +30,6 @@ export interface ICustomerFilters {
   name?: string;
   sortBy?: "name" | "createdAt" | "debtBalance";
   order?: "asc" | "desc";
-  /** Se true, o backend retornará apenas os clientes com conta pendurada */
   onlyDebtors?: boolean;
 }
 

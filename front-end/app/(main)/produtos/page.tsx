@@ -7,11 +7,17 @@ import { useProducts } from "@/hooks/products/useProducts";
 import { useGetProductsLowStock } from "@/hooks/products/useGetLowStockProducts";
 import { ProductData } from "@/types/product";
 import { Card } from "@/components/ui/card";
-import { PackageSearch, ArrowLeft, ArrowRight } from "lucide-react";
+import { PackageSearch, ArrowLeft, ArrowRight, Search } from "lucide-react";
 
 export default function ProductsPage() {
   const [page, setPage] = useState(1);
-  const { productsQuery } = useProducts(page, 10);
+  const [searchName, setSearchName] = useState("");
+  const { productsQuery } = useProducts({
+    page,
+    pageSize: 10,
+    name: searchName || undefined,
+  });
+
   const lowStockProductsQuery = useGetProductsLowStock();
 
   if (productsQuery.isPending) {
@@ -48,9 +54,25 @@ export default function ProductsPage() {
 
       {/* Lista de produtos */}
       <Card className="p-6 shadow-md rounded-lg">
-        <div>
-          <h2 className="text-2xl font-semibold mb-4">Lista de Produtos</h2>
-          {/* vou colocar os filtros e campos de busca aqui */}
+        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+          <h2 className="text-2xl font-semibold">Lista de produtos</h2>
+
+          {/* Barra de Filtros rápidos */}
+          <div className="flex flex-wrap items-center gap-4">
+            <div className="relative flex items-center">
+              <Search className="absolute right-3 text-gray-400" size={18} />
+              <input
+                type="text"
+                placeholder="Buscar por nome..."
+                value={searchName}
+                onChange={(e) => {
+                  setSearchName(e.target.value);
+                  setPage(1); // Volta para a primeira página ao filtrar
+                }}
+                className=" p-3 border rounded-sm text-sm focus:outline-none focus:ring-1 focus:ring-accent w-64 bg-transparent"
+              />
+            </div>
+          </div>
         </div>
         <table className="w-full border-collapse rounded-sm">
           <thead>

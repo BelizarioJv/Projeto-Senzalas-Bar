@@ -5,7 +5,7 @@ import { ICustomerFilters } from "@/types/customer";
 
 export const useAllCustomers = (filters?: ICustomerFilters) => {
   return useQuery({
-    queryKey: ["customers", filters],
-    queryFn: () => customerService.getAllWithPagination(filters),
+    queryKey: ["customers", "sale", filters],
+    queryFn: () => customerService.getAllWithFilters(filters),
   });
 };

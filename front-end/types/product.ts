@@ -44,6 +44,14 @@ export interface ProductUpdate {
   minimumQuantity: number;
 }
 
+export interface ProductFilters {
+  page?: number;
+  pageSize?: number;
+  name?: string;
+  sortBy?: "name" | "createdAt" | "debtBalance";
+  order?: "asc" | "desc";
+}
+
 export interface ProductFormData {
   name: string;
   description?: string;

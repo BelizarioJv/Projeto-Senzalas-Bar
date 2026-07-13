@@ -11,7 +11,7 @@ import {
 
 export const customerService = {
   // Listar com filtros e paginaçao
-  getAllWithPagination: async (filters?: ICustomerFilters) => {
+  getAllWithFilters: async (filters?: ICustomerFilters) => {
     try {
       const response = await api.get<ICustomerPaginatedResponse>("/customer", {
         params: filters,

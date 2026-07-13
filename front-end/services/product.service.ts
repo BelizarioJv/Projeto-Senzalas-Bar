@@ -1,5 +1,5 @@
 import { api } from "./api";
-import { ProductData, ProductFormData } from "@/types/product";
+import { ProductData, ProductFormData, ProductFilters } from "@/types/product";
 import { handleAxiosError } from "@/utils/handleAxiosError";
 import { MetaData } from "@/types/metaDataPage";
 
@@ -10,12 +10,11 @@ export interface ProductResponse {
 
 // Buscar produtos na API /products
 export async function getProducts(
-  page: number,
-  pageSize: number,
+  filters?: ProductFilters,
 ): Promise<ProductResponse> {
   try {
     const response = await api.get<ProductResponse>("/products", {
-      params: { page, pageSize },
+      params: filters,
     });
     return response.data;
   } catch (error) {
