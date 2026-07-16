@@ -1,13 +1,13 @@
 import jwt from "jsonwebtoken";
 import bcrypt from "bcryptjs";
 import { prisma } from "../database/prisma.js";
-import { Handler } from "express";
+import { RequestHandler } from "express";
 import { HttpError } from "../errors/HttpError.js";
 import { LoginRequestSchema } from "./schemas/LoginRequestSchema.js";
 
 //Controller de login com geraçao JWT token
 export class LoginController {
-  index: Handler = async (req, res, next) => {
+  index: RequestHandler = async (req, res, next) => {
     try {
       const data = LoginRequestSchema.parse(req.body);
 

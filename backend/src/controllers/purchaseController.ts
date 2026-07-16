@@ -1,4 +1,4 @@
-import { Handler } from "express";
+import { RequestHandler } from "express";
 import { prisma } from "../database/prisma.js";
 import { Prisma } from "@prisma/client";
 import { HttpError } from "../errors/HttpError.js";
@@ -10,7 +10,7 @@ import {
 
 export class PurchaseController {
   //Buscar compras com paginaçao e filtros
-  index: Handler = async (req, res, next) => {
+  index: RequestHandler = async (req, res, next) => {
     try {
       const query = MetaPurchaseRequestSchema.parse(req.query);
 
@@ -61,7 +61,7 @@ export class PurchaseController {
   };
 
   // Mostrar dados da compra
-  show: Handler = async (req, res, next) => {
+  show: RequestHandler = async (req, res, next) => {
     try {
       const { id } = req.params;
       const purchaseId = Number(id);
@@ -96,7 +96,7 @@ export class PurchaseController {
   };
 
   // Criação de compra
-  create: Handler = async (req, res, next) => {
+  create: RequestHandler = async (req, res, next) => {
     try {
       // 1. Validação do Body com Zod
       const body = PurchaseRequestSchema.parse(req.body);
@@ -174,7 +174,7 @@ export class PurchaseController {
   };
 
   //Deletar compra
-  delete: Handler = async (req, res, next) => {
+  delete: RequestHandler = async (req, res, next) => {
     try {
       const { id } = req.params;
 
@@ -214,7 +214,7 @@ export class PurchaseController {
   };
 
   // Valor total de compras no mês atual
-  monthlyTotal: Handler = async (req, res, next) => {
+  monthlyTotal: RequestHandler = async (req, res, next) => {
     try {
       const startDate = getStartOfMonth();
 

@@ -1,4 +1,4 @@
-import { Handler } from "express";
+import { RequestHandler } from "express";
 import { HttpError } from "../errors/HttpError.js";
 import { prisma } from "../database/prisma.js";
 import { Prisma } from "@prisma/client";
@@ -10,7 +10,7 @@ import {
 
 export class CustomerController {
   // Listagem de clientes com paginação, ordenação e filtro por nome
-  index: Handler = async (req, res, next) => {
+  index: RequestHandler = async (req, res, next) => {
     try {
       const query = MetaCustomerRequestSchema.parse(req.query);
 
@@ -54,7 +54,7 @@ export class CustomerController {
     }
   };
 
-  allCustomers: Handler = async (req, res, next) => {
+  allCustomers: RequestHandler = async (req, res, next) => {
     try {
       const customers = await prisma.customer.findMany({
         orderBy: { name: "asc" },
@@ -67,7 +67,7 @@ export class CustomerController {
   };
 
   // Busca um cliente pelo ID
-  show: Handler = async (req, res, next) => {
+  show: RequestHandler = async (req, res, next) => {
     try {
       const { id } = req.params;
       const customer = await prisma.customer.findUnique({
@@ -85,7 +85,7 @@ export class CustomerController {
   };
 
   // Criação de cliente
-  create: Handler = async (req, res, next) => {
+  create: RequestHandler = async (req, res, next) => {
     try {
       const body = CustomerRequestSchema.parse(req.body);
 
@@ -103,7 +103,7 @@ export class CustomerController {
   };
 
   // Atualizar dados do cliente
-  update: Handler = async (req, res, next) => {
+  update: RequestHandler = async (req, res, next) => {
     try {
       const { id } = req.params;
       const idNum: number = Number(id);
@@ -121,7 +121,7 @@ export class CustomerController {
   };
 
   // Deletar Cliente
-  delete: Handler = async (req, res, next) => {
+  delete: RequestHandler = async (req, res, next) => {
     try {
       const { id } = req.params;
 
@@ -135,7 +135,7 @@ export class CustomerController {
     }
   };
 
-  payDebt: Handler = async (req, res, next) => {
+  payDebt: RequestHandler = async (req, res, next) => {
     try {
       const { id } = req.params;
       const { amountToPay } = req.body;
@@ -179,7 +179,7 @@ export class CustomerController {
     }
   };
   // Retorna os indicadores (Métricas do Bar): total de cadastrados e total de devedores
-  getDashboardMetrics: Handler = async (req, res, next) => {
+  getDashboardMetrics: RequestHandler = async (req, res, next) => {
     try {
       // Executa ambas as contagens em paralelo no banco para melhor performance
       const [totalCustomers, totalDebtors] = await prisma.$transaction([

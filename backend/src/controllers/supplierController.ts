@@ -1,5 +1,5 @@
 import { prisma } from "../database/prisma.js";
-import { Handler } from "express";
+import { RequestHandler } from "express";
 import {
   SupplierRequestSchema,
   UpdateSupplierRequestSchema,
@@ -9,7 +9,7 @@ import { HttpError } from "../errors/HttpError.js";
 //Controller de fornecedores com as operações de CRUD e listagem.
 export class SupplierController {
   //Buscar fornecedor
-  index: Handler = async (req, res, next) => {
+  index: RequestHandler = async (req, res, next) => {
     try {
       const supplier = await prisma.supplier.findMany();
       res.json({ data: supplier });
@@ -19,7 +19,7 @@ export class SupplierController {
   };
 
   //Criar forncedor
-  create: Handler = async (req, res, next) => {
+  create: RequestHandler = async (req, res, next) => {
     try {
       const body = SupplierRequestSchema.parse(req.body);
       const newSupplier = await prisma.supplier.create({
@@ -32,7 +32,7 @@ export class SupplierController {
   };
 
   //Mostrar dados forcedor
-  show: Handler = async (req, res, next) => {
+  show: RequestHandler = async (req, res, next) => {
     try {
       const { id } = req.params;
       const category = await prisma.supplier.findUnique({
@@ -49,7 +49,7 @@ export class SupplierController {
   };
 
   //Deletar forneecedor
-  delete: Handler = async (req, res, next) => {
+  delete: RequestHandler = async (req, res, next) => {
     try {
       const { id } = req.params;
       await prisma.supplier.delete({
@@ -64,7 +64,7 @@ export class SupplierController {
   };
 
   //Atualizar fornecedor
-  update: Handler = async (req, res, next) => {
+  update: RequestHandler = async (req, res, next) => {
     try {
       const { id } = req.params;
       const body = UpdateSupplierRequestSchema.parse(req.body);

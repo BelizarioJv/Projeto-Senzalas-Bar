@@ -1,4 +1,4 @@
-import { Handler } from "express";
+import { RequestHandler } from "express";
 import { prisma } from "../database/prisma.js";
 import { HttpError } from "../errors/HttpError.js";
 import { getStartOfMonth } from "../utils/date.js";
@@ -10,7 +10,7 @@ import { Prisma } from "../generated/prisma/index.js";
 
 export class SaleController {
   //Buscar todos as vendas
-  index: Handler = async (req, res, next) => {
+  index: RequestHandler = async (req, res, next) => {
     try {
       const query = MetaSaleRequestSchema.parse(req.query);
       const { page, pageSize, total, sortBy, order } = query;
@@ -61,7 +61,7 @@ export class SaleController {
   };
 
   //Buscar venda
-  show: Handler = async (req, res, next) => {
+  show: RequestHandler = async (req, res, next) => {
     try {
       const { id } = req.params;
       const saleId = Number(id);
@@ -98,7 +98,7 @@ export class SaleController {
   };
 
   //Criar venda
-  create: Handler = async (req, res, next) => {
+  create: RequestHandler = async (req, res, next) => {
     try {
       const body = SaleRequestSchema.parse(req.body);
 
@@ -220,7 +220,7 @@ export class SaleController {
   };
 
   //Deletar venda
-  delete: Handler = async (req, res, next) => {
+  delete: RequestHandler = async (req, res, next) => {
     try {
       const { id } = req.params;
 
@@ -262,7 +262,7 @@ export class SaleController {
   };
 
   // Valor total de vendas no mês atual
-  monthlyTotal: Handler = async (req, res, next) => {
+  monthlyTotal: RequestHandler = async (req, res, next) => {
     try {
       const startDate = getStartOfMonth();
 

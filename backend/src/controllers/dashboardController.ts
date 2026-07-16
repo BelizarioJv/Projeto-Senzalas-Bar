@@ -1,11 +1,11 @@
-import { Handler } from "express";
+import { RequestHandler } from "express";
 import { prisma } from "../database/prisma.js";
 import { MetaStockMovementRequestSchema } from "./schemas/MovementStockRequestSchema.js";
 import { getStartOfToday, getStartOfMonth } from "../utils/date.js";
 
 export class DashboardController {
   //Busca de informaçaoes para mostrar no Dashboard principal , total de produtos , produtos com abaixo do estoque minimo , vendas de hoje e do mes
-  index: Handler = async (req, res, next) => {
+  index: RequestHandler = async (req, res, next) => {
     try {
       const totalProducts = await prisma.product.count({
         where: {
@@ -58,7 +58,7 @@ export class DashboardController {
   };
 
   //Buscar dados de movimentaçoes de estoque
-  stockMovement: Handler = async (req, res, next) => {
+  stockMovement: RequestHandler = async (req, res, next) => {
     try {
       const meta = MetaStockMovementRequestSchema.parse(req.query);
 

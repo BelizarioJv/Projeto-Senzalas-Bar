@@ -1,4 +1,4 @@
-import { Handler } from "express";
+import { RequestHandler } from "express";
 import { HttpError } from "../errors/HttpError.js";
 import { prisma } from "../database/prisma.js";
 import { Prisma } from "@prisma/client";
@@ -11,7 +11,7 @@ import {
 //Controller de produtos com as operações de CRUD e listagem com paginação, ordenação e filtro por nome.
 export class ProductController {
   //Busca de produtos com paginação
-  index: Handler = async (req, res, next) => {
+  index: RequestHandler = async (req, res, next) => {
     try {
       const query = MetaProductRequestSchema.parse(req.query);
 
@@ -52,7 +52,7 @@ export class ProductController {
   };
 
   //Busca produtos
-  show: Handler = async (req, res, next) => {
+  show: RequestHandler = async (req, res, next) => {
     try {
       const { id } = req.params;
       const product = await prisma.product.findUnique({
@@ -73,7 +73,7 @@ export class ProductController {
   };
 
   //Criaçao de produtos
-  create: Handler = async (req, res, next) => {
+  create: RequestHandler = async (req, res, next) => {
     try {
       const body = ProductRequestSchema.parse(req.body);
 
@@ -96,7 +96,7 @@ export class ProductController {
   };
 
   //Deletar Produto
-  delete: Handler = async (req, res, next) => {
+  delete: RequestHandler = async (req, res, next) => {
     try {
       const { id } = req.params;
       await prisma.product.delete({
@@ -110,7 +110,7 @@ export class ProductController {
   };
 
   //Atualizar produto
-  update: Handler = async (req, res, next) => {
+  update: RequestHandler = async (req, res, next) => {
     try {
       const { id } = req.params;
       const idNum: number = Number(id);
@@ -128,7 +128,7 @@ export class ProductController {
     }
   };
 
-  getProductsLowStock: Handler = async (req, res, next) => {
+  getProductsLowStock: RequestHandler = async (req, res, next) => {
     try {
       const lowStockProducts = await prisma.$queryRaw`
         SELECT * 
