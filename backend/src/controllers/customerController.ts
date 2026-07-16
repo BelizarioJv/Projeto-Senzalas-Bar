@@ -1,7 +1,7 @@
 import { Handler } from "express";
 import { HttpError } from "../errors/HttpError.js";
 import { prisma } from "../database/prisma.js";
-import { Prisma } from "../generated/prisma/index.js";
+import { Prisma } from "@prisma/client";
 import {
   CustomerRequestSchema,
   UpdateCustomerRequestSchema,

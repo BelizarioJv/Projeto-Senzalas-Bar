@@ -211,7 +211,7 @@ export default function LoginPage() {
         <div className="mt-8 text-center">
           <div className="inline-flex items-center gap-2 text-amber-600/40 text-xs">
             <div className="w-1 h-1 bg-amber-600 rounded-full"></div>
-            <span>SENZALAS BAR MANAGEMENT</span>
+            <span>SENZALAS BAR APP</span>
             <div className="w-1 h-1 bg-amber-600 rounded-full"></div>
           </div>
         </div>
@@ -219,10 +219,7 @@ export default function LoginPage() {
 
       {/* Footer */}
       <div className="absolute bottom-6 text-center text-gray-600 text-xs">
-        <p>
-          &copy; {new Date().getFullYear()} Senzalas Bar. Todos os direitos
-          reservados.
-        </p>
+        <p>&copy; {new Date().getFullYear()} Familia Senzalas Bar</p>
       </div>
     </div>
   );
