@@ -6,7 +6,7 @@ import {
   SaleRequestSchema,
   MetaSaleRequestSchema,
 } from "./schemas/SaleRequestSchema.js";
-import { Prisma } from "../generated/prisma/index.js";
+import { Prisma } from "@prisma/client";
 
 export class SaleController {
   //Buscar todos as vendas
