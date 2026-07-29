@@ -3,6 +3,8 @@ import Link from "next/link";
 import { useState } from "react";
 import { toast } from "sonner";
 import { AppCard } from "@/components/layout/AppCard";
+import { Loading } from "@/components/layout/Loading";
+import { Error } from "@/components/layout/Error";
 import { useProducts } from "@/hooks/products/useProducts";
 import { useGetProductsLowStock } from "@/hooks/products/useGetLowStockProducts";
 import { ProductData } from "@/types/product";
@@ -21,10 +23,11 @@ export default function ProductsPage() {
   const lowStockProductsQuery = useGetProductsLowStock();
 
   if (productsQuery.isPending) {
-    return <p className="text-center text-gray-500">Carregando...</p>;
+    return <Loading message="Buscando Dados" />;
   }
   if (productsQuery.error) {
-    return toast.error("Erro ao buscar produtos");
+    toast.error("Erro ao buscar produtos");
+    return <Error message="Erro ao buscar Dados" />;
   }
 
   return (

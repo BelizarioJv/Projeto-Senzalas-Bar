@@ -2,6 +2,8 @@
 
 import { useParams } from "next/navigation";
 import { Card } from "@/components/ui/card";
+import { Loading } from "@/components/layout/Loading";
+import { Error } from "@/components/layout/Error";
 import { useGetPurchase } from "@/hooks/purchase/useGetPurchase";
 
 export default function ShowPurchasePage() {
@@ -12,11 +14,11 @@ export default function ShowPurchasePage() {
   const purchaseQuery = useGetPurchase(purchaseId);
 
   if (purchaseQuery.isPending) {
-    return <p>Carregando...</p>;
+    return <Loading message="Buscando Dados" />;
   }
 
   if (purchaseQuery.error) {
-    return <p>Erro ao carregar compra</p>;
+    return <Error message="Erro ao buscar Dados" />;
   }
 
   const purchase = purchaseQuery.data;

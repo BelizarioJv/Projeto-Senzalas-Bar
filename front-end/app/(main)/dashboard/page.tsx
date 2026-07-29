@@ -1,6 +1,8 @@
 "use client";
 
 import { AppCard } from "@/components/layout/AppCard";
+import { Loading } from "@/components/layout/Loading";
+import { Error } from "@/components/layout/Error";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useState } from "react";
 import { ArrowLeft, ArrowRight } from "lucide-react";
@@ -13,11 +15,11 @@ export default function DashboardPage() {
   const dashboardQuery = useDashboard();
 
   if (dashboardQuery.isPending || stockMovementQuery.isPending) {
-    return <p>Carregando...</p>;
+    return <Loading message="Buscando Dados" />;
   }
 
   if (dashboardQuery.error || stockMovementQuery.error) {
-    return <p>Erro ao carregar dashboard</p>;
+    return <Error message="Erro ao buscar Dados" />;
   }
 
   const dashboard = dashboardQuery.data;

@@ -1,11 +1,13 @@
 //Servidor
 
+import "dotenv/config";
 import { loginRouter } from "./routes/loginRoutes.js";
 import { productRouter } from "./routes/productRoutes.js";
 import { supplierRouter } from "./routes/supplierRoutes.js";
 import { customerRouter } from "./routes/customerRoutes.js";
 import { purchaseRouter } from "./routes/purchaseRoutes.js";
 import { saleRouter } from "./routes/saleRoutes.js";
+import { paymentRouter } from "./routes/paymentsRoutes.js";
 import { dashboardRouter } from "./routes/dashboardRoutes.js";
 import { authMiddleware } from "./middlewares/authMiddleware.js";
 import { errorHandler } from "./middlewares/errorMiddleware.js";
@@ -28,6 +30,7 @@ app.use("/customer", authMiddleware, customerRouter);
 app.use("/supplier", authMiddleware, supplierRouter);
 app.use("/purchase", authMiddleware, purchaseRouter);
 app.use("/sale", authMiddleware, saleRouter);
+app.use("/payments", authMiddleware, paymentRouter);
 app.use("/dashboard", authMiddleware, dashboardRouter);
 
 // Middleware de erro

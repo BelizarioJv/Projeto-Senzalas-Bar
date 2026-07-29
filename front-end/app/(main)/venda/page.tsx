@@ -4,6 +4,8 @@ import Link from "next/link";
 import { useState } from "react";
 import { Card } from "@/components/ui/card";
 import { toast } from "sonner";
+import { Loading } from "@/components/layout/Loading";
+import { Error } from "@/components/layout/Error";
 import { useSales } from "@/hooks/sale/useSales";
 import { useGetSaleOfMonth } from "@/hooks/sale/useTotalSaleMonth";
 import { SaleData } from "@/types/sale";
@@ -16,10 +18,11 @@ export default function SellPage() {
   const totalSalesQuery = useGetSaleOfMonth();
 
   if (saleQuery.isPending) {
-    return <p className="text-center text-gray-500">Carregando...</p>;
+    return <Loading message="Buscando Dados" />;
   }
   if (saleQuery.error) {
-    return toast.error("Erro ao buscar vendas");
+    toast.error("Erro ao buscar vendas");
+    return <Error message="Erro ao buscar Dados" />;
   }
 
   return (

@@ -1,24 +1,23 @@
 "use client";
 import Link from "next/link";
 import { toast } from "sonner";
+import { Loading } from "@/components/layout/Loading";
+import { Error } from "@/components/layout/Error";
 import { SupplierData } from "@/types/supplier";
 import { Card } from "@/components/ui/card";
 import { Truck } from "lucide-react";
 import { useSupplier } from "@/hooks/supplier/useSupplier";
-import { useEffect } from "react";
 
-export default function ProductsPage() {
+export default function SupplierPage() {
   const { data, isPending, error } = useSupplier();
 
-  // Exibir toast de erro
-  useEffect(() => {
-    if (error) {
-      toast.error("Erro ao buscar fornecedores");
-    }
-  }, [data]);
+  if (error) {
+    return <Loading message="Buscando Dados" />;
+  }
 
   if (isPending) {
-    return <p>Carregando...</p>;
+    toast.error("Error ao buscar dados");
+    return <Error message="Erro ao buscar Dados" />;
   }
 
   return (

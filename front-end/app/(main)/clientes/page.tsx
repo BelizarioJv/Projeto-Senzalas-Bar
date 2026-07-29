@@ -8,6 +8,8 @@ import { useAllCustomers } from "@/hooks/customer/useAllCustomers";
 import { useGetCustomerMetrics } from "@/hooks/customer/useGetCustomerMetrics"; // Crie este hook se precisar, ou use mock
 import { ICustomer } from "@/types/customer";
 import { Card } from "@/components/ui/card";
+import { Loading } from "@/components/layout/Loading";
+import { Error } from "@/components/layout/Error";
 import { Users, ArrowLeft, ArrowRight, UserPlus, Search } from "lucide-react";
 
 export default function CustomerPage() {
@@ -27,16 +29,12 @@ export default function CustomerPage() {
   const metricsQuery = useGetCustomerMetrics();
 
   if (customerQuery.isPending) {
-    return <p className="text-center text-gray-500 py-10">Carregando...</p>;
+    return <Loading message="Buscando Dados" />;
   }
 
   if (customerQuery.error) {
     toast.error("Erro ao buscar clientes");
-    return (
-      <p className="text-center text-red-500 py-10">
-        Erro ao carregar os dados.
-      </p>
-    );
+    return <Error message="Erro ao buscar Dados" />;
   }
 
   const { data: customers = [], meta } = customerQuery.data || {
