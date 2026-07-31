@@ -7,7 +7,19 @@ export const CustomerRequestSchema = z.object({
     .min(3, "O nome deve ter no mínimo 3 caracteres")
     .max(100, "O nome deve ter no máximo 100 caracteres"),
 
-  phone: z.string().optional().nullable(),
+  phone: z
+    .string()
+    .nullable()
+    .optional()
+    .refine(
+      (val) => {
+        if (!val) return true;
+        return /^\(?\d{2}\)?\s?\d{4,5}-?\d{4}$/.test(val);
+      },
+      {
+        message: "Número de telefone brasileiro inválido",
+      },
+    ),
 
   email: z.string().email("Formato de e-mail inválido").optional().nullable(),
 
