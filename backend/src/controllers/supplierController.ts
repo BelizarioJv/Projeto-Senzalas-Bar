@@ -3,7 +3,7 @@ import { RequestHandler } from "express";
 import {
   SupplierRequestSchema,
   UpdateSupplierRequestSchema,
-} from "./schemas/SupplierRequestSchema.js";
+} from "../docs/schemas/SupplierRequestSchema.js";
 import { HttpError } from "../errors/HttpError.js";
 
 //Controller de fornecedores com as operações de CRUD e listagem.

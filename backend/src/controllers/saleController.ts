@@ -5,7 +5,7 @@ import { getStartOfMonth } from "../utils/date.js";
 import {
   SaleRequestSchema,
   MetaSaleRequestSchema,
-} from "./schemas/SaleRequestSchema.js";
+} from "../docs/schemas/SaleRequestSchema.js";
 import { Prisma } from "@prisma/client";
 
 export class SaleController {

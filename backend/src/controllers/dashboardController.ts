@@ -1,6 +1,6 @@
 import { RequestHandler } from "express";
 import { prisma } from "../database/prisma.js";
-import { MetaStockMovementRequestSchema } from "./schemas/MovementStockRequestSchema.js";
+import { MetaStockMovementRequestSchema } from "../docs/schemas/MovementStockRequestSchema.js";
 import { getStartOfToday, getStartOfMonth } from "../utils/date.js";
 
 export class DashboardController {

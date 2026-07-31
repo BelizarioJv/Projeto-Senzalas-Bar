@@ -3,7 +3,7 @@ import bcrypt from "bcryptjs";
 import { prisma } from "../database/prisma.js";
 import { RequestHandler } from "express";
 import { HttpError } from "../errors/HttpError.js";
-import { LoginRequestSchema } from "./schemas/LoginRequestSchema.js";
+import { LoginRequestSchema } from "../docs/schemas/LoginRequestSchema.js";
 
 //Controller de login com geraçao JWT token
 export class LoginController {

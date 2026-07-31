@@ -13,6 +13,8 @@ import { dashboardRouter } from "./routes/dashboardRoutes.js";
 import { authMiddleware } from "./middlewares/authMiddleware.js";
 import { errorHandler } from "./middlewares/errorMiddleware.js";
 import { initMonthlyBillingJob } from "./jobs/monthlyBilling.job.js";
+import swaggerUi from "swagger-ui-express";
+import { swaggerSpec } from "./docs/swagger.js";
 
 // ---------------------------------
 import express from "express";
@@ -24,6 +26,7 @@ const app = express();
 //Configuraçao do server
 app.use(express.json());
 app.use(cors());
+app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 // ---------------------------------
 app.use("/login", loginRouter);

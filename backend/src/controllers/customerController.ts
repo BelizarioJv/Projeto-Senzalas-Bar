@@ -6,7 +6,7 @@ import {
   CustomerRequestSchema,
   UpdateCustomerRequestSchema,
   MetaCustomerRequestSchema,
-} from "./schemas/CustomerResquestSchema.js"; // Lembre-se de criar esses schemas parecidos com os de produto
+} from "../docs/schemas/CustomerResquestSchema.js"; // Lembre-se de criar esses schemas parecidos com os de produto
 
 export class CustomerController {
   // Listagem de clientes com paginação, ordenação e filtro por nome

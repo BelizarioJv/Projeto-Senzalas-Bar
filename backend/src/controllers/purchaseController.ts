@@ -6,7 +6,7 @@ import { getStartOfMonth } from "../utils/date.js";
 import {
   PurchaseRequestSchema,
   MetaPurchaseRequestSchema,
-} from "./schemas/PurchaseResquestSchema.js";
+} from "../docs/schemas/PurchaseResquestSchema.js";
 
 export class PurchaseController {
   //Buscar compras com paginaçao e filtros

@@ -6,7 +6,7 @@ import {
   ProductRequestSchema,
   UpdateProductRequestSchema,
   MetaProductRequestSchema,
-} from "./schemas/ProductRequestSchema.js";
+} from "../docs/schemas/ProductRequestSchema.js";
 
 //Controller de produtos com as operações de CRUD e listagem com paginação, ordenação e filtro por nome.
 export class ProductController {
