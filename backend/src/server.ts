@@ -14,7 +14,7 @@ import { authMiddleware } from "./middlewares/authMiddleware.js";
 import { errorHandler } from "./middlewares/errorMiddleware.js";
 import { initMonthlyBillingJob } from "./jobs/monthlyBilling.job.js";
 import swaggerUi from "swagger-ui-express";
-import { swaggerSpec } from "./docs/swagger.js";
+import { openApiDocument } from "./docs/swagger.js";
 
 // ---------------------------------
 import express from "express";
@@ -26,7 +26,7 @@ const app = express();
 //Configuraçao do server
 app.use(express.json());
 app.use(cors());
-app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(openApiDocument));
 
 // ---------------------------------
 app.use("/login", loginRouter);
@@ -42,7 +42,7 @@ app.use("/apiBilling", billingRouter);
 // Middleware de erro
 app.use(errorHandler);
 
-//Inicaliza o contador para Datas
+//Inicaliza o contador para Datas e cobranças mensais
 initMonthlyBillingJob();
 
 // ---------------------------------

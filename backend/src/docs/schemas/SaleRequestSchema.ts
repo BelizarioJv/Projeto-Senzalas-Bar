@@ -16,6 +16,7 @@ export const MetaSaleRequestSchema = z.object({
   order: z.enum(["asc", "desc"]).default("asc"),
 });
 
+//schema para validação dos dados de criação de vendas
 export const SaleRequestSchema = z
   .object({
     payment: paymentMethod,
@@ -51,3 +52,21 @@ export const SaleRequestSchema = z
       path: ["customerId"], // O erro apontará diretamente no campo do cliente
     },
   );
+
+//schema para validação dos dados de resposta da API, incluindo os campos adicionais id, createdAt e updatedAt
+export const SaleResponseSchema = z.object({
+  id: z.number().int().positive(),
+  payment: paymentMethod,
+  customerId: z.number().int().positive().optional().nullable(),
+  observation: z.string().optional(),
+  discountPercent: z.number().optional(),
+  total: z.number().positive(),
+  createdAt: z.string(),
+  products: z.array(
+    z.object({
+      productId: z.number().int().positive(),
+      quantity: z.number().int().positive(),
+      price: z.number().positive(),
+    }),
+  ),
+});

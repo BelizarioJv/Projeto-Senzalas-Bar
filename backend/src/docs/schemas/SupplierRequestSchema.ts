@@ -19,3 +19,10 @@ export const UpdateSupplierRequestSchema = z.object({
   cnpj: z.string().optional(),
   observations: z.string().optional(),
 });
+
+//schema para validação dos dados de resposta da API, incluindo os campos adicionais id, createdAt e updatedAt
+export const SupplierResponseSchema = SupplierRequestSchema.extend({
+  id: z.number(),
+  createdAt: z.string(),
+  updatedAt: z.string(),
+});

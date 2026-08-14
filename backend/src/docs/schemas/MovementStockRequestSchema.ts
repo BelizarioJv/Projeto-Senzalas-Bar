@@ -11,3 +11,11 @@ export const MetaStockMovementRequestSchema = z.object({
 
   order: z.enum(["asc", "desc"]).default("desc"),
 });
+
+export const StockMovementResponseSchema = z.object({
+  id: z.string(),
+  productId: z.string(),
+  quantity: z.number(),
+  movementType: z.enum(["ENTRADA", "SAIDA", "AJUSTE"]),
+  createdAt: z.string(),
+});

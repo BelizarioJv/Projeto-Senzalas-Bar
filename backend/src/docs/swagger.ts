@@ -1,20 +1,28 @@
-import swaggerJsdoc from "swagger-jsdoc";
+import { OpenApiGeneratorV3 } from "@asteasolutions/zod-to-openapi";
 
-const options = {
-  definition: {
-    openapi: "3.0.0",
-    info: {
-      title: "API Senzalas",
-      version: "1.0.0",
-      description: "Documentação da API do Senzalas",
-    },
-    servers: [
-      {
-        url: "http://localhost:8080",
-      },
-    ],
+import { registry } from "./registry.js";
+import "./paths/auth.docs.js";
+import "./paths/customer.docs.js";
+import "./paths/product.docs.js";
+import "./paths/purchase.docs.js";
+import "./paths/movimentStock.js";
+import "./paths/sale.docs.js";
+import "./paths/supplier.docs.js";
+
+export const generator = new OpenApiGeneratorV3(registry.definitions);
+
+export const openApiDocument = generator.generateDocument({
+  openapi: "3.0.0",
+
+  info: {
+    title: "API Senzalas",
+    version: "1.0.0",
+    description: "ERP do Senzalas",
   },
-  apis: ["./src/routes/*.ts"],
-};
 
-export const swaggerSpec = swaggerJsdoc(options);
+  servers: [
+    {
+      url: "http://localhost:8080",
+    },
+  ],
+});
