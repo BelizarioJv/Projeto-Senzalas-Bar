@@ -19,6 +19,7 @@ import { openApiDocument } from "./docs/swagger.js";
 // ---------------------------------
 import express from "express";
 import cors from "cors";
+import { reportsRouter } from "./routes/reportsRoutes.js";
 
 //Inicalizaçao do server
 const app = express();
@@ -37,6 +38,7 @@ app.use("/purchase", authMiddleware, purchaseRouter);
 app.use("/sale", authMiddleware, saleRouter);
 app.use("/payments", authMiddleware, paymentRouter);
 app.use("/dashboard", authMiddleware, dashboardRouter);
+app.use("/reports", authMiddleware, reportsRouter);
 app.use("/apiBilling", billingRouter);
 
 // Middleware de erro

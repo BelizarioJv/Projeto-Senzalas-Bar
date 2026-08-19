@@ -8,6 +8,7 @@ import "./paths/purchase.docs.js";
 import "./paths/movimentStock.js";
 import "./paths/sale.docs.js";
 import "./paths/supplier.docs.js";
+import "./paths/report.docs.js";
 
 export const generator = new OpenApiGeneratorV3(registry.definitions);
 
